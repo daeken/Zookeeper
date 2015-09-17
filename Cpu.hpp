@@ -9,14 +9,21 @@
 
 class Cpu {
 public:
-	Cpu(uint8_t *ram, Kernel *_kernel);
+	Cpu(uint8_t *ram, uint8_t *kram);
 	~Cpu();
 	void run(uint32_t eip);
 	void map_pages(uint32_t virt, uint32_t phys, uint32_t count);
 	void alloc_stack(uint32_t bottom_virt, uint32_t bottom_phys, uint32_t size);
 
 	void read_memory(uint32_t addr, uint32_t size, void *buffer);
-	template<typename T> T read_memory(uint32_t addr);
+	template<typename T> T read_memory(uint32_t addr) {
+		T value = 0;
+		read_memory(addr, sizeof(T), &value);
+		return value;
+	}
+
+	uint64_t rdmsr(uint32_t msr);
+	void wrmsr(uint32_t msr, uint64_t val);
 
 	/* read GPR */
 	uint64_t rreg(hv_x86_reg_t reg) {
@@ -40,6 +47,5 @@ public:
 	}
 
 	hv_vcpuid_t vcpu;
-	uint8_t *mem;
-	Kernel *kernel;
+	uint8_t *mem, *kmem;
 };

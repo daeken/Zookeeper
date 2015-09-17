@@ -20,12 +20,13 @@ void gdt_encode(uint8_t *gdt, int entry, uint32_t base, uint32_t limit, uint8_t 
     gdt[5] = type;
 }
 
-Cpu::Cpu(uint8_t *ram, Kernel *_kernel) {
-	kernel = _kernel;
+Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 	mem = ram;
+	kmem = kram;
 
 	bailout(hv_vm_create(HV_VM_DEFAULT));
 	bailout(hv_vm_map(mem, 0, RAM_SIZE, HV_MEMORY_READ | HV_MEMORY_WRITE | HV_MEMORY_EXEC));
+	bailout(hv_vm_map(kmem, 0xc0000000, KRAM_SIZE, HV_MEMORY_READ | HV_MEMORY_WRITE | HV_MEMORY_EXEC));
 	bailout(hv_vcpu_create(&vcpu, HV_VCPU_DEFAULT));
 
 	uint64_t vmx_cap_pinbased, vmx_cap_procbased, vmx_cap_procbased2, vmx_cap_entry;
@@ -42,7 +43,7 @@ Cpu::Cpu(uint8_t *ram, Kernel *_kernel) {
 		VMCS_PRI_PROC_BASED_CTLS_CR8_STORE));
 	wvmcs(VMCS_CTRL_CPU_BASED2, cap2ctrl(vmx_cap_procbased2, 0));
 	wvmcs(VMCS_CTRL_VMENTRY_CONTROLS, cap2ctrl(vmx_cap_entry, 0));
-	wvmcs(VMCS_CTRL_EXC_BITMAP, 0xffffffff);
+	wvmcs(VMCS_CTRL_EXC_BITMAP, 0);
 	wvmcs(VMCS_CTRL_CR0_MASK, 0xffffffff);
 	wvmcs(VMCS_CTRL_CR0_SHADOW, 0xffffffff);
 	wvmcs(VMCS_CTRL_CR4_MASK, 0);
@@ -107,17 +108,6 @@ Cpu::Cpu(uint8_t *ram, Kernel *_kernel) {
 	wvmcs(VMCS_GUEST_TR_AR, 0x83);
 	wvmcs(VMCS_GUEST_TR_BASE, 0);
 
-	uint8_t *idt = ram + 0x16000;
-	for(int i = 0; i < 256; ++i) {
-		idt[0] = idt[1] = idt[6] = idt[7] = 0xFF;
-		idt[2] = 1;
-		idt[3] = 0;
-		idt[4] = 0;
-		idt[5] = 0x8E;
-	}
-	wvmcs(VMCS_GUEST_IDTR_LIMIT, 256 * 8);
-	wvmcs(VMCS_GUEST_IDTR_BASE, 0x16000);
-
 	wvmcs(VMCS_GUEST_CR4, 0x2000);
 }
 
@@ -139,19 +129,41 @@ void Cpu::alloc_stack(uint32_t bottom_virt, uint32_t bottom_phys, uint32_t size)
 }
 
 void Cpu::read_memory(uint32_t addr, uint32_t size, void *buffer) {
+	uint32_t cr3 = rreg(HV_X86_CR3);
+	if(cr3 == 0) {
+		if(addr >= 0xc0000000)
+			memcpy(buffer, &kmem[addr - 0xc0000000], size);
+		else
+			memcpy(buffer, &mem[addr], size);
+		return;
+	}
 	uint8_t *buf = (uint8_t *) buffer;
-	uint32_t *directory = (uint32_t *) (mem + rreg(HV_X86_CR3));
+	uint32_t *directory = (uint32_t *) (mem + cr3);
 	for(int i = 0; i < size; ++i) {
 		uint32_t *table = (uint32_t *) (mem + (directory[addr >> 22] & ~0xFFF));
-		*(buf++) = mem[(table[(addr >> 12) & 0x3ff] & ~0xFFF) + (addr & 0xFFF)];
+		uint32_t paddr = (table[(addr >> 12) & 0x3ff] & ~0xFFF) + (addr & 0xFFF);
+		if(paddr >= 0xc0000000)
+			*(buf++) = kmem[paddr - 0xc0000000];
+		else
+			*(buf++) = mem[paddr];
 		++addr;
 	}
 }
 
-template<typename T> T Cpu::read_memory(uint32_t addr) {
-	T value = 0;
-	read_memory(addr, sizeof(T), &value);
-	return value;
+uint64_t Cpu::rdmsr(uint32_t msr) {
+	switch(msr) {
+		default:
+			cout << "Unknown MSR being read: " << hex << msr << endl;
+			return 0;
+	}
+}
+
+void Cpu::wrmsr(uint32_t msr, uint64_t val) {
+	switch(msr) {
+		default:
+			cout << "Unknown MSR being written: " << hex << msr << " == 0x" << hex << val << endl;
+			break;
+	}
 }
 
 Cpu::~Cpu() {
@@ -160,54 +172,296 @@ Cpu::~Cpu() {
 	bailout(hv_vm_destroy());
 }
 
+#define TASK_TIMER 20 // Milliseconds
+#define TASK_INTERRUPT 80
+
+uint64_t systime() {
+	timeval time;
+	gettimeofday(&time, NULL);
+	return (time.tv_sec * 1000) + (time.tv_usec / 1000);
+}
+
+void log_exit_reason(uint32_t reason, uint32_t eip) {
+	if(reason & 0x80000000) {
+		reason &= 0x7FFFFFFF;
+		cout << "Entry failed: ";
+	} else
+		cout << "Exit ";
+	switch(reason) {
+		case VMX_REASON_EXC_NMI:
+			cout << "VMX_REASON_EXC_NMI";
+			break;
+		case VMX_REASON_IRQ:
+			cout << "VMX_REASON_IRQ";
+			break;
+		case VMX_REASON_TRIPLE_FAULT:
+			cout << "VMX_REASON_TRIPLE_FAULT";
+			break;
+		case VMX_REASON_INIT:
+			cout << "VMX_REASON_INIT";
+			break;
+		case VMX_REASON_SIPI:
+			cout << "VMX_REASON_SIPI";
+			break;
+		case VMX_REASON_IO_SMI:
+			cout << "VMX_REASON_IO_SMI";
+			break;
+		case VMX_REASON_OTHER_SMI:
+			cout << "VMX_REASON_OTHER_SMI";
+			break;
+		case VMX_REASON_IRQ_WND:
+			cout << "VMX_REASON_IRQ_WND";
+			break;
+		case VMX_REASON_VIRTUAL_NMI_WND:
+			cout << "VMX_REASON_VIRTUAL_NMI_WND";
+			break;
+		case VMX_REASON_TASK:
+			cout << "VMX_REASON_TASK";
+			break;
+		case VMX_REASON_CPUID:
+			cout << "VMX_REASON_CPUID";
+			break;
+		case VMX_REASON_GETSEC:
+			cout << "VMX_REASON_GETSEC";
+			break;
+		case VMX_REASON_HLT:
+			cout << "VMX_REASON_HLT";
+			break;
+		case VMX_REASON_INVD:
+			cout << "VMX_REASON_INVD";
+			break;
+		case VMX_REASON_INVLPG:
+			cout << "VMX_REASON_INVLPG";
+			break;
+		case VMX_REASON_RDPMC:
+			cout << "VMX_REASON_RDPMC";
+			break;
+		case VMX_REASON_RDTSC:
+			cout << "VMX_REASON_RDTSC";
+			break;
+		case VMX_REASON_RSM:
+			cout << "VMX_REASON_RSM";
+			break;
+		case VMX_REASON_VMCALL:
+			cout << "VMX_REASON_VMCALL";
+			break;
+		case VMX_REASON_VMCLEAR:
+			cout << "VMX_REASON_VMCLEAR";
+			break;
+		case VMX_REASON_VMLAUNCH:
+			cout << "VMX_REASON_VMLAUNCH";
+			break;
+		case VMX_REASON_VMPTRLD:
+			cout << "VMX_REASON_VMPTRLD";
+			break;
+		case VMX_REASON_VMPTRST:
+			cout << "VMX_REASON_VMPTRST";
+			break;
+		case VMX_REASON_VMREAD:
+			cout << "VMX_REASON_VMREAD";
+			break;
+		case VMX_REASON_VMRESUME:
+			cout << "VMX_REASON_VMRESUME";
+			break;
+		case VMX_REASON_VMWRITE:
+			cout << "VMX_REASON_VMWRITE";
+			break;
+		case VMX_REASON_VMOFF:
+			cout << "VMX_REASON_VMOFF";
+			break;
+		case VMX_REASON_VMON:
+			cout << "VMX_REASON_VMON";
+			break;
+		case VMX_REASON_MOV_CR:
+			cout << "VMX_REASON_MOV_CR";
+			break;
+		case VMX_REASON_MOV_DR:
+			cout << "VMX_REASON_MOV_DR";
+			break;
+		case VMX_REASON_IO:
+			cout << "VMX_REASON_IO";
+			break;
+		case VMX_REASON_RDMSR:
+			cout << "VMX_REASON_RDMSR";
+			break;
+		case VMX_REASON_WRMSR:
+			cout << "VMX_REASON_WRMSR";
+			break;
+		case VMX_REASON_VMENTRY_GUEST:
+			cout << "VMX_REASON_VMENTRY_GUEST";
+			break;
+		case VMX_REASON_VMENTRY_MSR:
+			cout << "VMX_REASON_VMENTRY_MSR";
+			break;
+		case VMX_REASON_MWAIT:
+			cout << "VMX_REASON_MWAIT";
+			break;
+		case VMX_REASON_MTF:
+			cout << "VMX_REASON_MTF";
+			break;
+		case VMX_REASON_MONITOR:
+			cout << "VMX_REASON_MONITOR";
+			break;
+		case VMX_REASON_PAUSE:
+			cout << "VMX_REASON_PAUSE";
+			break;
+		case VMX_REASON_VMENTRY_MC:
+			cout << "VMX_REASON_VMENTRY_MC";
+			break;
+		case VMX_REASON_TPR_THRESHOLD:
+			cout << "VMX_REASON_TPR_THRESHOLD";
+			break;
+		case VMX_REASON_APIC_ACCESS:
+			cout << "VMX_REASON_APIC_ACCESS";
+			break;
+		case VMX_REASON_VIRTUALIZED_EOI:
+			cout << "VMX_REASON_VIRTUALIZED_EOI";
+			break;
+		case VMX_REASON_GDTR_IDTR:
+			cout << "VMX_REASON_GDTR_IDTR";
+			break;
+		case VMX_REASON_LDTR_TR:
+			cout << "VMX_REASON_LDTR_TR";
+			break;
+		case VMX_REASON_EPT_VIOLATION:
+			cout << "VMX_REASON_EPT_VIOLATION";
+			break;
+		case VMX_REASON_EPT_MISCONFIG:
+			cout << "VMX_REASON_EPT_MISCONFIG";
+			break;
+		case VMX_REASON_EPT_INVEPT:
+			cout << "VMX_REASON_EPT_INVEPT";
+			break;
+		case VMX_REASON_RDTSCP:
+			cout << "VMX_REASON_RDTSCP";
+			break;
+		case VMX_REASON_VMX_TIMER_EXPIRED:
+			cout << "VMX_REASON_VMX_TIMER_EXPIRED";
+			break;
+		case VMX_REASON_INVVPID:
+			cout << "VMX_REASON_INVVPID";
+			break;
+		case VMX_REASON_WBINVD:
+			cout << "VMX_REASON_WBINVD";
+			break;
+		case VMX_REASON_XSETBV:
+			cout << "VMX_REASON_XSETBV";
+			break;
+		case VMX_REASON_APIC_WRITE:
+			cout << "VMX_REASON_APIC_WRITE";
+			break;
+		case VMX_REASON_RDRAND:
+			cout << "VMX_REASON_RDRAND";
+			break;
+		case VMX_REASON_INVPCID:
+			cout << "VMX_REASON_INVPCID";
+			break;
+		case VMX_REASON_VMFUNC:
+			cout << "VMX_REASON_VMFUNC";
+			break;
+		case VMX_REASON_RDSEED:
+			cout << "VMX_REASON_RDSEED";
+			break;
+		case VMX_REASON_XSAVES:
+			cout << "VMX_REASON_XSAVES";
+			break;
+		case VMX_REASON_XRSTORS:
+			cout << "VMX_REASON_XRSTORS";
+			break;
+		default:
+			cout << "Unknown reason: " << dec << reason;
+	}
+	cout << " @ " << hex << eip << endl;
+}
+
 void Cpu::run(uint32_t eip) {
 	wreg(HV_X86_RIP, eip);
 	wreg(HV_X86_RFLAGS, 0x2);
 
+	uint64_t last_time = systime();
+
 	int stop = 0;
 	do {
-		cout << "Running from EIP: " << hex << rreg(HV_X86_RIP) << endl;
+		//cout << "Running from EIP: " << hex << rreg(HV_X86_RIP) << endl;
 		bailout(hv_vcpu_run(vcpu));
 		uint64_t exit_reason = rvmcs(VMCS_RO_EXIT_REASON);
+		//log_exit_reason(exit_reason, rreg(HV_X86_RIP));
 
-		switch (exit_reason) {
-			case VMX_REASON_EXC_NMI: {
-				uint64_t vec_val = rvmcs(VMCS_RO_IDT_VECTOR_INFO) & 0xFFFF;
-				stop = 1;
-				cout << "VMX_REASON_EXC_NMI " << hex << (vec_val & 0xFF) << endl;
-				if(vec_val >> 8 == 6)
-					cout << "Exception." << endl;
-				else if(vec_val >> 8 == 4) {
-					cout << "Software interrupt." << endl;
-					if((vec_val & 0xFF) == 0x69) { // Kernel thunk!
-						uint32_t func = read_memory<uint32_t>(rreg(HV_X86_RSP));
-						wreg(HV_X86_RSP, rreg(HV_X86_RSP) + 4);
-						bailout(kernel->dispatch_call(func));
+		if(exit_reason & 0x80000000) {
+			cout << "Entry failed? " << dec << (exit_reason & 0x7FFFFFFF) << endl;
+			stop = 1;
+		} else
+			switch (exit_reason) {
+				case VMX_REASON_EXC_NMI: {
+					uint64_t vec_val = rvmcs(VMCS_RO_IDT_VECTOR_INFO) & 0xFFFF;
+					stop = 1;
+					cout << "VMX_REASON_EXC_NMI " << hex << (vec_val & 0xFF) << endl;
+					if(vec_val >> 8 == 6)
+						cout << "Exception." << endl;
+					else if(vec_val >> 8 == 4) {
+						cout << "Software interrupt." << endl;
 						stop = 0;
 					}
+					else if(vec_val >> 8 == 2)
+						cout << "NMI." << endl;
+					else if(vec_val == 0)
+						cout << "!!!Out of bounds access!!!" << endl;
+					else
+						cout << "WTF? " << (vec_val >> 8) << endl;
+					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 2);
+					break;
 				}
-				else if(vec_val >> 8 == 2)
-					cout << "NMI." << endl;
-				else if(vec_val == 0)
-					cout << "!!!Out of bounds access!!!" << endl;
-				else
-					cout << "WTF? " << (vec_val >> 8) << endl;
-				wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 2);
-				break;
+				case VMX_REASON_VMCALL:
+					bailout(vmcall_dispatch(*this, rreg(HV_X86_RAX), rreg(HV_X86_RDX)));
+					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 3);
+					break;
+				case VMX_REASON_IRQ:
+					//cout << "VMX_REASON_IRQ" << endl;
+					break;
+				case VMX_REASON_TRIPLE_FAULT:
+					cout << "Triple fault!" << endl;
+					cout << "IDTR Base " << hex << rreg(HV_X86_IDT_BASE) << endl;
+					cout << "IDTR Limit " << hex << rreg(HV_X86_IDT_LIMIT) << endl;
+					cout << "ISR 0 == " << hex << read_memory<uint64_t>(rvmcs(VMCS_GUEST_IDTR_BASE)) << endl;
+					cout << "ISR 7 == " << hex << read_memory<uint64_t>(rvmcs(VMCS_GUEST_IDTR_BASE) + 8 * 7) << endl;
+					stop = 1;
+					break;
+				case VMX_REASON_RDMSR: {
+					uint64_t msr = 0;
+					cout << "VMX_REASON_RDMSR " << hex << rreg(HV_X86_RCX);
+					msr = rdmsr(rreg(HV_X86_RCX));
+					cout << " == 0x" << hex << msr << endl;
+					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 2);
+					wreg(HV_X86_RAX, msr & 0xFFFFFFFF);
+					wreg(HV_X86_RDX, msr >> 32);
+					break;
+				}
+				case VMX_REASON_WRMSR: {
+					uint64_t msr = (rreg(HV_X86_RDX) << 32) | rreg(HV_X86_RAX);
+					cout << "VMX_REASON_WRMSR " << hex << rreg(HV_X86_RCX) << " == 0x" << hex << msr << endl;
+					wrmsr(rreg(HV_X86_RCX), msr);
+					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 2);
+					break;
+				}
+				case VMX_REASON_HLT:
+					cout << "VMX_REASON_HLT" << endl;
+					stop = 1;
+					break;
+				case VMX_REASON_EPT_VIOLATION:
+					//cout << "VMX_REASON_EPT_VIOLATION" << endl;
+					break;
+				case VMX_REASON_APIC_ACCESS:
+					cout << "VMX_REASON_APIC_ACCESS" << endl;
+					stop = 0;
+					break;
+				default:
+					cout << "Unhandled VM exit: " << dec << exit_reason << endl;
+					stop = 1;
 			}
-			case VMX_REASON_IRQ:
-				cout << "VMX_REASON_IRQ" << endl;
-				break;
-			case VMX_REASON_HLT:
-				cout << "VMX_REASON_HLT" << endl;
-				stop = 1;
-				break;
-			case VMX_REASON_EPT_VIOLATION:
-				//cout << "VMX_REASON_EPT_VIOLATION" << endl;
-				break;
-			default:
-				cout << "Unhandled VM exit: 0x" << hex << exit_reason << endl;
-				stop = 1;
+		uint64_t cur_time = systime();
+		if(cur_time >= last_time + TASK_TIMER) {
+			wvmcs(VMCS_CTRL_VMENTRY_IRQ_INFO, ((1 << 31) | (0 << 11) | (0 << 8) | TASK_INTERRUPT) & 0xFFFFFFFF);
+			last_time = cur_time;
 		}
 	} while(!stop);
 	cout << "Final EIP: " << hex << rreg(HV_X86_RIP) << endl;
