@@ -32,8 +32,8 @@ int vmcall_dispatch(uint32_t call, uint32_t addr) {
 
 			break;
 		}
-		case VMCALL_ENTRYPOINT: {
-			return box->entrypoint;
+		case VMCALL_XBEBASE: {
+			return box->xbebase;
 		}
 		default:
 			cout << "Unknown VMCall: 0x" << hex << call << " -- " << hex << addr << endl;

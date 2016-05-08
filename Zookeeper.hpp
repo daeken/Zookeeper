@@ -16,6 +16,7 @@ using namespace std;
 #define RAM_SIZE 128*1024*1024
 #define KRAM_SIZE 128*1024*1024
 
+#include "xbetypes.hpp"
 #include "Xbe.hpp"
 #include "Cpu.hpp"
 #include "PageManager.hpp"

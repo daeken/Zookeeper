@@ -42,7 +42,7 @@ void handle_interrupt(isr_regs_t *regs) {
 			break;
 		default:
 			log("Unknown interrupt! %i @ 0x%08x", regs->int_no, regs->eip);
-			asm("hlt");
+			halt();
 			break;
 	}
 }

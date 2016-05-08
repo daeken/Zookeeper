@@ -8,7 +8,13 @@ void entrypoint() {
 
 	log("Idle.");
 
-	auto ep = (xbe_ep_t) get_entrypoint();
+	auto xbe = get_xbebase();
+	auto thunk = (uint32_t *) xbe->thunk;
+	while(*thunk) {
+		*thunk = thunk_lookup(*thunk);
+		++thunk;
+	}
+	auto ep = (xbe_ep_t) xbe->oep;
 	ep();
 
 	log("Returned from entrypoint.");

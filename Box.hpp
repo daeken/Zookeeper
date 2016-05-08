@@ -9,7 +9,7 @@ public:
 	Cpu *cpu;
 	PageManager *pm;
 
-	uint32_t entrypoint;
+	uint32_t xbebase;
 };
 
 extern Box *box;

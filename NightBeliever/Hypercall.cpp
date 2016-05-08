@@ -38,6 +38,6 @@ void unmap(void *virt_base, uint32_t count) {
 	vmcall(VMCALL_UNMAP, &smap);
 }
 
-void *get_entrypoint() {
-	return (void *) vmcall(VMCALL_ENTRYPOINT, NULL);
+XbeHeader_t *get_xbebase() {
+	return (XbeHeader_t *) vmcall(VMCALL_XBEBASE, NULL);
 }
