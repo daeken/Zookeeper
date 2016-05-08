@@ -9,7 +9,9 @@
 #include <list>
 using namespace std;
 
-#define bailout(expr) do { if(expr) { cout << "Bailout: " << #expr << " @ " << __FILE__ << " (" << __LINE__ << ")" << endl; exit(1); } } while(0)
+#define bailout(expr) do { if(expr) { cout << "Bailout: " << #expr << " @ " << __FILE__ << " (" << dec << __LINE__ << ")" << endl; exit(1); } } while(0)
+
+#define pagepad(expr) (((expr) & 0xFFF) ? ((expr) & ~0xFFF) + 4096 : (expr))
 
 #define RAM_SIZE 128*1024*1024
 #define KRAM_SIZE 128*1024*1024

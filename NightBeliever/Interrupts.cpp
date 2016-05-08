@@ -41,7 +41,8 @@ void handle_interrupt(isr_regs_t *regs) {
 		case 80: // TASK_INTERRUPT
 			break;
 		default:
-			log("Unknown interrupt! %i", regs->int_no);
+			log("Unknown interrupt! %i @ 0x%08x", regs->int_no, regs->eip);
+			asm("hlt");
 			break;
 	}
 }

@@ -24,21 +24,27 @@ Xbe::Xbe(char *fn) {
 	header.thunk ^= THXORKEY;
 }
 
-uint32_t Xbe::LoadImage(void *mem_base) {
+uint32_t Xbe::LoadImage() {
 	cout << "Loading image at " << hex << header.base << " to " << hex << header.base + file_size << endl;
 	cout << "OEP is " << hex << header.oep << endl;
-	memcpy((uint8_t *) mem_base, file_data, file_size);
+	box->entrypoint = header.oep;
+	box->pm->map(header.base, pagepad(file_size) / 4096);
+	box->cpu->write_memory(header.base, file_size, file_data);
 
 	uint32_t end = file_size;
 
 	for(int i = 0; i < header.numsects; ++i) {
 		XbeSection *sect = &sections[i];
-		memcpy((uint8_t *) mem_base + (sect->vaddr - header.base), &file_data[sect->raddr], sect->rsize);
+		auto psize = pagepad(sect->vsize);
+		auto base = sect->vaddr & ~0xFFF;
+		if(sect->vaddr & 0xFFF)
+			psize += 4096;
+		box->pm->map(base, psize / 4096);
+		cout << "Loading section of 0x" << hex << sect->vsize << " bytes (padded to 0x" << psize << ") to 0x" << base << endl;
+		box->cpu->write_memory(sect->vaddr, sect->rsize, &file_data[sect->raddr]);
 		uint32_t nend = (sect->vaddr - header.base) + sect->rsize;
 		end = (nend > end) ? nend : end;
 	}
-	if(end & 0xFFF)
-		end = (end & ~0xFFF) + 4096;
 
-	return end;
+	return pagepad(end);
 }

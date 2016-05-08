@@ -15,6 +15,7 @@ public:
 	void map_pages(uint32_t virt, uint32_t phys, uint32_t count);
 	
 	uint32_t virt2phys(uint32_t addr);
+	bool is_mapped(uint32_t addr);
 	void read_memory(uint32_t addr, uint32_t size, void *buffer);
 	template<typename T> T read_memory(uint32_t addr) {
 		T value;

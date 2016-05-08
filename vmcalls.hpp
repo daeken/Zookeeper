@@ -13,3 +13,4 @@ typedef struct unmap_pages {
 #define VMCALL_LOG 1
 #define VMCALL_MAP 2
 #define VMCALL_UNMAP 3
+#define VMCALL_ENTRYPOINT 4

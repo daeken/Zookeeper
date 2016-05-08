@@ -8,6 +8,8 @@ public:
 
 	Cpu *cpu;
 	PageManager *pm;
+
+	uint32_t entrypoint;
 };
 
 extern Box *box;

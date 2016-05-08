@@ -16,6 +16,28 @@ void PageManager::add_region(uint32_t base, uint32_t size) {
 		freePhysPages.push_back(addr);
 }
 
+uint32_t PageManager::map(uint32_t base, uint32_t count) {
+	if(base == 0)
+		base = box->pm->alloc_virt(count);
+	
+	for(int i = 0; i < count; ++i) {
+		auto virt = base + i * 4096;
+		if(!box->cpu->is_mapped(virt))
+			box->cpu->map_pages(virt, box->pm->alloc_phys(), 1);
+	}
+
+	return base;
+}
+
+void PageManager::unmap(uint32_t base, uint32_t count) {
+	auto addr = base;
+	for(int i = 0; i < count; ++i) {
+		box->pm->free_phys(box->cpu->virt2phys(addr));
+		addr += 4096;
+	}
+	box->pm->free_virt(base, count);
+}
+
 uint32_t PageManager::alloc_phys() {
 	bailout(freePhysPages.size() == 0);
 

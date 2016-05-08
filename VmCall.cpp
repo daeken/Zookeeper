@@ -17,31 +17,26 @@ int vmcall_dispatch(uint32_t call, uint32_t addr) {
 		case VMCALL_MAP: {
 			auto smap = box->cpu->read_memory<map_pages_t>(addr);
 
+			auto base = box->pm->map(smap.virt_base, smap.count);
 			if(smap.virt_base == 0) {
-				smap.virt_base = box->pm->alloc_virt(smap.count);
+				smap.virt_base = base;
 				box->cpu->write_memory(addr, smap);
 			}
-			
-			for(int i = 0; i < smap.count; ++i)
-				box->cpu->map_pages(smap.virt_base + i * 4096, box->pm->alloc_phys(), 1);
 
 			break;
 		}
 		case VMCALL_UNMAP: {
 			auto smap = box->cpu->read_memory<unmap_pages_t>(addr);
-			auto addr = smap.virt_base;
-
-			for(int i = 0; i < smap.count; ++i) {
-				box->pm->free_phys(box->cpu->virt2phys(addr));
-				addr += 4096;
-			}
-			box->pm->free_virt(smap.virt_base, smap.count);
+			
+			box->pm->unmap(smap.virt_base, smap.count);
 
 			break;
 		}
+		case VMCALL_ENTRYPOINT: {
+			return box->entrypoint;
+		}
 		default:
 			cout << "Unknown VMCall: 0x" << hex << call << " -- " << hex << addr << endl;
-			return 1;
 	}
 	return 0;
 }

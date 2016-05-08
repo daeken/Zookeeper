@@ -34,5 +34,5 @@ public:
 	XbeHeader header;
 	XbeSection *sections;
 	Xbe(char *fn);
-	uint32_t LoadImage(void *mem_base);
+	uint32_t LoadImage();
 };

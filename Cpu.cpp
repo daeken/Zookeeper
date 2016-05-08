@@ -135,8 +135,18 @@ uint32_t Cpu::virt2phys(uint32_t addr) {
 	return (table[(addr >> 12) & 0x3ff] & ~0xFFF) + (addr & 0xFFF);
 }
 
-void Cpu::read_memory(uint32_t addr, uint32_t size, void *buffer) {
+bool Cpu::is_mapped(uint32_t addr) {
 	uint32_t cr3 = rreg(HV_X86_CR3);
+	if(cr3 == 0)
+		return true;
+
+	auto directory = (uint32_t *) (mem + cr3);
+	auto table = (uint32_t *) (mem + (directory[addr >> 22] & ~0xFFF));
+	return (table[(addr >> 12) & 0x3ff] & 1) == 1;
+}
+
+void Cpu::read_memory(uint32_t addr, uint32_t size, void *buffer) {
+	auto cr3 = rreg(HV_X86_CR3);
 	if(cr3 == 0) {
 		if(addr >= 0xc0000000)
 			memcpy(buffer, &kmem[addr - 0xc0000000], size);
@@ -144,11 +154,11 @@ void Cpu::read_memory(uint32_t addr, uint32_t size, void *buffer) {
 			memcpy(buffer, &mem[addr], size);
 		return;
 	}
-	uint8_t *buf = (uint8_t *) buffer;
-	uint32_t *directory = (uint32_t *) (mem + cr3);
+	auto buf = (uint8_t *) buffer;
+	auto directory = (uint32_t *) (mem + cr3);
 	for(int i = 0; i < size; ++i) {
-		uint32_t *table = (uint32_t *) (mem + (directory[addr >> 22] & ~0xFFF));
-		uint32_t paddr = (table[(addr >> 12) & 0x3ff] & ~0xFFF) + (addr & 0xFFF);
+		auto table = (uint32_t *) (mem + (directory[addr >> 22] & ~0xFFF));
+		auto paddr = (table[(addr >> 12) & 0x3ff] & ~0xFFF) + (addr & 0xFFF);
 		if(paddr >= 0xc0000000)
 			*(buf++) = kmem[paddr - 0xc0000000];
 		else
@@ -442,10 +452,12 @@ void Cpu::run(uint32_t eip) {
 					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 2);
 					break;
 				}
-				case VMX_REASON_VMCALL:
-					bailout(vmcall_dispatch(rreg(HV_X86_RAX), rreg(HV_X86_RDX)));
+				case VMX_REASON_VMCALL: {
+					auto ret = vmcall_dispatch(rreg(HV_X86_RAX), rreg(HV_X86_RDX));
+					wreg(HV_X86_RAX, ret);
 					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 3);
 					break;
+				}
 				case VMX_REASON_IRQ:
 					break;
 				case VMX_REASON_TRIPLE_FAULT:

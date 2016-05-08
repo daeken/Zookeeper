@@ -11,6 +11,9 @@ public:
 	PageManager();
 	void add_region(uint32_t base, uint32_t size);
 
+	uint32_t map(uint32_t base, uint32_t count);
+	void unmap(uint32_t base, uint32_t count);
+
 	uint32_t alloc_phys();
 	void free_phys(uint32_t page);
 
