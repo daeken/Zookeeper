@@ -10,5 +10,5 @@ Box::Box() {
 	cpu = new Cpu(mem, kmem);
 
 	pm = new PageManager();
-	pm->add_region(0, RAM_SIZE);
+	pm->add_region(1024*1024, RAM_SIZE - 1024*1024);
 }

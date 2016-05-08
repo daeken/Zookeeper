@@ -25,6 +25,7 @@ Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 	kmem = kram;
 
 	bailout(hv_vm_create(HV_VM_DEFAULT));
+	memset(mem, 0, RAM_SIZE);
 	bailout(hv_vm_map(mem, 0, RAM_SIZE, HV_MEMORY_READ | HV_MEMORY_WRITE | HV_MEMORY_EXEC));
 	bailout(hv_vm_map(kmem, 0xc0000000, KRAM_SIZE, HV_MEMORY_READ | HV_MEMORY_WRITE | HV_MEMORY_EXEC));
 	bailout(hv_vcpu_create(&vcpu, HV_VCPU_DEFAULT));
@@ -46,10 +47,10 @@ Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 	wvmcs(VMCS_CTRL_EXC_BITMAP, 0);
 	wvmcs(VMCS_CTRL_CR0_MASK, 0xffffffff);
 	wvmcs(VMCS_CTRL_CR0_SHADOW, 0xffffffff);
-	wvmcs(VMCS_CTRL_CR4_MASK, 0);
-	wvmcs(VMCS_CTRL_CR4_SHADOW, 0);
+	wvmcs(VMCS_CTRL_CR4_MASK, 0xffffffff);
+	wvmcs(VMCS_CTRL_CR4_SHADOW, 0xffffffff);
 
-	uint32_t directory = 32*1024*1024; // Page directory base
+	uint32_t directory = 64*1024*1024; // Page directory base
 	uint32_t *dir = (uint32_t *) (mem + directory);
 	for(int i = 0; i < 1024; ++i) {
 		dir[i] = (directory + 4096 + 4096 * i) | 0x7;
@@ -61,12 +62,12 @@ Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 	wvmcs(VMCS_GUEST_CR3, directory);
 	wvmcs(VMCS_GUEST_CR0, 0x80000000 | 0x20 | 0x01); // Paging | NE | PE
 
-	uint8_t *gdt = ram + 0x10000;
+	uint8_t *gdt = ram + 96*1024*1024;
 	gdt_encode(gdt, 0, 0, 0, 0); // Null entry
 	gdt_encode(gdt, 1, 0, 0xffffffff, 0x9A); // Code
 	gdt_encode(gdt, 2, 0, 0xffffffff, 0x92); // Data
 	wvmcs(VMCS_GUEST_GDTR_LIMIT, 0x100);
-	wvmcs(VMCS_GUEST_GDTR_BASE, 0x10000);
+	wvmcs(VMCS_GUEST_GDTR_BASE, 96*1024*1024);
 
 	wvmcs(VMCS_GUEST_CS, 1 << 3);
 	wvmcs(VMCS_GUEST_CS_AR, 0xc093);
@@ -110,11 +111,11 @@ Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 
 	wvmcs(VMCS_GUEST_CR4, 0x2000);
 
-	map_pages(0, 0, 1000);
+	map_pages(96 * 1024 * 1024, 96 * 1024 * 1024, 1);
 }
 
 void Cpu::map_pages(uint32_t virt, uint32_t phys, uint32_t count) {
-	uint32_t *dir = (uint32_t *) (mem + 32*1024*1024);
+	uint32_t *dir = (uint32_t *) (mem + 64*1024*1024);
 	for(int i = 0; i < count; ++i) {
 		uint32_t *table = (uint32_t *) (mem + (dir[virt >> 22] & ~0xFFF));
 		table[(virt >> 12) & 0x3ff] = phys | 0x7;
@@ -124,10 +125,14 @@ void Cpu::map_pages(uint32_t virt, uint32_t phys, uint32_t count) {
 	hv_vcpu_invalidate_tlb(vcpu);
 }
 
-void Cpu::alloc_stack(uint32_t bottom_virt, uint32_t bottom_phys, uint32_t size) {
-	wreg(HV_X86_RSP, bottom_virt + size);
-	wreg(HV_X86_RBP, bottom_virt + size - 0x20);
-	map_pages(bottom_virt, bottom_phys, size / 4096);
+uint32_t Cpu::virt2phys(uint32_t addr) {
+	uint32_t cr3 = rreg(HV_X86_CR3);
+	if(cr3 == 0)
+		return addr;
+
+	uint32_t *directory = (uint32_t *) (mem + cr3);
+	uint32_t *table = (uint32_t *) (mem + (directory[addr >> 22] & ~0xFFF));
+	return (table[(addr >> 12) & 0x3ff] & ~0xFFF) + (addr & 0xFFF);
 }
 
 void Cpu::read_memory(uint32_t addr, uint32_t size, void *buffer) {

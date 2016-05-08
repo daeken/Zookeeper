@@ -20,10 +20,9 @@ void log(const char *fmt, ...) {
 	vmcall(VMCALL_LOG, output);
 }
 
-void *map(void *virt_base, void *phys_base, uint32_t count) {
+void *map(void *virt_base, uint32_t count) {
 	volatile map_pages_t smap;
 	smap.virt_base = (uint32_t) virt_base;
-	smap.phys_base = (uint32_t) phys_base;
 	smap.count = count;
 
 	vmcall(VMCALL_MAP, &smap);

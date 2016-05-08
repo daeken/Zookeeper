@@ -6,8 +6,6 @@ void entrypoint() {
 
 	log("Idle.");
 
-	log("%08x", (uint32_t) map((void *) 0xdeadbeef, (void *) 0, 10));
-
 	while(true) {
 	}
 }

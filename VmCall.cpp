@@ -15,16 +15,28 @@ int vmcall_dispatch(uint32_t call, uint32_t addr) {
 			break;
 		}
 		case VMCALL_MAP: {
-			map_pages_t smap = box->cpu->read_memory<map_pages_t>(addr);
+			auto smap = box->cpu->read_memory<map_pages_t>(addr);
 
-			cout << "Mapping some pages and shit." << endl;
-			cout << hex << smap.virt_base << endl;
-			cout << hex << smap.phys_base << endl;
-			cout << dec << smap.count << endl;
+			if(smap.virt_base == 0) {
+				smap.virt_base = box->pm->alloc_virt(smap.count);
+				box->cpu->write_memory(addr, smap);
+			}
+			
+			for(int i = 0; i < smap.count; ++i)
+				box->cpu->map_pages(smap.virt_base + i * 4096, box->pm->alloc_phys(), 1);
 
-			smap.virt_base = 0xcafebabe;
+			break;
+		}
+		case VMCALL_UNMAP: {
+			auto smap = box->cpu->read_memory<unmap_pages_t>(addr);
+			auto addr = smap.virt_base;
 
-			box->cpu->write_memory(addr, smap);
+			for(int i = 0; i < smap.count; ++i) {
+				box->pm->free_phys(box->cpu->virt2phys(addr));
+				addr += 4096;
+			}
+			box->pm->free_virt(smap.virt_base, smap.count);
+
 			break;
 		}
 		default:

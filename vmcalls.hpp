@@ -2,7 +2,6 @@
 
 typedef struct map_pages {
 	uint32_t virt_base;
-	uint32_t phys_base;
 	uint32_t count;
 } map_pages_t;
 

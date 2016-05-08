@@ -10,16 +10,16 @@ typedef struct idt_entry {
 
 typedef struct idt_ptr {
     uint16_t limit;
-    uint32_t base;
+    idt_entry_t *base;
 } __attribute__((packed)) idt_ptr_t;
 
-idt_entry_t *real_idt = (idt_entry_t *) 0x1000;
 static idt_ptr_t idtp;
 
 void init_idt() {
 	log("IDT initializing...");
+	auto real_idt = new idt_entry_t[256];
 	for(int i = 0; i < 256; ++i) {
-		uint32_t isr_addr = (uint32_t) all_isrs[i];
+		auto isr_addr = (uint32_t) all_isrs[i];
 		real_idt[i].flags = 0x8E;
 		real_idt[i].sel = 8;
 		real_idt[i].always0 = 0;
@@ -28,7 +28,7 @@ void init_idt() {
 	}
 
 	idtp.limit = (sizeof(idt_entry_t) * 256) - 1;
-	idtp.base = (uint32_t) real_idt;
+	idtp.base = real_idt;
 
 	asm("lidt (_ZL4idtp)");
 	asm("sti");
