@@ -1,6 +1,6 @@
 #include "NightBeliever.hpp"
 
-static inline uint32_t vmcall(const int call, const void *addr) {
+static inline uint32_t vmcall(const int call, volatile const void *addr) {
 	uint32_t output;
 	__asm__ volatile(
 		"vmcall\n"
@@ -21,7 +21,7 @@ void log(const char *fmt, ...) {
 }
 
 void *map(void *virt_base, void *phys_base, uint32_t count) {
-	map_pages_t smap;
+	volatile map_pages_t smap;
 	smap.virt_base = (uint32_t) virt_base;
 	smap.phys_base = (uint32_t) phys_base;
 	smap.count = count;
@@ -32,7 +32,7 @@ void *map(void *virt_base, void *phys_base, uint32_t count) {
 }
 
 void unmap(void *virt_base, uint32_t count) {
-	unmap_pages_t smap;
+	volatile unmap_pages_t smap;
 	smap.virt_base = (uint32_t) virt_base;
 	smap.count = count;
 

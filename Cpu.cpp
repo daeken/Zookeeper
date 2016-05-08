@@ -152,6 +152,28 @@ void Cpu::read_memory(uint32_t addr, uint32_t size, void *buffer) {
 	}
 }
 
+void Cpu::write_memory(uint32_t addr, uint32_t size, void *buffer) {
+	uint32_t cr3 = rreg(HV_X86_CR3);
+	if(cr3 == 0) {
+		if(addr >= 0xc0000000)
+			memcpy(&kmem[addr - 0xc0000000], buffer, size);
+		else
+			memcpy(&mem[addr], buffer, size);
+		return;
+	}
+	uint8_t *buf = (uint8_t *) buffer;
+	uint32_t *directory = (uint32_t *) (mem + cr3);
+	for(int i = 0; i < size; ++i) {
+		uint32_t *table = (uint32_t *) (mem + (directory[addr >> 22] & ~0xFFF));
+		uint32_t paddr = (table[(addr >> 12) & 0x3ff] & ~0xFFF) + (addr & 0xFFF);
+		if(paddr >= 0xc0000000)
+			kmem[paddr - 0xc0000000] = *(buf++);
+		else
+			mem[paddr] = *(buf++);
+		++addr;
+	}
+}
+
 uint64_t Cpu::rdmsr(uint32_t msr) {
 	switch(msr) {
 		default:
@@ -416,7 +438,7 @@ void Cpu::run(uint32_t eip) {
 					break;
 				}
 				case VMX_REASON_VMCALL:
-					bailout(vmcall_dispatch(*this, rreg(HV_X86_RAX), rreg(HV_X86_RDX)));
+					bailout(vmcall_dispatch(rreg(HV_X86_RAX), rreg(HV_X86_RDX)));
 					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 3);
 					break;
 				case VMX_REASON_IRQ:

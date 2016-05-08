@@ -1,8 +1,9 @@
 CPP_FILES := $(wildcard *.cpp)
 OBJ_FILES := $(CPP_FILES:.cpp=.o)
+CC_FLAGS := -std=c++11
 
 all: NightBeliever $(OBJ_FILES)
-	clang++ -g -std=c++11 -framework Hypervisor -o zookeeper $(OBJ_FILES)
+	clang++ -g $(CC_FLAGS) -framework Hypervisor -o zookeeper $(OBJ_FILES)
 
 .PHONY: NightBeliever
 

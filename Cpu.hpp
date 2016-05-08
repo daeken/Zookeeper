@@ -17,9 +17,14 @@ public:
 
 	void read_memory(uint32_t addr, uint32_t size, void *buffer);
 	template<typename T> T read_memory(uint32_t addr) {
-		T value = 0;
+		T value;
 		read_memory(addr, sizeof(T), &value);
 		return value;
+	}
+
+	void write_memory(uint32_t addr, uint32_t size, void *buffer);
+	template<typename T> void write_memory(uint32_t addr, T &value) {
+		write_memory(addr, sizeof(T), &value);
 	}
 
 	uint64_t rdmsr(uint32_t msr);
