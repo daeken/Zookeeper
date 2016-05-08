@@ -8,7 +8,7 @@ uint32_t load_multiboot(Cpu &cpu, uint32_t *header) {
 	uint32_t memsize = header[6] - header[3];
 	if(memsize & 0xFFF)
 		memsize = (memsize & ~0xFFF) + 0x1000;
-	assert(memsize < KRAM_SIZE);
+	assert(memsize <= KRAM_SIZE);
 
 	memcpy(cpu.kmem + (header[4] - 0xC0000000), rel + (header[4] - header[3]), memsize);
 	cpu.map_pages(0xC0000000, 0xC0000000, memsize / 4096);

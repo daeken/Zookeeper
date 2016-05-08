@@ -532,6 +532,7 @@ isr_common:
 	pusha
 	mov %esp, %eax
 	push %eax
+	cld
 	call _Z16handle_interruptP8isr_regs
 	pop %eax
 	popa

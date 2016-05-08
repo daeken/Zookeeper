@@ -1,0 +1,3 @@
+*.o
+NightBeliever/*.o
+nightbeliever.krnl

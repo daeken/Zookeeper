@@ -109,6 +109,8 @@ Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 	wvmcs(VMCS_GUEST_TR_BASE, 0);
 
 	wvmcs(VMCS_GUEST_CR4, 0x2000);
+
+	map_pages(0, 0, 1000);
 }
 
 void Cpu::map_pages(uint32_t virt, uint32_t phys, uint32_t count) {
@@ -387,6 +389,8 @@ void Cpu::run(uint32_t eip) {
 		uint64_t exit_reason = rvmcs(VMCS_RO_EXIT_REASON);
 		//log_exit_reason(exit_reason, rreg(HV_X86_RIP));
 
+		//cout << exit_reason << endl;
+
 		if(exit_reason & 0x80000000) {
 			cout << "Entry failed? " << dec << (exit_reason & 0x7FFFFFFF) << endl;
 			stop = 1;
@@ -416,11 +420,10 @@ void Cpu::run(uint32_t eip) {
 					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 3);
 					break;
 				case VMX_REASON_IRQ:
-					//cout << "VMX_REASON_IRQ" << endl;
 					break;
 				case VMX_REASON_TRIPLE_FAULT:
 					cout << "Triple fault!" << endl;
-					cout << "IDTR Base " << hex << rreg(HV_X86_IDT_BASE) << endl;
+					cout << "IDTR Base " << hex << rreg(HV_X86_IDT_BASE) << " " << hex << rvmcs(VMCS_GUEST_IDTR_BASE) << endl;
 					cout << "IDTR Limit " << hex << rreg(HV_X86_IDT_LIMIT) << endl;
 					cout << "ISR 0 == " << hex << read_memory<uint64_t>(rvmcs(VMCS_GUEST_IDTR_BASE)) << endl;
 					cout << "ISR 7 == " << hex << read_memory<uint64_t>(rvmcs(VMCS_GUEST_IDTR_BASE) + 8 * 7) << endl;

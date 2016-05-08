@@ -15,5 +15,6 @@ using namespace std;
 
 #include "Xbe.hpp"
 #include "Cpu.hpp"
+#include "Kernel.hpp"
 #include "VmCall.hpp"
 #include "vmcalls.hpp"
