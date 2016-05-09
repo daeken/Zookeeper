@@ -20,6 +20,14 @@ void log(const char *fmt, ...) {
 	vmcall(VMCALL_LOG, output);
 }
 
+void log(const char *fmt, va_list arglist) {
+	char output[2048];
+
+	vsnprintf(output, 2048, fmt, arglist);
+
+	vmcall(VMCALL_LOG, output);
+}
+
 void *map(void *virt_base, uint32_t count) {
 	volatile map_pages_t arg;
 	arg.virt_base = (uint32_t) virt_base;

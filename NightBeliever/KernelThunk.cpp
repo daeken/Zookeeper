@@ -35,11 +35,6 @@ void NTAPI kernel_DbgLoadImageSymbols() {
 	halt();
 }
 
-void NTAPI kernel_DbgPrint() {
-	log("STUB DbgPrint");
-	halt();
-}
-
 void NTAPI kernel_HalReadSMCTrayState() {
 	log("STUB HalReadSMCTrayState");
 	halt();

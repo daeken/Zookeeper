@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include "mini-printf.hpp"
 #include "../xbetypes.hpp"
+#include "TIB.hpp"
 #include "Hypercall.hpp"
 #include "Interrupts.hpp"
 #include "liballoc.hpp"

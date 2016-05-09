@@ -63,11 +63,13 @@ Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 	wvmcs(VMCS_GUEST_CR0, 0x80000000 | 0x20 | 0x01); // Paging | NE | PE
 
 	uint8_t *gdt = ram + 96*1024*1024;
+	memset(gdt, 0, 0x10000);
 	gdt_encode(gdt, 0, 0, 0, 0); // Null entry
 	gdt_encode(gdt, 1, 0, 0xffffffff, 0x9A); // Code
 	gdt_encode(gdt, 2, 0, 0xffffffff, 0x92); // Data
-	wvmcs(VMCS_GUEST_GDTR_LIMIT, 0x100);
+	wvmcs(VMCS_GUEST_GDTR_LIMIT, 0xFFFF);
 	wvmcs(VMCS_GUEST_GDTR_BASE, 96*1024*1024);
+	map_pages(96 * 1024 * 1024, 96 * 1024 * 1024, 16);
 
 	wvmcs(VMCS_GUEST_CS, 1 << 3);
 	wvmcs(VMCS_GUEST_CS_AR, 0xc093);
@@ -110,8 +112,6 @@ Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 	wvmcs(VMCS_GUEST_TR_BASE, 0);
 
 	wvmcs(VMCS_GUEST_CR4, 0x2000);
-
-	map_pages(96 * 1024 * 1024, 96 * 1024 * 1024, 1);
 }
 
 void Cpu::map_pages(uint32_t virt, uint32_t phys, uint32_t count) {

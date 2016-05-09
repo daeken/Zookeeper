@@ -8,7 +8,6 @@ void NTAPI kernel_AvSetSavedDataAddress();
 void NTAPI kernel_DbgBreakPoint();
 void NTAPI kernel_DbgBreakPointWithStatus();
 void NTAPI kernel_DbgLoadImageSymbols();
-void NTAPI kernel_DbgPrint();
 void NTAPI kernel_HalReadSMCTrayState();
 void NTAPI kernel_DbgPrompt();
 void NTAPI kernel_DbgUnLoadImageSymbols();

@@ -8,6 +8,8 @@ public:
 
 	uint32_t eip, eflags, eax, ecx, edx, ebx;
 	uint32_t esi, edi, esp, ebp;
+
+	uint32_t cs, ss, ds, es, fs, gs;
 };
 
 class ThreadManager {

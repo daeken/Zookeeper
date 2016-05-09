@@ -38,6 +38,12 @@ void ThreadManager::next() {
 	REG(RDI, edi); \
 	REG(RSP, esp); \
 	REG(RBP, ebp); \
+	REG(CS, cs); \
+	REG(SS, ss); \
+	REG(DS, ds); \
+	REG(ES, es); \
+	REG(FS, fs); \
+	REG(GS, gs); \
 } while(0)
 
 void Thread::save() {

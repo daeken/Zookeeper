@@ -5,6 +5,7 @@
 
 void log(const char *fmt, ...);
 #define printf log
+void log(const char *fmt, va_list arglist);
 
 void *map(void *virt_base, uint32_t count);
 void unmap(void *virt_base, uint32_t count);

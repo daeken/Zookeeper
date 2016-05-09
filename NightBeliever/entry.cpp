@@ -5,7 +5,7 @@ typedef void(*xbe_ep_t)();
 void entrypoint() {
 	log("NightBeliever initializing...");
 	init_idt();
-
+	init_tib();
 	log("Idle.");
 
 	auto xbe = get_xbebase();

@@ -10,6 +10,8 @@ void threadex_proxy(uint32_t up) {
 	auto s = *p;
 	delete p;
 
+	init_tib();
+
 	while(1) {}
 }
 
@@ -53,3 +55,12 @@ PVOID NTAPI kernel_MmAllocateContiguousMemory(IN ULONG NumberOfBytes) {
 }
 
 uint32_t kernel_LaunchDataPage = 0;
+
+void kernel_DbgPrint(char *format, ...) {
+	va_list arglist;
+
+	va_start(arglist, format);
+	log("DbgPrint:");
+	log(format, arglist);
+	va_end(arglist);
+}

@@ -393,7 +393,7 @@ for line in imports:
 	name, id = line.split(' ')
 	id = int(id, 16)
 
-	print >>ks, '\t\tcase 0x%08x: return (uint32_t) kernel_%s;' % (id, name)
+	print >>ks, '\t\tcase 0x%08x: return (uint32_t) &kernel_%s;' % (id, name)
 
 print >>ks, '\t\tdefault:'
 print >>ks, '\t\t\tlog("Unknown id to thunk_lookup %08x", id);'

@@ -11,6 +11,7 @@ int vmcall_dispatch(uint32_t call, uint32_t addr) {
 					break;
 				str += c;
 			} while(true);
+			str.erase(std::find_if(str.rbegin(), str.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), str.end());
 			cout << "Guest Log: \"" << str << "\"" << endl;
 			break;
 		}
