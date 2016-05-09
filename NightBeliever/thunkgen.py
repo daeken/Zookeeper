@@ -1,3 +1,5 @@
+import re
+
 imports = '''AvGetSavedDataAddress 80000001
 AvSendTVEncoderOption 80000002
 AvSetDisplayMode 80000003
@@ -365,6 +367,12 @@ vsprintf 8000016C
 HalEnableSecureTrayEject 8000016D
 HalWriteSMCScratchRegister 8000016E'''.split('\n')
 
+rh = file('Kernel.hpp', 'r').read()
+def defined(sym):
+	if re.search(r'[\s^]kernel_' + sym + r'[;\s(]', rh, re.M | re.S):
+		return True
+	return False
+
 ks = file('KernelThunk.cpp', 'w')
 print >>ks, '#include "NightBeliever.hpp"'
 print >>ks
@@ -377,13 +385,15 @@ print >>kh
 for line in imports:
 	name, id = line.split(' ')
 	id = int(id, 16)
-	print >>ks, 'void NTAPI kernel_%s() {' % name
-	print >>ks, '\tlog("STUB %s");' % name
-	print >>ks, '\thalt();'
-	print >>ks, '}'
-	print >>ks
+	if not defined(name):
+		print >>ks, 'void NTAPI kernel_%s() {' % name
+		print >>ks, '\tuint32_t magic;'
+		print >>ks, '\tlog("STUB %s called from 0x%%08x", (&magic)[4]);' % name
+		print >>ks, '\thalt();'
+		print >>ks, '}'
+		print >>ks
 
-	print >>kh, 'void NTAPI kernel_%s();' % name
+		print >>kh, 'void NTAPI kernel_%s();' % name
 print >>kh
 
 print >>kh, 'uint32_t thunk_lookup(uint32_t id);'

@@ -38,9 +38,11 @@ int vmcall_dispatch(uint32_t call, uint32_t addr) {
 		}
 		case VMCALL_CREATETHREAD: {
 			auto arg = box->cpu->read_memory<create_thread_t>(addr);
-			arg.esp -= 8;
-			box->cpu->write_memory(arg.esp + 4, arg.arg);
-			return box->tm->create(arg.eip, arg.esp);
+			arg.esp -= 12;
+			auto tid = box->tm->create(arg.eip, arg.esp);
+			box->cpu->write_memory(arg.esp + 4, tid);
+			box->cpu->write_memory(arg.esp + 8, arg.arg);
+			return tid;
 		}
 		default:
 			cout << "Unknown VMCall: 0x" << hex << call << " -- " << hex << addr << endl;

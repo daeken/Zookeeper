@@ -1,7 +1,9 @@
 #include "Zookeeper.hpp"
 
 ThreadManager::ThreadManager() {
-	threads.push_back(make_shared<Thread>());
+	auto thread = make_shared<Thread>();
+	thread->id = 0;
+	threads.push_back(thread);
 	iterator = threads.begin();
 }
 
@@ -9,11 +11,12 @@ uint32_t ThreadManager::create(uint32_t eip, uint32_t esp) {
 	cout << "Creating thread at " << hex << eip << " stack at " << esp << endl;
 	auto thread = make_shared<Thread>();
 	(*iterator)->save();
-	thread->eflags = (*iterator)->eflags; // Copy current eflags state
+	thread->eflags = (*iterator)->eflags; // XXX: Copying current eflags state.  Add default
+	thread->id = ++tid;
 	thread->eip = eip;
 	thread->esp = esp;
 	threads.push_back(thread);
-	return 0; // XXX: Return a tid
+	return thread->id;
 }
 
 void ThreadManager::next() {

@@ -5,12 +5,12 @@ typedef struct threadexp {
 	PVOID StartContext1, StartContext2;
 } threadexp_t;
 
-void threadex_proxy(uint32_t up) {
+void threadex_proxy(uint32_t tid, uint32_t up) {
 	auto p = (threadexp_t *) up;
 	auto s = *p;
 	delete p;
 
-	init_tib();
+	init_tib(tid);
 
 	asm(
 		"mov %0, %%esi\n"
@@ -59,7 +59,7 @@ void NTAPI kernel_MmPersistContiguousMemory(
     IN ULONG   NumberOfBytes,
     IN BOOLEAN Persist
 ) {
-	log("Ignore MmPersistContiguousMemory");
+	//log("Ignore MmPersistContiguousMemory");
 }
 
 PVOID NTAPI kernel_MmAllocateContiguousMemory(IN ULONG NumberOfBytes) {
@@ -76,4 +76,9 @@ void kernel_DbgPrint(char *format, ...) {
 	log("DbgPrint:");
 	log(format, arglist);
 	va_end(arglist);
+}
+
+void NTAPI kernel_HalReturnToFirmware() {
+	log("STUB HalReturnToFirmware");
+	while(1) {}
 }

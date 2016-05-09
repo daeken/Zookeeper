@@ -1,1802 +1,2156 @@
 #include "NightBeliever.hpp"
 
 void NTAPI kernel_AvGetSavedDataAddress() {
-	log("STUB AvGetSavedDataAddress");
+	uint32_t magic;
+	log("STUB AvGetSavedDataAddress called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_AvSendTVEncoderOption() {
-	log("STUB AvSendTVEncoderOption");
+	uint32_t magic;
+	log("STUB AvSendTVEncoderOption called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_AvSetDisplayMode() {
-	log("STUB AvSetDisplayMode");
+	uint32_t magic;
+	log("STUB AvSetDisplayMode called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_AvSetSavedDataAddress() {
-	log("STUB AvSetSavedDataAddress");
+	uint32_t magic;
+	log("STUB AvSetSavedDataAddress called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_DbgBreakPoint() {
-	log("STUB DbgBreakPoint");
+	uint32_t magic;
+	log("STUB DbgBreakPoint called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_DbgBreakPointWithStatus() {
-	log("STUB DbgBreakPointWithStatus");
+	uint32_t magic;
+	log("STUB DbgBreakPointWithStatus called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_DbgLoadImageSymbols() {
-	log("STUB DbgLoadImageSymbols");
+	uint32_t magic;
+	log("STUB DbgLoadImageSymbols called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalReadSMCTrayState() {
-	log("STUB HalReadSMCTrayState");
+	uint32_t magic;
+	log("STUB HalReadSMCTrayState called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_DbgPrompt() {
-	log("STUB DbgPrompt");
+	uint32_t magic;
+	log("STUB DbgPrompt called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_DbgUnLoadImageSymbols() {
-	log("STUB DbgUnLoadImageSymbols");
+	uint32_t magic;
+	log("STUB DbgUnLoadImageSymbols called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExAcquireReadWriteLockExclusive() {
-	log("STUB ExAcquireReadWriteLockExclusive");
+	uint32_t magic;
+	log("STUB ExAcquireReadWriteLockExclusive called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExAcquireReadWriteLockShared() {
-	log("STUB ExAcquireReadWriteLockShared");
+	uint32_t magic;
+	log("STUB ExAcquireReadWriteLockShared called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExAllocatePool() {
-	log("STUB ExAllocatePool");
+	uint32_t magic;
+	log("STUB ExAllocatePool called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExAllocatePoolWithTag() {
-	log("STUB ExAllocatePoolWithTag");
+	uint32_t magic;
+	log("STUB ExAllocatePoolWithTag called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExEventObjectType() {
-	log("STUB ExEventObjectType");
+	uint32_t magic;
+	log("STUB ExEventObjectType called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExFreePool() {
-	log("STUB ExFreePool");
+	uint32_t magic;
+	log("STUB ExFreePool called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExInitializeReadWriteLock() {
-	log("STUB ExInitializeReadWriteLock");
+	uint32_t magic;
+	log("STUB ExInitializeReadWriteLock called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExInterlockedAddLargeInteger() {
-	log("STUB ExInterlockedAddLargeInteger");
+	uint32_t magic;
+	log("STUB ExInterlockedAddLargeInteger called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExInterlockedAddLargeStatistic() {
-	log("STUB ExInterlockedAddLargeStatistic");
+	uint32_t magic;
+	log("STUB ExInterlockedAddLargeStatistic called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExInterlockedCompareExchange64() {
-	log("STUB ExInterlockedCompareExchange64");
+	uint32_t magic;
+	log("STUB ExInterlockedCompareExchange64 called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExMutantObjectType() {
-	log("STUB ExMutantObjectType");
+	uint32_t magic;
+	log("STUB ExMutantObjectType called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExQueryPoolBlockSize() {
-	log("STUB ExQueryPoolBlockSize");
+	uint32_t magic;
+	log("STUB ExQueryPoolBlockSize called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExQueryNonVolatileSetting() {
-	log("STUB ExQueryNonVolatileSetting");
+	uint32_t magic;
+	log("STUB ExQueryNonVolatileSetting called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExReadWriteRefurbInfo() {
-	log("STUB ExReadWriteRefurbInfo");
+	uint32_t magic;
+	log("STUB ExReadWriteRefurbInfo called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExRaiseException() {
-	log("STUB ExRaiseException");
+	uint32_t magic;
+	log("STUB ExRaiseException called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExRaiseStatus() {
-	log("STUB ExRaiseStatus");
+	uint32_t magic;
+	log("STUB ExRaiseStatus called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExReleaseReadWriteLock() {
-	log("STUB ExReleaseReadWriteLock");
+	uint32_t magic;
+	log("STUB ExReleaseReadWriteLock called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExSaveNonVolatileSetting() {
-	log("STUB ExSaveNonVolatileSetting");
+	uint32_t magic;
+	log("STUB ExSaveNonVolatileSetting called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExSemaphoreObjectType() {
-	log("STUB ExSemaphoreObjectType");
+	uint32_t magic;
+	log("STUB ExSemaphoreObjectType called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExTimerObjectType() {
-	log("STUB ExTimerObjectType");
+	uint32_t magic;
+	log("STUB ExTimerObjectType called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExfInterlockedInsertHeadList() {
-	log("STUB ExfInterlockedInsertHeadList");
+	uint32_t magic;
+	log("STUB ExfInterlockedInsertHeadList called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExfInterlockedInsertTailList() {
-	log("STUB ExfInterlockedInsertTailList");
+	uint32_t magic;
+	log("STUB ExfInterlockedInsertTailList called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ExfInterlockedRemoveHeadList() {
-	log("STUB ExfInterlockedRemoveHeadList");
+	uint32_t magic;
+	log("STUB ExfInterlockedRemoveHeadList called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_FscGetCacheSize() {
-	log("STUB FscGetCacheSize");
+	uint32_t magic;
+	log("STUB FscGetCacheSize called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_FscInvalidateIdleBlocks() {
-	log("STUB FscInvalidateIdleBlocks");
+	uint32_t magic;
+	log("STUB FscInvalidateIdleBlocks called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_FscSetCacheSize() {
-	log("STUB FscSetCacheSize");
+	uint32_t magic;
+	log("STUB FscSetCacheSize called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalClearSoftwareInterrupt() {
-	log("STUB HalClearSoftwareInterrupt");
+	uint32_t magic;
+	log("STUB HalClearSoftwareInterrupt called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalDisableSystemInterrupt() {
-	log("STUB HalDisableSystemInterrupt");
+	uint32_t magic;
+	log("STUB HalDisableSystemInterrupt called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalDiskCachePartitionCount() {
-	log("STUB HalDiskCachePartitionCount");
+	uint32_t magic;
+	log("STUB HalDiskCachePartitionCount called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalDiskModelNumber() {
-	log("STUB HalDiskModelNumber");
+	uint32_t magic;
+	log("STUB HalDiskModelNumber called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalDiskSerialNumber() {
-	log("STUB HalDiskSerialNumber");
+	uint32_t magic;
+	log("STUB HalDiskSerialNumber called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalEnableSystemInterrupt() {
-	log("STUB HalEnableSystemInterrupt");
+	uint32_t magic;
+	log("STUB HalEnableSystemInterrupt called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalGetInterruptVector() {
-	log("STUB HalGetInterruptVector");
+	uint32_t magic;
+	log("STUB HalGetInterruptVector called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalReadSMBusValue() {
-	log("STUB HalReadSMBusValue");
+	uint32_t magic;
+	log("STUB HalReadSMBusValue called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalReadWritePCISpace() {
-	log("STUB HalReadWritePCISpace");
+	uint32_t magic;
+	log("STUB HalReadWritePCISpace called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalRegisterShutdownNotification() {
-	log("STUB HalRegisterShutdownNotification");
+	uint32_t magic;
+	log("STUB HalRegisterShutdownNotification called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalRequestSoftwareInterrupt() {
-	log("STUB HalRequestSoftwareInterrupt");
+	uint32_t magic;
+	log("STUB HalRequestSoftwareInterrupt called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
-void NTAPI kernel_HalReturnToFirmware() {
-	log("STUB HalReturnToFirmware");
-	while(1) {}
-}
-
 void NTAPI kernel_HalWriteSMBusValue() {
-	log("STUB HalWriteSMBusValue");
+	uint32_t magic;
+	log("STUB HalWriteSMBusValue called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_InterlockedCompareExchange() {
-	log("STUB InterlockedCompareExchange");
+	uint32_t magic;
+	log("STUB InterlockedCompareExchange called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_InterlockedDecrement() {
-	log("STUB InterlockedDecrement");
+	uint32_t magic;
+	log("STUB InterlockedDecrement called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_InterlockedIncrement() {
-	log("STUB InterlockedIncrement");
+	uint32_t magic;
+	log("STUB InterlockedIncrement called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_InterlockedExchange() {
-	log("STUB InterlockedExchange");
+	uint32_t magic;
+	log("STUB InterlockedExchange called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_InterlockedExchangeAdd() {
-	log("STUB InterlockedExchangeAdd");
+	uint32_t magic;
+	log("STUB InterlockedExchangeAdd called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_InterlockedFlushSList() {
-	log("STUB InterlockedFlushSList");
+	uint32_t magic;
+	log("STUB InterlockedFlushSList called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_InterlockedPopEntrySList() {
-	log("STUB InterlockedPopEntrySList");
+	uint32_t magic;
+	log("STUB InterlockedPopEntrySList called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_InterlockedPushEntrySList() {
-	log("STUB InterlockedPushEntrySList");
+	uint32_t magic;
+	log("STUB InterlockedPushEntrySList called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoAllocateIrp() {
-	log("STUB IoAllocateIrp");
+	uint32_t magic;
+	log("STUB IoAllocateIrp called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoBuildAsynchronousFsdRequest() {
-	log("STUB IoBuildAsynchronousFsdRequest");
+	uint32_t magic;
+	log("STUB IoBuildAsynchronousFsdRequest called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoBuildDeviceIoControlRequest() {
-	log("STUB IoBuildDeviceIoControlRequest");
+	uint32_t magic;
+	log("STUB IoBuildDeviceIoControlRequest called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoBuildSynchronousFsdRequest() {
-	log("STUB IoBuildSynchronousFsdRequest");
+	uint32_t magic;
+	log("STUB IoBuildSynchronousFsdRequest called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoCheckShareAccess() {
-	log("STUB IoCheckShareAccess");
+	uint32_t magic;
+	log("STUB IoCheckShareAccess called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoCompletionObjectType() {
-	log("STUB IoCompletionObjectType");
+	uint32_t magic;
+	log("STUB IoCompletionObjectType called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoCreateDevice() {
-	log("STUB IoCreateDevice");
+	uint32_t magic;
+	log("STUB IoCreateDevice called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoCreateFile() {
-	log("STUB IoCreateFile");
+	uint32_t magic;
+	log("STUB IoCreateFile called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoCreateSymbolicLink() {
-	log("STUB IoCreateSymbolicLink");
+	uint32_t magic;
+	log("STUB IoCreateSymbolicLink called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoDeleteDevice() {
-	log("STUB IoDeleteDevice");
+	uint32_t magic;
+	log("STUB IoDeleteDevice called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoDeleteSymbolicLink() {
-	log("STUB IoDeleteSymbolicLink");
+	uint32_t magic;
+	log("STUB IoDeleteSymbolicLink called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoDeviceObjectType() {
-	log("STUB IoDeviceObjectType");
+	uint32_t magic;
+	log("STUB IoDeviceObjectType called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoFileObjectType() {
-	log("STUB IoFileObjectType");
+	uint32_t magic;
+	log("STUB IoFileObjectType called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoFreeIrp() {
-	log("STUB IoFreeIrp");
+	uint32_t magic;
+	log("STUB IoFreeIrp called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoInitializeIrp() {
-	log("STUB IoInitializeIrp");
+	uint32_t magic;
+	log("STUB IoInitializeIrp called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoInvalidDeviceRequest() {
-	log("STUB IoInvalidDeviceRequest");
+	uint32_t magic;
+	log("STUB IoInvalidDeviceRequest called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoQueryFileInformation() {
-	log("STUB IoQueryFileInformation");
+	uint32_t magic;
+	log("STUB IoQueryFileInformation called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoQueryVolumeInformation() {
-	log("STUB IoQueryVolumeInformation");
+	uint32_t magic;
+	log("STUB IoQueryVolumeInformation called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoQueueThreadIrp() {
-	log("STUB IoQueueThreadIrp");
+	uint32_t magic;
+	log("STUB IoQueueThreadIrp called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoRemoveShareAccess() {
-	log("STUB IoRemoveShareAccess");
+	uint32_t magic;
+	log("STUB IoRemoveShareAccess called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoSetIoCompletion() {
-	log("STUB IoSetIoCompletion");
+	uint32_t magic;
+	log("STUB IoSetIoCompletion called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoSetShareAccess() {
-	log("STUB IoSetShareAccess");
+	uint32_t magic;
+	log("STUB IoSetShareAccess called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoStartNextPacket() {
-	log("STUB IoStartNextPacket");
+	uint32_t magic;
+	log("STUB IoStartNextPacket called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoStartNextPacketByKey() {
-	log("STUB IoStartNextPacketByKey");
+	uint32_t magic;
+	log("STUB IoStartNextPacketByKey called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoStartPacket() {
-	log("STUB IoStartPacket");
+	uint32_t magic;
+	log("STUB IoStartPacket called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoSynchronousDeviceIoControlRequest() {
-	log("STUB IoSynchronousDeviceIoControlRequest");
+	uint32_t magic;
+	log("STUB IoSynchronousDeviceIoControlRequest called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoSynchronousFsdRequest() {
-	log("STUB IoSynchronousFsdRequest");
+	uint32_t magic;
+	log("STUB IoSynchronousFsdRequest called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IofCallDriver() {
-	log("STUB IofCallDriver");
+	uint32_t magic;
+	log("STUB IofCallDriver called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IofCompleteRequest() {
-	log("STUB IofCompleteRequest");
+	uint32_t magic;
+	log("STUB IofCompleteRequest called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KdDebuggerEnabled() {
-	log("STUB KdDebuggerEnabled");
+	uint32_t magic;
+	log("STUB KdDebuggerEnabled called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KdDebuggerNotPresent() {
-	log("STUB KdDebuggerNotPresent");
+	uint32_t magic;
+	log("STUB KdDebuggerNotPresent called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoDismountVolume() {
-	log("STUB IoDismountVolume");
+	uint32_t magic;
+	log("STUB IoDismountVolume called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoDismountVolumeByName() {
-	log("STUB IoDismountVolumeByName");
+	uint32_t magic;
+	log("STUB IoDismountVolumeByName called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeAlertResumeThread() {
-	log("STUB KeAlertResumeThread");
+	uint32_t magic;
+	log("STUB KeAlertResumeThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeAlertThread() {
-	log("STUB KeAlertThread");
+	uint32_t magic;
+	log("STUB KeAlertThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeBoostPriorityThread() {
-	log("STUB KeBoostPriorityThread");
+	uint32_t magic;
+	log("STUB KeBoostPriorityThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeBugCheck() {
-	log("STUB KeBugCheck");
+	uint32_t magic;
+	log("STUB KeBugCheck called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeBugCheckEx() {
-	log("STUB KeBugCheckEx");
+	uint32_t magic;
+	log("STUB KeBugCheckEx called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeCancelTimer() {
-	log("STUB KeCancelTimer");
+	uint32_t magic;
+	log("STUB KeCancelTimer called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeConnectInterrupt() {
-	log("STUB KeConnectInterrupt");
+	uint32_t magic;
+	log("STUB KeConnectInterrupt called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeDelayExecutionThread() {
-	log("STUB KeDelayExecutionThread");
+	uint32_t magic;
+	log("STUB KeDelayExecutionThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeDisconnectInterrupt() {
-	log("STUB KeDisconnectInterrupt");
+	uint32_t magic;
+	log("STUB KeDisconnectInterrupt called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeEnterCriticalRegion() {
-	log("STUB KeEnterCriticalRegion");
+	uint32_t magic;
+	log("STUB KeEnterCriticalRegion called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmGlobalData() {
-	log("STUB MmGlobalData");
+	uint32_t magic;
+	log("STUB MmGlobalData called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeGetCurrentIrql() {
-	log("STUB KeGetCurrentIrql");
+	uint32_t magic;
+	log("STUB KeGetCurrentIrql called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeGetCurrentThread() {
-	log("STUB KeGetCurrentThread");
+	uint32_t magic;
+	log("STUB KeGetCurrentThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInitializeApc() {
-	log("STUB KeInitializeApc");
+	uint32_t magic;
+	log("STUB KeInitializeApc called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInitializeDeviceQueue() {
-	log("STUB KeInitializeDeviceQueue");
+	uint32_t magic;
+	log("STUB KeInitializeDeviceQueue called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInitializeDpc() {
-	log("STUB KeInitializeDpc");
+	uint32_t magic;
+	log("STUB KeInitializeDpc called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInitializeEvent() {
-	log("STUB KeInitializeEvent");
+	uint32_t magic;
+	log("STUB KeInitializeEvent called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInitializeInterrupt() {
-	log("STUB KeInitializeInterrupt");
+	uint32_t magic;
+	log("STUB KeInitializeInterrupt called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInitializeMutant() {
-	log("STUB KeInitializeMutant");
+	uint32_t magic;
+	log("STUB KeInitializeMutant called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInitializeQueue() {
-	log("STUB KeInitializeQueue");
+	uint32_t magic;
+	log("STUB KeInitializeQueue called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInitializeSemaphore() {
-	log("STUB KeInitializeSemaphore");
+	uint32_t magic;
+	log("STUB KeInitializeSemaphore called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInitializeTimerEx() {
-	log("STUB KeInitializeTimerEx");
+	uint32_t magic;
+	log("STUB KeInitializeTimerEx called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInsertByKeyDeviceQueue() {
-	log("STUB KeInsertByKeyDeviceQueue");
+	uint32_t magic;
+	log("STUB KeInsertByKeyDeviceQueue called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInsertDeviceQueue() {
-	log("STUB KeInsertDeviceQueue");
+	uint32_t magic;
+	log("STUB KeInsertDeviceQueue called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInsertHeadQueue() {
-	log("STUB KeInsertHeadQueue");
+	uint32_t magic;
+	log("STUB KeInsertHeadQueue called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInsertQueue() {
-	log("STUB KeInsertQueue");
+	uint32_t magic;
+	log("STUB KeInsertQueue called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInsertQueueApc() {
-	log("STUB KeInsertQueueApc");
+	uint32_t magic;
+	log("STUB KeInsertQueueApc called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInsertQueueDpc() {
-	log("STUB KeInsertQueueDpc");
+	uint32_t magic;
+	log("STUB KeInsertQueueDpc called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeInterruptTime() {
-	log("STUB KeInterruptTime");
+	uint32_t magic;
+	log("STUB KeInterruptTime called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeIsExecutingDpc() {
-	log("STUB KeIsExecutingDpc");
+	uint32_t magic;
+	log("STUB KeIsExecutingDpc called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeLeaveCriticalRegion() {
-	log("STUB KeLeaveCriticalRegion");
+	uint32_t magic;
+	log("STUB KeLeaveCriticalRegion called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KePulseEvent() {
-	log("STUB KePulseEvent");
+	uint32_t magic;
+	log("STUB KePulseEvent called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeQueryBasePriorityThread() {
-	log("STUB KeQueryBasePriorityThread");
+	uint32_t magic;
+	log("STUB KeQueryBasePriorityThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeQueryInterruptTime() {
-	log("STUB KeQueryInterruptTime");
+	uint32_t magic;
+	log("STUB KeQueryInterruptTime called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeQueryPerformanceCounter() {
-	log("STUB KeQueryPerformanceCounter");
+	uint32_t magic;
+	log("STUB KeQueryPerformanceCounter called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeQueryPerformanceFrequency() {
-	log("STUB KeQueryPerformanceFrequency");
+	uint32_t magic;
+	log("STUB KeQueryPerformanceFrequency called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeQuerySystemTime() {
-	log("STUB KeQuerySystemTime");
+	uint32_t magic;
+	log("STUB KeQuerySystemTime called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeRaiseIrqlToDpcLevel() {
-	log("STUB KeRaiseIrqlToDpcLevel");
+	uint32_t magic;
+	log("STUB KeRaiseIrqlToDpcLevel called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeRaiseIrqlToSynchLevel() {
-	log("STUB KeRaiseIrqlToSynchLevel");
+	uint32_t magic;
+	log("STUB KeRaiseIrqlToSynchLevel called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeReleaseMutant() {
-	log("STUB KeReleaseMutant");
+	uint32_t magic;
+	log("STUB KeReleaseMutant called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeReleaseSemaphore() {
-	log("STUB KeReleaseSemaphore");
+	uint32_t magic;
+	log("STUB KeReleaseSemaphore called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeRemoveByKeyDeviceQueue() {
-	log("STUB KeRemoveByKeyDeviceQueue");
+	uint32_t magic;
+	log("STUB KeRemoveByKeyDeviceQueue called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeRemoveDeviceQueue() {
-	log("STUB KeRemoveDeviceQueue");
+	uint32_t magic;
+	log("STUB KeRemoveDeviceQueue called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeRemoveEntryDeviceQueue() {
-	log("STUB KeRemoveEntryDeviceQueue");
+	uint32_t magic;
+	log("STUB KeRemoveEntryDeviceQueue called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeRemoveQueue() {
-	log("STUB KeRemoveQueue");
+	uint32_t magic;
+	log("STUB KeRemoveQueue called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeRemoveQueueDpc() {
-	log("STUB KeRemoveQueueDpc");
+	uint32_t magic;
+	log("STUB KeRemoveQueueDpc called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeResetEvent() {
-	log("STUB KeResetEvent");
+	uint32_t magic;
+	log("STUB KeResetEvent called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeRestoreFloatingPointState() {
-	log("STUB KeRestoreFloatingPointState");
+	uint32_t magic;
+	log("STUB KeRestoreFloatingPointState called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeResumeThread() {
-	log("STUB KeResumeThread");
+	uint32_t magic;
+	log("STUB KeResumeThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeRundownQueue() {
-	log("STUB KeRundownQueue");
+	uint32_t magic;
+	log("STUB KeRundownQueue called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeSaveFloatingPointState() {
-	log("STUB KeSaveFloatingPointState");
+	uint32_t magic;
+	log("STUB KeSaveFloatingPointState called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeSetBasePriorityThread() {
-	log("STUB KeSetBasePriorityThread");
+	uint32_t magic;
+	log("STUB KeSetBasePriorityThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeSetDisableBoostThread() {
-	log("STUB KeSetDisableBoostThread");
+	uint32_t magic;
+	log("STUB KeSetDisableBoostThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeSetEvent() {
-	log("STUB KeSetEvent");
+	uint32_t magic;
+	log("STUB KeSetEvent called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeSetEventBoostPriority() {
-	log("STUB KeSetEventBoostPriority");
+	uint32_t magic;
+	log("STUB KeSetEventBoostPriority called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeSetPriorityProcess() {
-	log("STUB KeSetPriorityProcess");
+	uint32_t magic;
+	log("STUB KeSetPriorityProcess called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeSetPriorityThread() {
-	log("STUB KeSetPriorityThread");
+	uint32_t magic;
+	log("STUB KeSetPriorityThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeSetTimer() {
-	log("STUB KeSetTimer");
+	uint32_t magic;
+	log("STUB KeSetTimer called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeSetTimerEx() {
-	log("STUB KeSetTimerEx");
+	uint32_t magic;
+	log("STUB KeSetTimerEx called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeStallExecutionProcessor() {
-	log("STUB KeStallExecutionProcessor");
+	uint32_t magic;
+	log("STUB KeStallExecutionProcessor called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeSuspendThread() {
-	log("STUB KeSuspendThread");
+	uint32_t magic;
+	log("STUB KeSuspendThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeSynchronizeExecution() {
-	log("STUB KeSynchronizeExecution");
+	uint32_t magic;
+	log("STUB KeSynchronizeExecution called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeSystemTime() {
-	log("STUB KeSystemTime");
+	uint32_t magic;
+	log("STUB KeSystemTime called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeTestAlertThread() {
-	log("STUB KeTestAlertThread");
+	uint32_t magic;
+	log("STUB KeTestAlertThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeTickCount() {
-	log("STUB KeTickCount");
+	uint32_t magic;
+	log("STUB KeTickCount called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeTimeIncrement() {
-	log("STUB KeTimeIncrement");
+	uint32_t magic;
+	log("STUB KeTimeIncrement called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeWaitForMultipleObjects() {
-	log("STUB KeWaitForMultipleObjects");
+	uint32_t magic;
+	log("STUB KeWaitForMultipleObjects called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KeWaitForSingleObject() {
-	log("STUB KeWaitForSingleObject");
+	uint32_t magic;
+	log("STUB KeWaitForSingleObject called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KfRaiseIrql() {
-	log("STUB KfRaiseIrql");
+	uint32_t magic;
+	log("STUB KfRaiseIrql called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KfLowerIrql() {
-	log("STUB KfLowerIrql");
+	uint32_t magic;
+	log("STUB KfLowerIrql called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KiBugCheckData() {
-	log("STUB KiBugCheckData");
+	uint32_t magic;
+	log("STUB KiBugCheckData called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_KiUnlockDispatcherDatabase() {
-	log("STUB KiUnlockDispatcherDatabase");
+	uint32_t magic;
+	log("STUB KiUnlockDispatcherDatabase called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmAllocateContiguousMemoryEx() {
-	log("STUB MmAllocateContiguousMemoryEx");
+	uint32_t magic;
+	log("STUB MmAllocateContiguousMemoryEx called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmAllocateSystemMemory() {
-	log("STUB MmAllocateSystemMemory");
+	uint32_t magic;
+	log("STUB MmAllocateSystemMemory called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmClaimGpuInstanceMemory() {
-	log("STUB MmClaimGpuInstanceMemory");
+	uint32_t magic;
+	log("STUB MmClaimGpuInstanceMemory called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmCreateKernelStack() {
-	log("STUB MmCreateKernelStack");
+	uint32_t magic;
+	log("STUB MmCreateKernelStack called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmDeleteKernelStack() {
-	log("STUB MmDeleteKernelStack");
+	uint32_t magic;
+	log("STUB MmDeleteKernelStack called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmFreeContiguousMemory() {
-	log("STUB MmFreeContiguousMemory");
+	uint32_t magic;
+	log("STUB MmFreeContiguousMemory called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmFreeSystemMemory() {
-	log("STUB MmFreeSystemMemory");
+	uint32_t magic;
+	log("STUB MmFreeSystemMemory called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmGetPhysicalAddress() {
-	log("STUB MmGetPhysicalAddress");
+	uint32_t magic;
+	log("STUB MmGetPhysicalAddress called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmIsAddressValid() {
-	log("STUB MmIsAddressValid");
+	uint32_t magic;
+	log("STUB MmIsAddressValid called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmLockUnlockBufferPages() {
-	log("STUB MmLockUnlockBufferPages");
+	uint32_t magic;
+	log("STUB MmLockUnlockBufferPages called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmLockUnlockPhysicalPage() {
-	log("STUB MmLockUnlockPhysicalPage");
+	uint32_t magic;
+	log("STUB MmLockUnlockPhysicalPage called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmMapIoSpace() {
-	log("STUB MmMapIoSpace");
+	uint32_t magic;
+	log("STUB MmMapIoSpace called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmQueryAddressProtect() {
-	log("STUB MmQueryAddressProtect");
+	uint32_t magic;
+	log("STUB MmQueryAddressProtect called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmQueryAllocationSize() {
-	log("STUB MmQueryAllocationSize");
+	uint32_t magic;
+	log("STUB MmQueryAllocationSize called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmQueryStatistics() {
-	log("STUB MmQueryStatistics");
+	uint32_t magic;
+	log("STUB MmQueryStatistics called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmSetAddressProtect() {
-	log("STUB MmSetAddressProtect");
+	uint32_t magic;
+	log("STUB MmSetAddressProtect called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_MmUnmapIoSpace() {
-	log("STUB MmUnmapIoSpace");
+	uint32_t magic;
+	log("STUB MmUnmapIoSpace called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtAllocateVirtualMemory() {
-	log("STUB NtAllocateVirtualMemory");
+	uint32_t magic;
+	log("STUB NtAllocateVirtualMemory called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtCancelTimer() {
-	log("STUB NtCancelTimer");
+	uint32_t magic;
+	log("STUB NtCancelTimer called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtClearEvent() {
-	log("STUB NtClearEvent");
+	uint32_t magic;
+	log("STUB NtClearEvent called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtClose() {
-	log("STUB NtClose");
+	uint32_t magic;
+	log("STUB NtClose called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtCreateDirectoryObject() {
-	log("STUB NtCreateDirectoryObject");
+	uint32_t magic;
+	log("STUB NtCreateDirectoryObject called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtCreateEvent() {
-	log("STUB NtCreateEvent");
+	uint32_t magic;
+	log("STUB NtCreateEvent called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtCreateFile() {
-	log("STUB NtCreateFile");
+	uint32_t magic;
+	log("STUB NtCreateFile called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtCreateIoCompletion() {
-	log("STUB NtCreateIoCompletion");
+	uint32_t magic;
+	log("STUB NtCreateIoCompletion called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtCreateMutant() {
-	log("STUB NtCreateMutant");
+	uint32_t magic;
+	log("STUB NtCreateMutant called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtCreateSemaphore() {
-	log("STUB NtCreateSemaphore");
+	uint32_t magic;
+	log("STUB NtCreateSemaphore called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtCreateTimer() {
-	log("STUB NtCreateTimer");
+	uint32_t magic;
+	log("STUB NtCreateTimer called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtDeleteFile() {
-	log("STUB NtDeleteFile");
+	uint32_t magic;
+	log("STUB NtDeleteFile called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtDeviceIoControlFile() {
-	log("STUB NtDeviceIoControlFile");
+	uint32_t magic;
+	log("STUB NtDeviceIoControlFile called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtDuplicateObject() {
-	log("STUB NtDuplicateObject");
+	uint32_t magic;
+	log("STUB NtDuplicateObject called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtFlushBuffersFile() {
-	log("STUB NtFlushBuffersFile");
+	uint32_t magic;
+	log("STUB NtFlushBuffersFile called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtFreeVirtualMemory() {
-	log("STUB NtFreeVirtualMemory");
+	uint32_t magic;
+	log("STUB NtFreeVirtualMemory called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtFsControlFile() {
-	log("STUB NtFsControlFile");
+	uint32_t magic;
+	log("STUB NtFsControlFile called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtOpenDirectoryObject() {
-	log("STUB NtOpenDirectoryObject");
+	uint32_t magic;
+	log("STUB NtOpenDirectoryObject called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtOpenFile() {
-	log("STUB NtOpenFile");
+	uint32_t magic;
+	log("STUB NtOpenFile called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtOpenSymbolicLinkObject() {
-	log("STUB NtOpenSymbolicLinkObject");
+	uint32_t magic;
+	log("STUB NtOpenSymbolicLinkObject called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtProtectVirtualMemory() {
-	log("STUB NtProtectVirtualMemory");
+	uint32_t magic;
+	log("STUB NtProtectVirtualMemory called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtPulseEvent() {
-	log("STUB NtPulseEvent");
+	uint32_t magic;
+	log("STUB NtPulseEvent called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtQueueApcThread() {
-	log("STUB NtQueueApcThread");
+	uint32_t magic;
+	log("STUB NtQueueApcThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtQueryDirectoryFile() {
-	log("STUB NtQueryDirectoryFile");
+	uint32_t magic;
+	log("STUB NtQueryDirectoryFile called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtQueryDirectoryObject() {
-	log("STUB NtQueryDirectoryObject");
+	uint32_t magic;
+	log("STUB NtQueryDirectoryObject called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtQueryEvent() {
-	log("STUB NtQueryEvent");
+	uint32_t magic;
+	log("STUB NtQueryEvent called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtQueryFullAttributesFile() {
-	log("STUB NtQueryFullAttributesFile");
+	uint32_t magic;
+	log("STUB NtQueryFullAttributesFile called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtQueryInformationFile() {
-	log("STUB NtQueryInformationFile");
+	uint32_t magic;
+	log("STUB NtQueryInformationFile called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtQueryIoCompletion() {
-	log("STUB NtQueryIoCompletion");
+	uint32_t magic;
+	log("STUB NtQueryIoCompletion called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtQueryMutant() {
-	log("STUB NtQueryMutant");
+	uint32_t magic;
+	log("STUB NtQueryMutant called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtQuerySemaphore() {
-	log("STUB NtQuerySemaphore");
+	uint32_t magic;
+	log("STUB NtQuerySemaphore called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtQuerySymbolicLinkObject() {
-	log("STUB NtQuerySymbolicLinkObject");
+	uint32_t magic;
+	log("STUB NtQuerySymbolicLinkObject called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtQueryTimer() {
-	log("STUB NtQueryTimer");
+	uint32_t magic;
+	log("STUB NtQueryTimer called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtQueryVirtualMemory() {
-	log("STUB NtQueryVirtualMemory");
+	uint32_t magic;
+	log("STUB NtQueryVirtualMemory called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtQueryVolumeInformationFile() {
-	log("STUB NtQueryVolumeInformationFile");
+	uint32_t magic;
+	log("STUB NtQueryVolumeInformationFile called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtReadFile() {
-	log("STUB NtReadFile");
+	uint32_t magic;
+	log("STUB NtReadFile called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtReadFileScatter() {
-	log("STUB NtReadFileScatter");
+	uint32_t magic;
+	log("STUB NtReadFileScatter called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtReleaseMutant() {
-	log("STUB NtReleaseMutant");
+	uint32_t magic;
+	log("STUB NtReleaseMutant called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtReleaseSemaphore() {
-	log("STUB NtReleaseSemaphore");
+	uint32_t magic;
+	log("STUB NtReleaseSemaphore called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtRemoveIoCompletion() {
-	log("STUB NtRemoveIoCompletion");
+	uint32_t magic;
+	log("STUB NtRemoveIoCompletion called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtResumeThread() {
-	log("STUB NtResumeThread");
+	uint32_t magic;
+	log("STUB NtResumeThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtSetEvent() {
-	log("STUB NtSetEvent");
+	uint32_t magic;
+	log("STUB NtSetEvent called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtSetInformationFile() {
-	log("STUB NtSetInformationFile");
+	uint32_t magic;
+	log("STUB NtSetInformationFile called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtSetIoCompletion() {
-	log("STUB NtSetIoCompletion");
+	uint32_t magic;
+	log("STUB NtSetIoCompletion called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtSetSystemTime() {
-	log("STUB NtSetSystemTime");
+	uint32_t magic;
+	log("STUB NtSetSystemTime called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtSetTimerEx() {
-	log("STUB NtSetTimerEx");
+	uint32_t magic;
+	log("STUB NtSetTimerEx called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtSignalAndWaitForSingleObjectEx() {
-	log("STUB NtSignalAndWaitForSingleObjectEx");
+	uint32_t magic;
+	log("STUB NtSignalAndWaitForSingleObjectEx called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtSuspendThread() {
-	log("STUB NtSuspendThread");
+	uint32_t magic;
+	log("STUB NtSuspendThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtUserIoApcDispatcher() {
-	log("STUB NtUserIoApcDispatcher");
+	uint32_t magic;
+	log("STUB NtUserIoApcDispatcher called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtWaitForSingleObject() {
-	log("STUB NtWaitForSingleObject");
+	uint32_t magic;
+	log("STUB NtWaitForSingleObject called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtWaitForSingleObjectEx() {
-	log("STUB NtWaitForSingleObjectEx");
+	uint32_t magic;
+	log("STUB NtWaitForSingleObjectEx called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtWaitForMultipleObjectsEx() {
-	log("STUB NtWaitForMultipleObjectsEx");
+	uint32_t magic;
+	log("STUB NtWaitForMultipleObjectsEx called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtWriteFile() {
-	log("STUB NtWriteFile");
+	uint32_t magic;
+	log("STUB NtWriteFile called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtWriteFileGather() {
-	log("STUB NtWriteFileGather");
+	uint32_t magic;
+	log("STUB NtWriteFileGather called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_NtYieldExecution() {
-	log("STUB NtYieldExecution");
+	uint32_t magic;
+	log("STUB NtYieldExecution called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ObCreateObject() {
-	log("STUB ObCreateObject");
+	uint32_t magic;
+	log("STUB ObCreateObject called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ObDirectoryObjectType() {
-	log("STUB ObDirectoryObjectType");
+	uint32_t magic;
+	log("STUB ObDirectoryObjectType called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ObInsertObject() {
-	log("STUB ObInsertObject");
+	uint32_t magic;
+	log("STUB ObInsertObject called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ObMakeTemporaryObject() {
-	log("STUB ObMakeTemporaryObject");
+	uint32_t magic;
+	log("STUB ObMakeTemporaryObject called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ObOpenObjectByName() {
-	log("STUB ObOpenObjectByName");
+	uint32_t magic;
+	log("STUB ObOpenObjectByName called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ObOpenObjectByPointer() {
-	log("STUB ObOpenObjectByPointer");
+	uint32_t magic;
+	log("STUB ObOpenObjectByPointer called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ObpObjectHandleTable() {
-	log("STUB ObpObjectHandleTable");
+	uint32_t magic;
+	log("STUB ObpObjectHandleTable called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ObReferenceObjectByHandle() {
-	log("STUB ObReferenceObjectByHandle");
+	uint32_t magic;
+	log("STUB ObReferenceObjectByHandle called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ObReferenceObjectByName() {
-	log("STUB ObReferenceObjectByName");
+	uint32_t magic;
+	log("STUB ObReferenceObjectByName called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ObReferenceObjectByPointer() {
-	log("STUB ObReferenceObjectByPointer");
+	uint32_t magic;
+	log("STUB ObReferenceObjectByPointer called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ObSymbolicLinkObjectType() {
-	log("STUB ObSymbolicLinkObjectType");
+	uint32_t magic;
+	log("STUB ObSymbolicLinkObjectType called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ObfDereferenceObject() {
-	log("STUB ObfDereferenceObject");
+	uint32_t magic;
+	log("STUB ObfDereferenceObject called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_ObfReferenceObject() {
-	log("STUB ObfReferenceObject");
+	uint32_t magic;
+	log("STUB ObfReferenceObject called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_PhyGetLinkState() {
-	log("STUB PhyGetLinkState");
+	uint32_t magic;
+	log("STUB PhyGetLinkState called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_PhyInitialize() {
-	log("STUB PhyInitialize");
+	uint32_t magic;
+	log("STUB PhyInitialize called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_PsCreateSystemThread() {
-	log("STUB PsCreateSystemThread");
+	uint32_t magic;
+	log("STUB PsCreateSystemThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_PsQueryStatistics() {
-	log("STUB PsQueryStatistics");
+	uint32_t magic;
+	log("STUB PsQueryStatistics called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_PsSetCreateThreadNotifyRoutine() {
-	log("STUB PsSetCreateThreadNotifyRoutine");
+	uint32_t magic;
+	log("STUB PsSetCreateThreadNotifyRoutine called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_PsTerminateSystemThread() {
-	log("STUB PsTerminateSystemThread");
+	uint32_t magic;
+	log("STUB PsTerminateSystemThread called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_PsThreadObjectType() {
-	log("STUB PsThreadObjectType");
+	uint32_t magic;
+	log("STUB PsThreadObjectType called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlAnsiStringToUnicodeString() {
-	log("STUB RtlAnsiStringToUnicodeString");
+	uint32_t magic;
+	log("STUB RtlAnsiStringToUnicodeString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlAppendStringToString() {
-	log("STUB RtlAppendStringToString");
+	uint32_t magic;
+	log("STUB RtlAppendStringToString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlAppendUnicodeStringToString() {
-	log("STUB RtlAppendUnicodeStringToString");
+	uint32_t magic;
+	log("STUB RtlAppendUnicodeStringToString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlAppendUnicodeToString() {
-	log("STUB RtlAppendUnicodeToString");
+	uint32_t magic;
+	log("STUB RtlAppendUnicodeToString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlAssert() {
-	log("STUB RtlAssert");
+	uint32_t magic;
+	log("STUB RtlAssert called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlCaptureContext() {
-	log("STUB RtlCaptureContext");
+	uint32_t magic;
+	log("STUB RtlCaptureContext called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlCaptureStackBackTrace() {
-	log("STUB RtlCaptureStackBackTrace");
+	uint32_t magic;
+	log("STUB RtlCaptureStackBackTrace called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlCharToInteger() {
-	log("STUB RtlCharToInteger");
+	uint32_t magic;
+	log("STUB RtlCharToInteger called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlCompareMemory() {
-	log("STUB RtlCompareMemory");
+	uint32_t magic;
+	log("STUB RtlCompareMemory called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlCompareMemoryUlong() {
-	log("STUB RtlCompareMemoryUlong");
+	uint32_t magic;
+	log("STUB RtlCompareMemoryUlong called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlCompareString() {
-	log("STUB RtlCompareString");
+	uint32_t magic;
+	log("STUB RtlCompareString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlCompareUnicodeString() {
-	log("STUB RtlCompareUnicodeString");
+	uint32_t magic;
+	log("STUB RtlCompareUnicodeString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlCopyString() {
-	log("STUB RtlCopyString");
+	uint32_t magic;
+	log("STUB RtlCopyString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlCopyUnicodeString() {
-	log("STUB RtlCopyUnicodeString");
+	uint32_t magic;
+	log("STUB RtlCopyUnicodeString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlCreateUnicodeString() {
-	log("STUB RtlCreateUnicodeString");
+	uint32_t magic;
+	log("STUB RtlCreateUnicodeString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlDowncaseUnicodeChar() {
-	log("STUB RtlDowncaseUnicodeChar");
+	uint32_t magic;
+	log("STUB RtlDowncaseUnicodeChar called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlDowncaseUnicodeString() {
-	log("STUB RtlDowncaseUnicodeString");
+	uint32_t magic;
+	log("STUB RtlDowncaseUnicodeString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlEnterCriticalSection() {
-	log("STUB RtlEnterCriticalSection");
+	uint32_t magic;
+	log("STUB RtlEnterCriticalSection called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlEnterCriticalSectionAndRegion() {
-	log("STUB RtlEnterCriticalSectionAndRegion");
+	uint32_t magic;
+	log("STUB RtlEnterCriticalSectionAndRegion called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlEqualString() {
-	log("STUB RtlEqualString");
+	uint32_t magic;
+	log("STUB RtlEqualString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlEqualUnicodeString() {
-	log("STUB RtlEqualUnicodeString");
+	uint32_t magic;
+	log("STUB RtlEqualUnicodeString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlExtendedIntegerMultiply() {
-	log("STUB RtlExtendedIntegerMultiply");
+	uint32_t magic;
+	log("STUB RtlExtendedIntegerMultiply called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlExtendedLargeIntegerDivide() {
-	log("STUB RtlExtendedLargeIntegerDivide");
+	uint32_t magic;
+	log("STUB RtlExtendedLargeIntegerDivide called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlExtendedMagicDivide() {
-	log("STUB RtlExtendedMagicDivide");
+	uint32_t magic;
+	log("STUB RtlExtendedMagicDivide called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlFillMemory() {
-	log("STUB RtlFillMemory");
+	uint32_t magic;
+	log("STUB RtlFillMemory called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlFillMemoryUlong() {
-	log("STUB RtlFillMemoryUlong");
+	uint32_t magic;
+	log("STUB RtlFillMemoryUlong called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlFreeAnsiString() {
-	log("STUB RtlFreeAnsiString");
+	uint32_t magic;
+	log("STUB RtlFreeAnsiString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlFreeUnicodeString() {
-	log("STUB RtlFreeUnicodeString");
+	uint32_t magic;
+	log("STUB RtlFreeUnicodeString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlGetCallersAddress() {
-	log("STUB RtlGetCallersAddress");
+	uint32_t magic;
+	log("STUB RtlGetCallersAddress called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlInitAnsiString() {
-	log("STUB RtlInitAnsiString");
+	uint32_t magic;
+	log("STUB RtlInitAnsiString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlInitUnicodeString() {
-	log("STUB RtlInitUnicodeString");
+	uint32_t magic;
+	log("STUB RtlInitUnicodeString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlInitializeCriticalSection() {
-	log("STUB RtlInitializeCriticalSection");
+	uint32_t magic;
+	log("STUB RtlInitializeCriticalSection called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlIntegerToChar() {
-	log("STUB RtlIntegerToChar");
+	uint32_t magic;
+	log("STUB RtlIntegerToChar called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlIntegerToUnicodeString() {
-	log("STUB RtlIntegerToUnicodeString");
+	uint32_t magic;
+	log("STUB RtlIntegerToUnicodeString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlLeaveCriticalSection() {
-	log("STUB RtlLeaveCriticalSection");
+	uint32_t magic;
+	log("STUB RtlLeaveCriticalSection called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlLeaveCriticalSectionAndRegion() {
-	log("STUB RtlLeaveCriticalSectionAndRegion");
+	uint32_t magic;
+	log("STUB RtlLeaveCriticalSectionAndRegion called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlLowerChar() {
-	log("STUB RtlLowerChar");
+	uint32_t magic;
+	log("STUB RtlLowerChar called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlMapGenericMask() {
-	log("STUB RtlMapGenericMask");
+	uint32_t magic;
+	log("STUB RtlMapGenericMask called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlMoveMemory() {
-	log("STUB RtlMoveMemory");
+	uint32_t magic;
+	log("STUB RtlMoveMemory called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlMultiByteToUnicodeN() {
-	log("STUB RtlMultiByteToUnicodeN");
+	uint32_t magic;
+	log("STUB RtlMultiByteToUnicodeN called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlMultiByteToUnicodeSize() {
-	log("STUB RtlMultiByteToUnicodeSize");
+	uint32_t magic;
+	log("STUB RtlMultiByteToUnicodeSize called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlNtStatusToDosError() {
-	log("STUB RtlNtStatusToDosError");
+	uint32_t magic;
+	log("STUB RtlNtStatusToDosError called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlRaiseException() {
-	log("STUB RtlRaiseException");
+	uint32_t magic;
+	log("STUB RtlRaiseException called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlRaiseStatus() {
-	log("STUB RtlRaiseStatus");
+	uint32_t magic;
+	log("STUB RtlRaiseStatus called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlTimeFieldsToTime() {
-	log("STUB RtlTimeFieldsToTime");
+	uint32_t magic;
+	log("STUB RtlTimeFieldsToTime called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlTimeToTimeFields() {
-	log("STUB RtlTimeToTimeFields");
+	uint32_t magic;
+	log("STUB RtlTimeToTimeFields called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlTryEnterCriticalSection() {
-	log("STUB RtlTryEnterCriticalSection");
+	uint32_t magic;
+	log("STUB RtlTryEnterCriticalSection called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlUlongByteSwap() {
-	log("STUB RtlUlongByteSwap");
+	uint32_t magic;
+	log("STUB RtlUlongByteSwap called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlUnicodeStringToAnsiString() {
-	log("STUB RtlUnicodeStringToAnsiString");
+	uint32_t magic;
+	log("STUB RtlUnicodeStringToAnsiString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlUnicodeStringToInteger() {
-	log("STUB RtlUnicodeStringToInteger");
+	uint32_t magic;
+	log("STUB RtlUnicodeStringToInteger called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlUnicodeToMultiByteN() {
-	log("STUB RtlUnicodeToMultiByteN");
+	uint32_t magic;
+	log("STUB RtlUnicodeToMultiByteN called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlUnicodeToMultiByteSize() {
-	log("STUB RtlUnicodeToMultiByteSize");
+	uint32_t magic;
+	log("STUB RtlUnicodeToMultiByteSize called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlUnwind() {
-	log("STUB RtlUnwind");
+	uint32_t magic;
+	log("STUB RtlUnwind called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlUpcaseUnicodeChar() {
-	log("STUB RtlUpcaseUnicodeChar");
+	uint32_t magic;
+	log("STUB RtlUpcaseUnicodeChar called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlUpcaseUnicodeString() {
-	log("STUB RtlUpcaseUnicodeString");
+	uint32_t magic;
+	log("STUB RtlUpcaseUnicodeString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlUpcaseUnicodeToMultiByteN() {
-	log("STUB RtlUpcaseUnicodeToMultiByteN");
+	uint32_t magic;
+	log("STUB RtlUpcaseUnicodeToMultiByteN called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlUpperChar() {
-	log("STUB RtlUpperChar");
+	uint32_t magic;
+	log("STUB RtlUpperChar called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlUpperString() {
-	log("STUB RtlUpperString");
+	uint32_t magic;
+	log("STUB RtlUpperString called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlUshortByteSwap() {
-	log("STUB RtlUshortByteSwap");
+	uint32_t magic;
+	log("STUB RtlUshortByteSwap called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlWalkFrameChain() {
-	log("STUB RtlWalkFrameChain");
+	uint32_t magic;
+	log("STUB RtlWalkFrameChain called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlZeroMemory() {
-	log("STUB RtlZeroMemory");
+	uint32_t magic;
+	log("STUB RtlZeroMemory called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XboxEEPROMKey() {
-	log("STUB XboxEEPROMKey");
+	uint32_t magic;
+	log("STUB XboxEEPROMKey called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XboxHardwareInfo() {
-	log("STUB XboxHardwareInfo");
+	uint32_t magic;
+	log("STUB XboxHardwareInfo called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XboxHDKey() {
-	log("STUB XboxHDKey");
+	uint32_t magic;
+	log("STUB XboxHDKey called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XboxKrnlVersion() {
-	log("STUB XboxKrnlVersion");
+	uint32_t magic;
+	log("STUB XboxKrnlVersion called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XboxSignatureKey() {
-	log("STUB XboxSignatureKey");
+	uint32_t magic;
+	log("STUB XboxSignatureKey called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XeImageFileName() {
-	log("STUB XeImageFileName");
+	uint32_t magic;
+	log("STUB XeImageFileName called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XeLoadSection() {
-	log("STUB XeLoadSection");
+	uint32_t magic;
+	log("STUB XeLoadSection called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XeUnloadSection() {
-	log("STUB XeUnloadSection");
+	uint32_t magic;
+	log("STUB XeUnloadSection called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_READ_PORT_BUFFER_UCHAR() {
-	log("STUB READ_PORT_BUFFER_UCHAR");
+	uint32_t magic;
+	log("STUB READ_PORT_BUFFER_UCHAR called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_READ_PORT_BUFFER_USHORT() {
-	log("STUB READ_PORT_BUFFER_USHORT");
+	uint32_t magic;
+	log("STUB READ_PORT_BUFFER_USHORT called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_READ_PORT_BUFFER_ULONG() {
-	log("STUB READ_PORT_BUFFER_ULONG");
+	uint32_t magic;
+	log("STUB READ_PORT_BUFFER_ULONG called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_WRITE_PORT_BUFFER_UCHAR() {
-	log("STUB WRITE_PORT_BUFFER_UCHAR");
+	uint32_t magic;
+	log("STUB WRITE_PORT_BUFFER_UCHAR called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_WRITE_PORT_BUFFER_USHORT() {
-	log("STUB WRITE_PORT_BUFFER_USHORT");
+	uint32_t magic;
+	log("STUB WRITE_PORT_BUFFER_USHORT called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_WRITE_PORT_BUFFER_ULONG() {
-	log("STUB WRITE_PORT_BUFFER_ULONG");
+	uint32_t magic;
+	log("STUB WRITE_PORT_BUFFER_ULONG called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcSHAInit() {
-	log("STUB XcSHAInit");
+	uint32_t magic;
+	log("STUB XcSHAInit called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcSHAUpdate() {
-	log("STUB XcSHAUpdate");
+	uint32_t magic;
+	log("STUB XcSHAUpdate called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcSHAFinal() {
-	log("STUB XcSHAFinal");
+	uint32_t magic;
+	log("STUB XcSHAFinal called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcRC4Key() {
-	log("STUB XcRC4Key");
+	uint32_t magic;
+	log("STUB XcRC4Key called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcRC4Crypt() {
-	log("STUB XcRC4Crypt");
+	uint32_t magic;
+	log("STUB XcRC4Crypt called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcHMAC() {
-	log("STUB XcHMAC");
+	uint32_t magic;
+	log("STUB XcHMAC called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcPKEncPublic() {
-	log("STUB XcPKEncPublic");
+	uint32_t magic;
+	log("STUB XcPKEncPublic called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcPKDecPrivate() {
-	log("STUB XcPKDecPrivate");
+	uint32_t magic;
+	log("STUB XcPKDecPrivate called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcPKGetKeyLen() {
-	log("STUB XcPKGetKeyLen");
+	uint32_t magic;
+	log("STUB XcPKGetKeyLen called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcVerifyPKCS1Signature() {
-	log("STUB XcVerifyPKCS1Signature");
+	uint32_t magic;
+	log("STUB XcVerifyPKCS1Signature called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcModExp() {
-	log("STUB XcModExp");
+	uint32_t magic;
+	log("STUB XcModExp called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcDESKeyParity() {
-	log("STUB XcDESKeyParity");
+	uint32_t magic;
+	log("STUB XcDESKeyParity called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcKeyTable() {
-	log("STUB XcKeyTable");
+	uint32_t magic;
+	log("STUB XcKeyTable called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcBlockCrypt() {
-	log("STUB XcBlockCrypt");
+	uint32_t magic;
+	log("STUB XcBlockCrypt called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcBlockCryptCBC() {
-	log("STUB XcBlockCryptCBC");
+	uint32_t magic;
+	log("STUB XcBlockCryptCBC called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcCryptService() {
-	log("STUB XcCryptService");
+	uint32_t magic;
+	log("STUB XcCryptService called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XcUpdateCrypto() {
-	log("STUB XcUpdateCrypto");
+	uint32_t magic;
+	log("STUB XcUpdateCrypto called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_RtlRip() {
-	log("STUB RtlRip");
+	uint32_t magic;
+	log("STUB RtlRip called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XboxLANKey() {
-	log("STUB XboxLANKey");
+	uint32_t magic;
+	log("STUB XboxLANKey called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XboxAlternateSignatureKeys() {
-	log("STUB XboxAlternateSignatureKeys");
+	uint32_t magic;
+	log("STUB XboxAlternateSignatureKeys called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_XePublicKeyData() {
-	log("STUB XePublicKeyData");
+	uint32_t magic;
+	log("STUB XePublicKeyData called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalBootSMCVideoMode() {
-	log("STUB HalBootSMCVideoMode");
+	uint32_t magic;
+	log("STUB HalBootSMCVideoMode called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalIsResetOrShutdownPending() {
-	log("STUB HalIsResetOrShutdownPending");
+	uint32_t magic;
+	log("STUB HalIsResetOrShutdownPending called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_IoMarkIrpMustComplete() {
-	log("STUB IoMarkIrpMustComplete");
+	uint32_t magic;
+	log("STUB IoMarkIrpMustComplete called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalInitiateShutdown() {
-	log("STUB HalInitiateShutdown");
+	uint32_t magic;
+	log("STUB HalInitiateShutdown called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_snprintf() {
-	log("STUB snprintf");
+	uint32_t magic;
+	log("STUB snprintf called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_sprintf() {
-	log("STUB sprintf");
+	uint32_t magic;
+	log("STUB sprintf called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_vsnprintf() {
-	log("STUB vsnprintf");
+	uint32_t magic;
+	log("STUB vsnprintf called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_vsprintf() {
-	log("STUB vsprintf");
+	uint32_t magic;
+	log("STUB vsprintf called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalEnableSecureTrayEject() {
-	log("STUB HalEnableSecureTrayEject");
+	uint32_t magic;
+	log("STUB HalEnableSecureTrayEject called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
 void NTAPI kernel_HalWriteSMCScratchRegister() {
-	log("STUB HalWriteSMCScratchRegister");
+	uint32_t magic;
+	log("STUB HalWriteSMCScratchRegister called from 0x%08x", (&magic)[4]);
 	halt();
 }
 

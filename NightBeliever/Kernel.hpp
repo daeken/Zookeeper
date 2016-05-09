@@ -25,3 +25,4 @@ extern uint32_t kernel_LaunchDataPage;
 extern uint32_t kernel_IdexChannelObject;
 
 void kernel_DbgPrint(char *format, ...);
+void NTAPI kernel_HalReturnToFirmware();

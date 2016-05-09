@@ -20,7 +20,7 @@ void gdt_encode(uint8_t *gdt, int entry, uint32_t base, uint32_t limit, uint8_t 
     gdt[5] = type;
 }
 
-void init_tib() {
+void init_tib(uint32_t tid) {
 	auto gdt = (uint8_t *) (96 * 1024 * 1024);
 	auto entry = -1;
 	for(auto i = 3 * 8; i < 8192 * 8; i += 8) {
@@ -39,7 +39,7 @@ void init_tib() {
 
 	auto ethread = new ETHREAD;
 	ethread->Tcb.TlsData = tls;
-	ethread->UniqueThread = 0xDEADBEEF; // XXX: Need TID
+	ethread->UniqueThread = tid;
 
 	auto tib = new _KPCR;
 	tib->NtTib.Self = &tib->NtTib;

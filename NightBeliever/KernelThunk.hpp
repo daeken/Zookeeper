@@ -48,7 +48,6 @@ void NTAPI kernel_HalReadSMBusValue();
 void NTAPI kernel_HalReadWritePCISpace();
 void NTAPI kernel_HalRegisterShutdownNotification();
 void NTAPI kernel_HalRequestSoftwareInterrupt();
-void NTAPI kernel_HalReturnToFirmware();
 void NTAPI kernel_HalWriteSMBusValue();
 void NTAPI kernel_InterlockedCompareExchange();
 void NTAPI kernel_InterlockedDecrement();
