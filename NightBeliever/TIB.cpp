@@ -35,8 +35,17 @@ void init_tib() {
 		halt();
 	}
 
-	auto tib = new uint32_t[0x10000];
-	tib[0x20 / 4] = (uint32_t) tib;
+	auto tls = new uint8_t[0x10000];
+
+	auto ethread = new ETHREAD;
+	ethread->Tcb.TlsData = tls;
+	ethread->UniqueThread = 0xDEADBEEF; // XXX: Need TID
+
+	auto tib = new _KPCR;
+	tib->NtTib.Self = &tib->NtTib;
+	tib->SelfPcr = tib;
+	tib->PrcbData.CurrentThread = (KTHREAD *) ethread;
+	tib->Prcb = &tib->PrcbData;
 	gdt_encode(gdt, entry, (uint32_t) tib, 0xFFFFFFFF, 0x92);
 	asm("mov %0, %%fs" :: "r"(entry << 3));
 }
