@@ -18,3 +18,8 @@ typedef struct XbeSection {
 	uint32_t nameaddr, nameref, headref, tailref;
 	uint8_t digest[20];
 } XbeSection_t;
+
+typedef struct XbeTLS {
+	uint32_t data_start, data_end, index, callback;
+	uint32_t zero_fill, characteristics;
+} XbeTLS_t;

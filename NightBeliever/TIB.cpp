@@ -1,5 +1,7 @@
 #include "NightBeliever.hpp"
 
+XbeTLS_t *global_tls;
+
 void gdt_encode(uint8_t *gdt, int entry, uint32_t base, uint32_t limit, uint8_t type) {
 	gdt += 8 * entry;
 	if(limit > 65536) {
@@ -21,7 +23,7 @@ void gdt_encode(uint8_t *gdt, int entry, uint32_t base, uint32_t limit, uint8_t 
 }
 
 void init_tib(uint32_t tid) {
-	auto gdt = (uint8_t *) (96 * 1024 * 1024);
+	auto gdt = (uint8_t *) (96 * 1024 * 1024); // XXX: Should pass GDT and other things in a struct at startup.
 	auto entry = -1;
 	for(auto i = 3 * 8; i < 8192 * 8; i += 8) {
 		if((gdt[i + 6] & 0x80) == 0) {
@@ -35,13 +37,25 @@ void init_tib(uint32_t tid) {
 		halt();
 	}
 
-	auto tls = new uint8_t[0x10000];
+	auto copy = global_tls->data_end - global_tls->data_start;
+	// Weird padding dance
+	auto tls = new uint8_t[copy + global_tls->zero_fill + 15] + 4;
+	while((((uint32_t) tls) & 0xF) != 0)
+		tls += 1;
+	tls -= 4;
 
+	memcpy(tls, (uint8_t *) global_tls->data_start, copy);
+	memset(tls + copy, 0, global_tls->zero_fill);
+
+	auto index = (uint32_t *) global_tls->index;
+	*index = 0;
+	
 	auto ethread = new ETHREAD;
 	ethread->Tcb.TlsData = tls;
 	ethread->UniqueThread = tid;
 
 	auto tib = new _KPCR;
+	tib->NtTib.StackBase = tls;
 	tib->NtTib.Self = &tib->NtTib;
 	tib->SelfPcr = tib;
 	tib->PrcbData.CurrentThread = (KTHREAD *) ethread;

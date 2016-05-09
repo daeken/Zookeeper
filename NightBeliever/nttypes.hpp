@@ -47,8 +47,7 @@ typedef struct _ETHREAD
     struct _KTHREAD Tcb;
     UCHAR           UnknownA[0x1C]; // 0x110
     DWORD           UniqueThread;   // 0x12C
-}
-ETHREAD, *PETHREAD;
+} ETHREAD, *PETHREAD;
 
 typedef struct _KPRCB
 {

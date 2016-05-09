@@ -4,6 +4,7 @@
 #define NTAPI __attribute__((stdcall))
 
 #include <stdint.h>
+#include "C.hpp"
 #include "mini-printf.hpp"
 #include "../xbetypes.hpp"
 #include "TIB.hpp"
