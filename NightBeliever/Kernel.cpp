@@ -12,7 +12,19 @@ void threadex_proxy(uint32_t up) {
 
 	init_tib();
 
-	while(1) {}
+	asm(
+		"mov %0, %%esi\n"
+		"push %1\n"
+		"push %2\n"
+		"push callComplete\n"
+		"lea 4(%%esp), %%ebp\n"
+		"jmp *%%esi\n"
+		"callComplete:"
+		:: "r"(s.StartRoutine), "r"(s.StartContext2), "r"(s.StartContext1)
+	);
+
+	log("Thread complete");
+	halt();
 }
 
 NTSTATUS NTAPI kernel_PsCreateSystemThreadEx(
@@ -55,6 +67,7 @@ PVOID NTAPI kernel_MmAllocateContiguousMemory(IN ULONG NumberOfBytes) {
 }
 
 uint32_t kernel_LaunchDataPage = 0;
+uint32_t kernel_IdexChannelObject = 0;
 
 void kernel_DbgPrint(char *format, ...) {
 	va_list arglist;

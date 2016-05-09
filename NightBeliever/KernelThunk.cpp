@@ -237,7 +237,7 @@ void NTAPI kernel_HalRequestSoftwareInterrupt() {
 
 void NTAPI kernel_HalReturnToFirmware() {
 	log("STUB HalReturnToFirmware");
-	halt();
+	while(1) {}
 }
 
 void NTAPI kernel_HalWriteSMBusValue() {
@@ -1752,11 +1752,6 @@ void NTAPI kernel_XePublicKeyData() {
 
 void NTAPI kernel_HalBootSMCVideoMode() {
 	log("STUB HalBootSMCVideoMode");
-	halt();
-}
-
-void NTAPI kernel_IdexChannelObject() {
-	log("STUB IdexChannelObject");
 	halt();
 }
 

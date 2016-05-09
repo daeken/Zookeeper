@@ -39,8 +39,6 @@ int vmcall_dispatch(uint32_t call, uint32_t addr) {
 		case VMCALL_CREATETHREAD: {
 			auto arg = box->cpu->read_memory<create_thread_t>(addr);
 			arg.esp -= 8;
-			uint32_t ret = 0xFFFFFFFF; // Bad return address
-			box->cpu->write_memory(arg.esp, ret);
 			box->cpu->write_memory(arg.esp + 4, arg.arg);
 			return box->tm->create(arg.eip, arg.esp);
 		}

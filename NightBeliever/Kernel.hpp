@@ -22,5 +22,6 @@ void NTAPI kernel_MmPersistContiguousMemory(
 PVOID NTAPI kernel_MmAllocateContiguousMemory(IN ULONG NumberOfBytes);
 
 extern uint32_t kernel_LaunchDataPage;
+extern uint32_t kernel_IdexChannelObject;
 
 void kernel_DbgPrint(char *format, ...);

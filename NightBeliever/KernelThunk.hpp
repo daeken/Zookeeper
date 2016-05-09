@@ -352,7 +352,6 @@ void NTAPI kernel_XboxLANKey();
 void NTAPI kernel_XboxAlternateSignatureKeys();
 void NTAPI kernel_XePublicKeyData();
 void NTAPI kernel_HalBootSMCVideoMode();
-void NTAPI kernel_IdexChannelObject();
 void NTAPI kernel_HalIsResetOrShutdownPending();
 void NTAPI kernel_IoMarkIrpMustComplete();
 void NTAPI kernel_HalInitiateShutdown();
