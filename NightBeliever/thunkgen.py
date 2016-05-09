@@ -377,13 +377,13 @@ print >>kh
 for line in imports:
 	name, id = line.split(' ')
 	id = int(id, 16)
-	print >>ks, 'void kernel_%s() {' % name
+	print >>ks, 'void NTAPI kernel_%s() {' % name
 	print >>ks, '\tlog("STUB %s");' % name
 	print >>ks, '\thalt();'
 	print >>ks, '}'
 	print >>ks
 
-	print >>kh, 'void kernel_%s();' % name
+	print >>kh, 'void NTAPI kernel_%s();' % name
 print >>kh
 
 print >>kh, 'uint32_t thunk_lookup(uint32_t id);'

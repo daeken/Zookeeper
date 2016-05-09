@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
 	box = new Box;
 
 	uint32_t entry = load_kernel(box->cpu);
-	auto xbe = new Xbe("test1.xbe");
+	auto xbe = new Xbe((char *) "test1.xbe");
 	xbe->LoadImage();
 	
 	box->cpu->run(entry);

@@ -502,7 +502,7 @@ void Cpu::run(uint32_t eip) {
 			}
 		uint64_t cur_time = systime();
 		if(cur_time >= last_time + TASK_TIMER) {
-			wvmcs(VMCS_CTRL_VMENTRY_IRQ_INFO, ((1 << 31) | (0 << 11) | (0 << 8) | TASK_INTERRUPT) & 0xFFFFFFFF);
+			box->tm->next();
 			last_time = cur_time;
 		}
 	} while(!stop);

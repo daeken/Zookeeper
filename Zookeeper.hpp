@@ -20,6 +20,7 @@ using namespace std;
 #include "Xbe.hpp"
 #include "Cpu.hpp"
 #include "PageManager.hpp"
+#include "ThreadManager.hpp"
 #include "VmCall.hpp"
 #include "vmcalls.hpp"
 #include "Box.hpp"

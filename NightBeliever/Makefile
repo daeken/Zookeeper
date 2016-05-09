@@ -1,7 +1,7 @@
 CPP_FILES := $(wildcard *.cpp)
 ASM_FILES := $(wildcard *.S)
 OBJ_FILES := $(CPP_FILES:.cpp=.o) $(ASM_FILES:.S=.o)
-CC_FLAGS := -std=c++11 -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti
+CC_FLAGS := -std=c++11 -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -Wno-unused-parameter
 LD_FLAGS := -T linker.ld -ffreestanding -fno-use-linker-plugin -O2 -nostdlib
 
 %.o: %.cpp
@@ -10,8 +10,10 @@ LD_FLAGS := -T linker.ld -ffreestanding -fno-use-linker-plugin -O2 -nostdlib
 %.o: %.S
 	i686-elf-as -o $@ $<
 
-all: $(OBJ_FILES) linker.ld
-	i686-elf-g++ $(LD_FLAGS) -o ../nightbeliever.krnl $^
+all: ../nightbeliever.krnl
+
+../nightbeliever.krnl: $(OBJ_FILES) linker.ld
+	i686-elf-g++ $(LD_FLAGS) -o ../nightbeliever.krnl $(OBJ_FILES)
 
 clean:
 	rm *.o
