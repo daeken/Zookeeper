@@ -12,7 +12,7 @@ LD_FLAGS := -T linker.ld -ffreestanding -fno-use-linker-plugin -O2 -nostdlib
 
 all: ../nightbeliever.krnl
 
-KernelThunk.cpp: thunkgen.py
+KernelThunk.cpp: thunkgen.py Kernel.hpp
 	python thunkgen.py
 
 ../nightbeliever.krnl: $(OBJ_FILES) linker.ld

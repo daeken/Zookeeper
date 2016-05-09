@@ -26,3 +26,5 @@ extern uint32_t kernel_IdexChannelObject;
 
 void kernel_DbgPrint(char *format, ...);
 void NTAPI kernel_HalReturnToFirmware();
+
+void NTAPI kernel_RtlAssert(char *message, char *filename, uint32_t line, uint32_t unk);

@@ -1542,12 +1542,6 @@ void NTAPI kernel_RtlAppendUnicodeToString() {
 	halt();
 }
 
-void NTAPI kernel_RtlAssert() {
-	uint32_t magic;
-	log("STUB RtlAssert called from 0x%08x", (&magic)[4]);
-	halt();
-}
-
 void NTAPI kernel_RtlCaptureContext() {
 	uint32_t magic;
 	log("STUB RtlCaptureContext called from 0x%08x", (&magic)[4]);

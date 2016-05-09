@@ -49,7 +49,7 @@ NTSTATUS NTAPI kernel_PsCreateSystemThreadEx(
 	p->StartContext1 = StartContext1;
 	p->StartContext2 = StartContext2;
 
-	create_thread(threadex_proxy, malloc(1024*1024) + 1024 * 1024, (uint32_t) p);
+	create_thread(threadex_proxy, ((uint8_t *) malloc(1024*1024)) + 1024 * 1024, (uint32_t) p);
 
 	return 0;
 }
@@ -81,4 +81,12 @@ void kernel_DbgPrint(char *format, ...) {
 void NTAPI kernel_HalReturnToFirmware() {
 	log("STUB HalReturnToFirmware");
 	while(1) {}
+}
+
+void NTAPI kernel_RtlAssert(char *message, char *filename, uint32_t line, uint32_t unk) {
+	if(message == NULL) message = (char *) "~NULL~";
+	if(filename == NULL) filename = (char *) "~NULL~";
+	log("Failed assert %s in %s on line %i (unknown %i == 0x%x)", message, filename, line, unk, unk);
+	log("Around address 0x%08x", ((uint32_t *) &message)[-1]);
+	halt();
 }

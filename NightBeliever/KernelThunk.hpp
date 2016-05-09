@@ -258,7 +258,6 @@ void NTAPI kernel_RtlAnsiStringToUnicodeString();
 void NTAPI kernel_RtlAppendStringToString();
 void NTAPI kernel_RtlAppendUnicodeStringToString();
 void NTAPI kernel_RtlAppendUnicodeToString();
-void NTAPI kernel_RtlAssert();
 void NTAPI kernel_RtlCaptureContext();
 void NTAPI kernel_RtlCaptureStackBackTrace();
 void NTAPI kernel_RtlCharToInteger();
