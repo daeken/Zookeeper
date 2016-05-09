@@ -8,7 +8,6 @@
 #include "../xbetypes.hpp"
 #include "TIB.hpp"
 #include "Hypercall.hpp"
-#include "Interrupts.hpp"
 #include "liballoc.hpp"
 #include "nttypes.hpp"
 #include "KernelThunk.hpp"

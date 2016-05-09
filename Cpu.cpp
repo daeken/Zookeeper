@@ -44,7 +44,7 @@ Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 		VMCS_PRI_PROC_BASED_CTLS_CR8_STORE));
 	wvmcs(VMCS_CTRL_CPU_BASED2, cap2ctrl(vmx_cap_procbased2, 0));
 	wvmcs(VMCS_CTRL_VMENTRY_CONTROLS, cap2ctrl(vmx_cap_entry, 0));
-	wvmcs(VMCS_CTRL_EXC_BITMAP, 0);
+	wvmcs(VMCS_CTRL_EXC_BITMAP, 0xffffffff);
 	wvmcs(VMCS_CTRL_CR0_MASK, 0xffffffff);
 	wvmcs(VMCS_CTRL_CR0_SHADOW, 0xffffffff);
 	wvmcs(VMCS_CTRL_CR4_MASK, 0xffffffff);
