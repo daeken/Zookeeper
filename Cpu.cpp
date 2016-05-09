@@ -487,6 +487,7 @@ void Cpu::run(uint32_t eip) {
 				}
 				case VMX_REASON_HLT:
 					cout << "VMX_REASON_HLT" << endl;
+					dumpStack();
 					stop = 1;
 					break;
 				case VMX_REASON_EPT_VIOLATION:

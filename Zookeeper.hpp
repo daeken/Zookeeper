@@ -24,3 +24,4 @@ using namespace std;
 #include "VmCall.hpp"
 #include "vmcalls.hpp"
 #include "Box.hpp"
+#include "Debug.hpp"

@@ -79,7 +79,8 @@ void kernel_DbgPrint(char *format, ...) {
 }
 
 void NTAPI kernel_HalReturnToFirmware() {
-	log("STUB HalReturnToFirmware");
+	uint32_t magic;
+	log("STUB HalReturnToFirmware called from 0x%08x", (&magic)[4]);
 	while(1) {}
 }
 
