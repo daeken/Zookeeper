@@ -417,6 +417,8 @@ void Cpu::run(uint32_t eip) {
 	wreg(HV_X86_RIP, eip);
 	wreg(HV_X86_RFLAGS, 0x2);
 
+	enter_debug(0);
+
 	uint64_t last_time = systime();
 
 	int stop = 0;
@@ -445,8 +447,10 @@ void Cpu::run(uint32_t eip) {
 					}
 					else if(vec_val >> 8 == 2)
 						cout << "NMI." << endl;
-					else if(vec_val == 0)
+					else if(vec_val == 0) {
 						cout << "!!!Out of bounds access!!!" << endl;
+						enter_debug(vec_val);
+					}
 					else
 						cout << "WTF? " << (vec_val >> 8) << endl;
 					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 2);
@@ -470,7 +474,7 @@ void Cpu::run(uint32_t eip) {
 					break;
 				case VMX_REASON_RDMSR: {
 					uint64_t msr = 0;
-					cout << "VMX_REASON_RDMSR " << hex << rreg(HV_X86_RCX);
+					cout << "RDMSR " << hex << rreg(HV_X86_RCX);
 					msr = rdmsr(rreg(HV_X86_RCX));
 					cout << " == 0x" << hex << msr << endl;
 					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 2);
@@ -480,22 +484,17 @@ void Cpu::run(uint32_t eip) {
 				}
 				case VMX_REASON_WRMSR: {
 					uint64_t msr = (rreg(HV_X86_RDX) << 32) | rreg(HV_X86_RAX);
-					cout << "VMX_REASON_WRMSR " << hex << rreg(HV_X86_RCX) << " == 0x" << hex << msr << endl;
+					cout << "WRMSR " << hex << rreg(HV_X86_RCX) << " == 0x" << hex << msr << endl;
 					wrmsr(rreg(HV_X86_RCX), msr);
 					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 2);
 					break;
 				}
 				case VMX_REASON_HLT:
-					cout << "VMX_REASON_HLT" << endl;
-					dumpStack();
+					cout << "HLT" << endl;
 					stop = 1;
 					break;
 				case VMX_REASON_EPT_VIOLATION:
-					//cout << "VMX_REASON_EPT_VIOLATION" << endl;
-					break;
-				case VMX_REASON_APIC_ACCESS:
-					cout << "VMX_REASON_APIC_ACCESS" << endl;
-					stop = 0;
+					// cout << "EPT_VIOLATION" << endl;
 					break;
 				default:
 					cout << "Unhandled VM exit: " << dec << exit_reason << endl;
@@ -507,5 +506,5 @@ void Cpu::run(uint32_t eip) {
 			last_time = cur_time;
 		}
 	} while(!stop);
-	cout << "Final EIP: " << hex << rreg(HV_X86_RIP) << endl;
+	enter_debug();
 }

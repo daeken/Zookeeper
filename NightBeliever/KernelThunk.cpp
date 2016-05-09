@@ -1614,12 +1614,6 @@ void NTAPI kernel_RtlDowncaseUnicodeString() {
 	halt();
 }
 
-void NTAPI kernel_RtlEnterCriticalSection() {
-	uint32_t magic;
-	log("STUB RtlEnterCriticalSection called from 0x%08x", (&magic)[4]);
-	halt();
-}
-
 void NTAPI kernel_RtlEnterCriticalSectionAndRegion() {
 	uint32_t magic;
 	log("STUB RtlEnterCriticalSectionAndRegion called from 0x%08x", (&magic)[4]);
@@ -1698,12 +1692,6 @@ void NTAPI kernel_RtlInitUnicodeString() {
 	halt();
 }
 
-void NTAPI kernel_RtlInitializeCriticalSection() {
-	uint32_t magic;
-	log("STUB RtlInitializeCriticalSection called from 0x%08x", (&magic)[4]);
-	halt();
-}
-
 void NTAPI kernel_RtlIntegerToChar() {
 	uint32_t magic;
 	log("STUB RtlIntegerToChar called from 0x%08x", (&magic)[4]);
@@ -1713,12 +1701,6 @@ void NTAPI kernel_RtlIntegerToChar() {
 void NTAPI kernel_RtlIntegerToUnicodeString() {
 	uint32_t magic;
 	log("STUB RtlIntegerToUnicodeString called from 0x%08x", (&magic)[4]);
-	halt();
-}
-
-void NTAPI kernel_RtlLeaveCriticalSection() {
-	uint32_t magic;
-	log("STUB RtlLeaveCriticalSection called from 0x%08x", (&magic)[4]);
 	halt();
 }
 
@@ -1884,21 +1866,9 @@ void NTAPI kernel_XboxEEPROMKey() {
 	halt();
 }
 
-void NTAPI kernel_XboxHardwareInfo() {
-	uint32_t magic;
-	log("STUB XboxHardwareInfo called from 0x%08x", (&magic)[4]);
-	halt();
-}
-
 void NTAPI kernel_XboxHDKey() {
 	uint32_t magic;
 	log("STUB XboxHDKey called from 0x%08x", (&magic)[4]);
-	halt();
-}
-
-void NTAPI kernel_XboxKrnlVersion() {
-	uint32_t magic;
-	log("STUB XboxKrnlVersion called from 0x%08x", (&magic)[4]);
 	halt();
 }
 

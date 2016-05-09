@@ -1,7 +1,7 @@
 #include "Zookeeper.hpp"
 
 #define MAX_FRAMES 8
-void dumpStack() {
+void dump_stack() {
 	cout << endl;
 	cout << "Stack trace:" << endl;
 
@@ -15,4 +15,11 @@ void dumpStack() {
 	}
 
 	cout << endl;
+}
+
+void enter_debug(uint32_t reason) {
+	if(reason == -1)
+		cout << "Execution ended" << endl;
+
+	cout << hex << (uint32_t *) box->cpu->rreg(HV_X86_RIP) << " >" << endl;
 }

@@ -12,6 +12,10 @@ void threadex_proxy(uint32_t tid, uint32_t up) {
 
 	init_tib(tid);
 
+	log("Starting xbthread at %08x", s.StartRoutine);
+	log("StartContext1 %08x", s.StartContext1);
+	log("StartContext2 %08x", s.StartContext2);
+
 	asm(
 		"mov %0, %%esi\n"
 		"push %1\n"
@@ -68,6 +72,11 @@ PVOID NTAPI kernel_MmAllocateContiguousMemory(IN ULONG NumberOfBytes) {
 
 uint32_t kernel_LaunchDataPage = 0;
 uint32_t kernel_IdexChannelObject = 0;
+XBOX_HARDWARE_INFO kernel_XboxHardwareInfo = {
+    0xC0000035,
+    0,0,0,0
+};
+uint32_t kernel_XboxKrnlVersion = 0;
 
 void kernel_DbgPrint(char *format, ...) {
 	va_list arglist;
@@ -90,4 +99,26 @@ void NTAPI kernel_RtlAssert(char *message, char *filename, uint32_t line, uint32
 	log("Failed assert %s in %s on line %i (unknown %i == 0x%x)", message, filename, line, unk, unk);
 	log("Around address 0x%08x", ((uint32_t *) &message)[-1]);
 	halt();
+}
+
+NTSTATUS NTAPI kernel_RtlInitializeCriticalSection(RTL_CRITICAL_SECTION *crit) {
+	// A hack to ensure we haven't already initialized this
+	if(crit->Unknown[0] == 0xDEADBEEF)
+		return 0;
+	crit->Unknown[0] = 0xDEADBEEF;
+	crit->LockCount = -1;
+	crit->RecursionCount = 0;
+	crit->OwningThread = get_thread_id();
+
+	return 0;
+}
+
+NTSTATUS NTAPI kernel_RtlEnterCriticalSection(RTL_CRITICAL_SECTION *crit) {
+	kernel_RtlInitializeCriticalSection(crit); // XBEs don't seem to do this.
+
+	return 0;
+}
+
+void NTAPI kernel_RtlLeaveCriticalSection() {
+
 }

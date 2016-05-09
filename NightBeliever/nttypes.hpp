@@ -9,6 +9,7 @@ typedef uint32_t HANDLE;
 typedef HANDLE *PHANDLE;
 
 typedef uint8_t UCHAR;
+typedef int32_t LONG;
 typedef uint32_t ULONG;
 typedef uint32_t DWORD;
 typedef ULONG *PULONG;
@@ -67,3 +68,20 @@ typedef struct _KPCR
     UCHAR           Irql;                                           // 0x24
     struct _KPRCB   PrcbData;                                       // 0x28
 } KPCR, *PKPCR;
+
+typedef struct _RTL_CRITICAL_SECTION
+{
+    DWORD               Unknown[4];                                     // 0x00
+    LONG                LockCount;                                      // 0x10
+    LONG                RecursionCount;                                 // 0x14
+    ULONG               OwningThread;                                   // 0x18
+} RTL_CRITICAL_SECTION, *PRTL_CRITICAL_SECTION;
+
+typedef struct _XBOX_HARDWARE_INFO
+{
+    ULONG Flags;
+    UCHAR Unknown1;
+    UCHAR Unknown2;
+    UCHAR Unknown3;
+    UCHAR Unknown4;
+} XBOX_HARDWARE_INFO;
