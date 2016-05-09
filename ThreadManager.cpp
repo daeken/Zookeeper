@@ -40,31 +40,26 @@ void ThreadManager::next() {
 	REG(RBP, ebp); \
 } while(0)
 
-/*
-	REG(CS, cs); \
-	REG(SS, ss); \
-	REG(DS, ds); \
-	REG(ES, es); \
-	REG(FS, fs); \
-	REG(GS, gs);
-*/
-
 void Thread::save() {
 #define REG(reg, name) (name = (uint32_t) box->cpu->rreg(HV_X86_##reg))
 	REGMAGIC();
 #undef REG
-/*	cout << "Saved thread at 0x" << hex << eip << endl;
+#ifdef THREADDEBUG
+	cout << "Saved thread" << endl;
 #define REG(reg, name) cout << "REG " << #name << " == 0x" << hex << name << endl;
 	REGMAGIC();
-#undef REG*/
+#undef REG
+#endif
 }
 
 void Thread::restore() {
 #define REG(reg, name) (box->cpu->wreg(HV_X86_##reg, (uint64_t) name))
 	REGMAGIC();
 #undef REG
-/*	cout << "Restored thread at 0x" << hex << eip << endl;
+#ifdef THREADDEBUG
+	cout << "Restored thread" << endl;
 #define REG(reg, name) cout << "REG " << #name << " == 0x" << hex << name << endl;
 	REGMAGIC();
-#undef REG*/
+#undef REG
+#endif
 }
