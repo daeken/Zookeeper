@@ -20,3 +20,4 @@ KernelThunk.cpp: thunkgen.py Kernel.hpp
 
 clean:
 	rm *.o
+	rm ../nightbeliever.krnl

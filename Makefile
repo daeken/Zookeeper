@@ -5,7 +5,7 @@ CC_FLAGS := -std=c++11
 all: NightBeliever zookeeper
 
 zookeeper: $(OBJ_FILES)
-	clang++ -g $(CC_FLAGS) -framework Hypervisor -o zookeeper $(OBJ_FILES)
+	clang++ -g $(CC_FLAGS) -lboost_regex-mt -framework Hypervisor -o zookeeper $(OBJ_FILES)
 
 .PHONY: NightBeliever
 

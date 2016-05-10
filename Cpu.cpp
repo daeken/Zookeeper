@@ -122,6 +122,10 @@ void Cpu::map_pages(uint32_t virt, uint32_t phys, uint32_t count) {
 		virt += 4096;
 		phys += 4096;
 	}
+	invalidate_tlb();
+}
+
+void Cpu::invalidate_tlb() {
 	hv_vcpu_invalidate_tlb(vcpu);
 }
 
@@ -417,18 +421,15 @@ void Cpu::run(uint32_t eip) {
 	wreg(HV_X86_RIP, eip);
 	wreg(HV_X86_RFLAGS, 0x2);
 
-	enter_debug(0);
+	box->debugger->enter(0);
 
 	uint64_t last_time = systime();
 
 	int stop = 0;
 	do {
-		//cout << "Running from EIP: " << hex << rreg(HV_X86_RIP) << endl;
 		bailout(hv_vcpu_run(vcpu));
-		uint64_t exit_reason = rvmcs(VMCS_RO_EXIT_REASON);
-		//log_exit_reason(exit_reason, rreg(HV_X86_RIP));
 
-		//cout << exit_reason << endl;
+		uint64_t exit_reason = rvmcs(VMCS_RO_EXIT_REASON);
 
 		if(exit_reason & 0x80000000) {
 			cout << "Entry failed? " << dec << (exit_reason & 0x7FFFFFFF) << endl;
@@ -436,24 +437,41 @@ void Cpu::run(uint32_t eip) {
 		} else
 			switch (exit_reason) {
 				case VMX_REASON_EXC_NMI: {
-					uint64_t vec_val = rvmcs(VMCS_RO_IDT_VECTOR_INFO) & 0xFFFF;
-					stop = 1;
-					cout << "VMX_REASON_EXC_NMI " << hex << (vec_val & 0xFF) << endl;
-					if(vec_val >> 8 == 6)
-						cout << "Exception." << endl;
-					else if(vec_val >> 8 == 4) {
-						cout << "Software interrupt." << endl;
-						stop = 0;
+					auto vec_val = rvmcs(VMCS_RO_VMEXIT_IRQ_INFO) & 0xFFFF;
+					switch(vec_val >> 8) {
+						case 6: { // Interrupt
+							if((vec_val & 0xFF) == 3) {
+								box->debugger->enter();
+							} else {
+								cout << "Unknown interrupt. " << dec << (vec_val & 0xFF) << endl;
+								box->debugger->enter();
+								exit(0);
+							}
+							break;
+						}
+						case 3: { // Exception
+							switch(vec_val & 0xFF) {
+								case 1: { // Single step
+									auto flags = rreg(HV_X86_RFLAGS);
+									wreg(HV_X86_RFLAGS, flags & ~(1 << 8));
+									box->debugger->reenable();
+									break;
+								}
+								case 6: {
+									cout << "Invalid opcode" << endl;
+									box->debugger->enter();
+									break;
+								}
+								default:
+									cout << "Unknown exception. " << dec << (vec_val & 0xFF) << endl;
+									box->debugger->enter();
+									exit(0);
+							}
+							break;
+						}
+						default:
+							cout << "Unknown NMI class. " << hex << vec_val << endl;
 					}
-					else if(vec_val >> 8 == 2)
-						cout << "NMI." << endl;
-					else if(vec_val == 0) {
-						cout << "!!!Out of bounds access!!!" << endl;
-						enter_debug(vec_val);
-					}
-					else
-						cout << "WTF? " << (vec_val >> 8) << endl;
-					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 2);
 					break;
 				}
 				case VMX_REASON_VMCALL: {
@@ -483,7 +501,7 @@ void Cpu::run(uint32_t eip) {
 					break;
 				}
 				case VMX_REASON_WRMSR: {
-					uint64_t msr = (rreg(HV_X86_RDX) << 32) | rreg(HV_X86_RAX);
+					uint64_t msr = ((uint64_t) rreg(HV_X86_RDX) << 32) | (uint64_t) rreg(HV_X86_RAX);
 					cout << "WRMSR " << hex << rreg(HV_X86_RCX) << " == 0x" << hex << msr << endl;
 					wrmsr(rreg(HV_X86_RCX), msr);
 					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 2);
@@ -505,6 +523,12 @@ void Cpu::run(uint32_t eip) {
 			box->tm->next();
 			last_time = cur_time;
 		}
+
+		if(single_step) {
+			single_step = false;
+			auto flags = rreg(HV_X86_RFLAGS);
+			wreg(HV_X86_RFLAGS, flags | (1 << 8));
+		}
 	} while(!stop);
-	enter_debug();
+	box->debugger->enter();
 }

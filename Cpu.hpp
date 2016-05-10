@@ -24,22 +24,24 @@ public:
 	}
 
 	void write_memory(uint32_t addr, uint32_t size, void *buffer);
-	template<typename T> void write_memory(uint32_t addr, T &value) {
+	template<typename T> void write_memory(uint32_t addr, T value) {
 		write_memory(addr, sizeof(T), &value);
 	}
+
+	void invalidate_tlb();
 
 	uint64_t rdmsr(uint32_t msr);
 	void wrmsr(uint32_t msr, uint64_t val);
 
 	/* read GPR */
-	uint64_t rreg(hv_x86_reg_t reg) {
+	uint32_t rreg(hv_x86_reg_t reg) {
 		uint64_t v;
 		bailout(hv_vcpu_read_register(vcpu, reg, &v));
-		return v;
+		return (uint32_t) v;
 	}
 	/* write GPR */
-	void wreg(hv_x86_reg_t reg, uint64_t v) {
-		bailout(hv_vcpu_write_register(vcpu, reg, v));
+	void wreg(hv_x86_reg_t reg, uint32_t v) {
+		bailout(hv_vcpu_write_register(vcpu, reg, (uint32_t) v));
 	}
 	/* read VMCS field */
 	uint64_t rvmcs(uint32_t field) {
@@ -54,4 +56,5 @@ public:
 
 	hv_vcpuid_t vcpu;
 	uint8_t *mem, *kmem;
+	bool single_step = false;
 };

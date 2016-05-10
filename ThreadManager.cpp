@@ -8,10 +8,8 @@ ThreadManager::ThreadManager() {
 }
 
 uint32_t ThreadManager::create(uint32_t eip, uint32_t esp) {
-	cout << "Creating thread at " << hex << eip << " stack at " << esp << endl;
 	auto thread = make_shared<Thread>();
-	(*iterator)->save();
-	thread->eflags = (*iterator)->eflags; // XXX: Copying current eflags state.  Add default
+	thread->eflags = 2;
 	thread->id = ++tid;
 	thread->eip = eip;
 	thread->esp = esp;

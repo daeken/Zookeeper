@@ -9,6 +9,7 @@ public:
 	Cpu *cpu;
 	PageManager *pm;
 	ThreadManager *tm;
+	Debugger *debugger;
 
 	uint32_t xbebase;
 };

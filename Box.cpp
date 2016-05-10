@@ -13,4 +13,6 @@ Box::Box() {
 	pm->add_region(0, 64 * 1024 * 1024);
 
 	tm = new ThreadManager();
+
+	debugger = new Debugger();
 }
