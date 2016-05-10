@@ -49,8 +49,6 @@ void Debugger::enter(uint32_t reason) {
 		box->cpu->single_step = true;
 	}
 
-	if(breakpoints.find(0x00022a44) == breakpoints.end())
-		breakpoints[0x00022a44] = new Breakpoint(0x00022a44);
 	while(1) {
 		cout << format("%08x > ") % eip << flush;
 
