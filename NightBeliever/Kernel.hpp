@@ -39,3 +39,9 @@ void NTAPI kernel_HalRegisterShutdownNotification(
     PHAL_SHUTDOWN_REGISTRATION ShutdownRegistration, 
     CHAR Register
 );
+
+void NTAPI kernel_KeInitializeDpc(
+    KDPC                *Dpc,
+    PKDEFERRED_ROUTINE   DeferredRoutine,
+    PVOID                DeferredContext
+);

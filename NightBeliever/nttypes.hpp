@@ -10,6 +10,7 @@ typedef HANDLE *PHANDLE;
 
 typedef int8_t CHAR;
 typedef uint8_t UCHAR;
+typedef int16_t SHORT;
 typedef int32_t LONG;
 typedef uint32_t ULONG;
 typedef uint32_t DWORD;
@@ -92,9 +93,30 @@ typedef struct _LIST_ENTRY {
   struct _LIST_ENTRY  *Blink;
 } LIST_ENTRY, *PLIST_ENTRY;
 
-typedef struct HAL_SHUTDOWN_REGISTRATION // 0x10
-{
+typedef struct HAL_SHUTDOWN_REGISTRATION { // 0x10
     PVOID NotificationRoutine; // +0x0(0x4)
     DWORD Priority; // +0x4(0x4)
     LIST_ENTRY ListEntry; // +0x8(0x8)
 } *PHAL_SHUTDOWN_REGISTRATION;
+
+typedef VOID (*PKDEFERRED_ROUTINE)(
+    IN struct _KDPC *Dpc,
+    IN PVOID         DeferredContext,
+    IN PVOID         SystemArgument1,
+    IN PVOID         SystemArgument2
+);
+
+typedef struct _KDPC {
+    SHORT               Type;               // 0x00
+    UCHAR               Number;             // 0x02
+    UCHAR               Importance;         // 0x03
+    LIST_ENTRY          DpcListEntry;       // 0x04
+    PKDEFERRED_ROUTINE  DeferredRoutine;    // 0x0C
+    PVOID               DeferredContext;
+    PVOID               SystemArgument1;
+    PVOID               SystemArgument2;
+} KDPC, *PKDPC;
+
+typedef enum _KOBJECTS {
+    DpcObject = 0x13,
+} KOBJECTS, *PKOBJECTS;

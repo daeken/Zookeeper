@@ -104,7 +104,6 @@ void NTAPI kernel_KeGetCurrentIrql();
 void NTAPI kernel_KeGetCurrentThread();
 void NTAPI kernel_KeInitializeApc();
 void NTAPI kernel_KeInitializeDeviceQueue();
-void NTAPI kernel_KeInitializeDpc();
 void NTAPI kernel_KeInitializeEvent();
 void NTAPI kernel_KeInitializeInterrupt();
 void NTAPI kernel_KeInitializeMutant();

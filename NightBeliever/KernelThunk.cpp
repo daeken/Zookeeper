@@ -618,12 +618,6 @@ void NTAPI kernel_KeInitializeDeviceQueue() {
 	halt();
 }
 
-void NTAPI kernel_KeInitializeDpc() {
-	uint32_t magic;
-	log("STUB KeInitializeDpc called from 0x%08x", (&magic)[4]);
-	halt();
-}
-
 void NTAPI kernel_KeInitializeEvent() {
 	uint32_t magic;
 	log("STUB KeInitializeEvent called from 0x%08x", (&magic)[4]);

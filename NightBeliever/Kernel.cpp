@@ -114,19 +114,32 @@ NTSTATUS NTAPI kernel_RtlInitializeCriticalSection(RTL_CRITICAL_SECTION *crit) {
 }
 
 NTSTATUS NTAPI kernel_RtlEnterCriticalSection(RTL_CRITICAL_SECTION *crit) {
-	log("kernel_RtlEnterCriticalSection");
+	log("RtlEnterCriticalSection");
 	kernel_RtlInitializeCriticalSection(crit); // XBEs don't seem to do this.
 
 	return 0;
 }
 
 void NTAPI kernel_RtlLeaveCriticalSection(RTL_CRITICAL_SECTION *crit) {
-	log("kernel_RtlLeaveCriticalSection");
+	log("RtlLeaveCriticalSection");
 }
 
 void NTAPI kernel_HalRegisterShutdownNotification(
 	PHAL_SHUTDOWN_REGISTRATION ShutdownRegistration, 
 	CHAR Register
 ) {
-	log("kernel_HalRegisterShutdownNotification");
+	log("HalRegisterShutdownNotification");
+}
+
+void NTAPI kernel_KeInitializeDpc(
+	KDPC                *Dpc,
+	PKDEFERRED_ROUTINE   DeferredRoutine,
+	PVOID                DeferredContext
+) {
+	log("KeInitializeDPC");
+	
+	Dpc->Number = 0;
+	Dpc->DeferredRoutine = DeferredRoutine;
+	Dpc->Type = DpcObject;
+	Dpc->DeferredContext = DeferredContext;
 }
