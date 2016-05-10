@@ -33,4 +33,4 @@ void NTAPI kernel_RtlAssert(char *message, char *filename, uint32_t line, uint32
 
 NTSTATUS NTAPI kernel_RtlInitializeCriticalSection(RTL_CRITICAL_SECTION *crit);
 NTSTATUS NTAPI kernel_RtlEnterCriticalSection(RTL_CRITICAL_SECTION *crit);
-void NTAPI kernel_RtlLeaveCriticalSection();
+void NTAPI kernel_RtlLeaveCriticalSection(RTL_CRITICAL_SECTION *crit);

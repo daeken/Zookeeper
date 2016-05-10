@@ -114,11 +114,12 @@ NTSTATUS NTAPI kernel_RtlInitializeCriticalSection(RTL_CRITICAL_SECTION *crit) {
 }
 
 NTSTATUS NTAPI kernel_RtlEnterCriticalSection(RTL_CRITICAL_SECTION *crit) {
+	log("kernel_RtlEnterCriticalSection");
 	kernel_RtlInitializeCriticalSection(crit); // XBEs don't seem to do this.
 
 	return 0;
 }
 
-void NTAPI kernel_RtlLeaveCriticalSection() {
-
+void NTAPI kernel_RtlLeaveCriticalSection(RTL_CRITICAL_SECTION *crit) {
+	log("kernel_RtlLeaveCriticalSection");
 }

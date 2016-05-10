@@ -56,5 +56,5 @@ public:
 
 	hv_vcpuid_t vcpu;
 	uint8_t *mem, *kmem;
-	bool single_step = false;
+	int single_step = 0;
 };

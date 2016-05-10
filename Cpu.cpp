@@ -439,7 +439,7 @@ void Cpu::run(uint32_t eip) {
 			switch (exit_reason) {
 				case VMX_REASON_EXC_NMI: {
 					auto vec_val = rvmcs(VMCS_RO_VMEXIT_IRQ_INFO) & 0xFFFF;
-					switch(vec_val >> 8) {
+					switch((vec_val >> 8) & 7) {
 						case 6: { // Interrupt
 							if((vec_val & 0xFF) == 3) {
 								box->debugger->enter();
@@ -455,12 +455,20 @@ void Cpu::run(uint32_t eip) {
 								case 1: { // Single step
 									auto flags = rreg(HV_X86_RFLAGS);
 									wreg(HV_X86_RFLAGS, flags & ~(1 << 8));
-									box->debugger->reenable();
+									if(single_step == 2) // Requested
+										box->debugger->enter();
+									else
+										box->debugger->reenable();
 									swap = true;
 									break;
 								}
 								case 6: {
 									cout << "Invalid opcode" << endl;
+									box->debugger->enter();
+									break;
+								}
+								case 14: {
+									cout << format("Page fault reading %08x") % rvmcs(VMCS_RO_EXIT_QUALIFIC) << endl;
 									box->debugger->enter();
 									break;
 								}
@@ -522,7 +530,8 @@ void Cpu::run(uint32_t eip) {
 			}
 
 		if(single_step) {
-			single_step = false;
+			if(single_step == 1)
+				single_step = 0;
 			auto flags = rreg(HV_X86_RFLAGS);
 			wreg(HV_X86_RFLAGS, flags | (1 << 8));
 			swap = false;

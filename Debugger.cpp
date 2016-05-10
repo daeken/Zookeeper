@@ -53,7 +53,7 @@ void Debugger::enter(uint32_t reason) {
 	if(breakpoints.find(eip) != breakpoints.end()) {
 		cout << format("Hit breakpoint at 0x%08x") % eip << endl;
 		breakpoints[eip]->disable();
-		box->cpu->single_step = true;
+		box->cpu->single_step = 1;
 	}
 
 	while(1) {
@@ -74,7 +74,10 @@ void Debugger::enter(uint32_t reason) {
 		auto cmd = v[0];
 		if(cmd == "c" || cmd == "cont" || cmd == "continue")
 			break;
-		else if(cmd == "b" || cmd == "bp" || cmd == "break") {
+		else if(cmd == "s" || cmd == "step") {
+			box->cpu->single_step = 2;
+			break;
+		} else if(cmd == "b" || cmd == "bp" || cmd == "break") {
 			assert(v.size() >= 2);
 			auto addr = stoul(v[1], nullptr, 16);
 			if(breakpoints.find(addr) != breakpoints.end())
@@ -83,9 +86,9 @@ void Debugger::enter(uint32_t reason) {
 				breakpoints[addr] = new Breakpoint(addr);
 				cout << format("Added breakpoint at addr %08x") % addr << endl;
 			}
-		} else if(cmd == "t" || cmd == "trace") {
+		} else if(cmd == "trace") {
 			stack_trace();
-		} else if(cmd == "s" || cmd == "stack") {
+		} else if(cmd == "stack") {
 			dump_stack();
 		} else if(cmd == "r" || cmd == "regs") {
 			cout << format("eax  %08x    ebx  %08x") % box->cpu->rreg(HV_X86_RAX) % box->cpu->rreg(HV_X86_RBX) << endl;
