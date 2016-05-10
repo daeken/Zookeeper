@@ -81,7 +81,7 @@ void Debugger::enter(uint32_t reason) {
 		} else if(cmd == "r" || cmd == "regs") {
 			cout << format("eax  %08x    ebx  %08x") % box->cpu->rreg(HV_X86_RAX) % box->cpu->rreg(HV_X86_RBX) << endl;
 			cout << format("ecx  %08x    edx  %08x") % box->cpu->rreg(HV_X86_RCX) % box->cpu->rreg(HV_X86_RDX) << endl;
-			cout << format("edi  %08x    esi  %08x") % box->cpu->rreg(HV_X86_RAX) % box->cpu->rreg(HV_X86_RBX) << endl;
+			cout << format("edi  %08x    esi  %08x") % box->cpu->rreg(HV_X86_RDI) % box->cpu->rreg(HV_X86_RSI) << endl;
 			cout << format("ebp  %08x    esp  %08x") % box->cpu->rreg(HV_X86_RBP) % box->cpu->rreg(HV_X86_RSP) << endl;
 			cout << format("eflags  %08x") % box->cpu->rreg(HV_X86_RFLAGS) << endl;
 		} else {
