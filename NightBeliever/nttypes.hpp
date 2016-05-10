@@ -8,6 +8,7 @@ typedef int32_t NTSTATUS;
 typedef uint32_t HANDLE;
 typedef HANDLE *PHANDLE;
 
+typedef int8_t CHAR;
 typedef uint8_t UCHAR;
 typedef int32_t LONG;
 typedef uint32_t ULONG;
@@ -85,3 +86,15 @@ typedef struct _XBOX_HARDWARE_INFO
     UCHAR Unknown3;
     UCHAR Unknown4;
 } XBOX_HARDWARE_INFO;
+
+typedef struct _LIST_ENTRY {
+  struct _LIST_ENTRY  *Flink;
+  struct _LIST_ENTRY  *Blink;
+} LIST_ENTRY, *PLIST_ENTRY;
+
+typedef struct HAL_SHUTDOWN_REGISTRATION // 0x10
+{
+    PVOID NotificationRoutine; // +0x0(0x4)
+    DWORD Priority; // +0x4(0x4)
+    LIST_ENTRY ListEntry; // +0x8(0x8)
+} *PHAL_SHUTDOWN_REGISTRATION;

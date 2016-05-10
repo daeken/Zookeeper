@@ -123,3 +123,10 @@ NTSTATUS NTAPI kernel_RtlEnterCriticalSection(RTL_CRITICAL_SECTION *crit) {
 void NTAPI kernel_RtlLeaveCriticalSection(RTL_CRITICAL_SECTION *crit) {
 	log("kernel_RtlLeaveCriticalSection");
 }
+
+void NTAPI kernel_HalRegisterShutdownNotification(
+	PHAL_SHUTDOWN_REGISTRATION ShutdownRegistration, 
+	CHAR Register
+) {
+	log("kernel_HalRegisterShutdownNotification");
+}

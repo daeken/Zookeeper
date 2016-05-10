@@ -270,12 +270,6 @@ void NTAPI kernel_HalReadWritePCISpace() {
 	halt();
 }
 
-void NTAPI kernel_HalRegisterShutdownNotification() {
-	uint32_t magic;
-	log("STUB HalRegisterShutdownNotification called from 0x%08x", (&magic)[4]);
-	halt();
-}
-
 void NTAPI kernel_HalRequestSoftwareInterrupt() {
 	uint32_t magic;
 	log("STUB HalRequestSoftwareInterrupt called from 0x%08x", (&magic)[4]);

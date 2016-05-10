@@ -46,7 +46,6 @@ void NTAPI kernel_HalEnableSystemInterrupt();
 void NTAPI kernel_HalGetInterruptVector();
 void NTAPI kernel_HalReadSMBusValue();
 void NTAPI kernel_HalReadWritePCISpace();
-void NTAPI kernel_HalRegisterShutdownNotification();
 void NTAPI kernel_HalRequestSoftwareInterrupt();
 void NTAPI kernel_HalWriteSMBusValue();
 void NTAPI kernel_InterlockedCompareExchange();
