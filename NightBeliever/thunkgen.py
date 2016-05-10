@@ -382,6 +382,8 @@ print >>kh, '#pragma once'
 print >>kh, '#include "NightBeliever.hpp"'
 print >>kh
 
+total = 0
+stubbed = 0
 for line in imports:
 	name, id = line.split(' ')
 	id = int(id, 16)
@@ -394,7 +396,11 @@ for line in imports:
 		print >>ks
 
 		print >>kh, 'void NTAPI kernel_%s();' % name
+		stubbed += 1
+	total += 1
 print >>kh
+
+print '%i/%i kernel exports implemented' % (total - stubbed, total)
 
 print >>kh, 'uint32_t thunk_lookup(uint32_t id);'
 print >>ks, 'uint32_t thunk_lookup(uint32_t id) {'

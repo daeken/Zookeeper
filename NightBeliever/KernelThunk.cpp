@@ -132,12 +132,6 @@ void NTAPI kernel_ExQueryPoolBlockSize() {
 	halt();
 }
 
-void NTAPI kernel_ExQueryNonVolatileSetting() {
-	uint32_t magic;
-	log("STUB ExQueryNonVolatileSetting called from 0x%08x", (&magic)[4]);
-	halt();
-}
-
 void NTAPI kernel_ExReadWriteRefurbInfo() {
 	uint32_t magic;
 	log("STUB ExReadWriteRefurbInfo called from 0x%08x", (&magic)[4]);
@@ -645,12 +639,6 @@ void NTAPI kernel_KeInitializeQueue() {
 void NTAPI kernel_KeInitializeSemaphore() {
 	uint32_t magic;
 	log("STUB KeInitializeSemaphore called from 0x%08x", (&magic)[4]);
-	halt();
-}
-
-void NTAPI kernel_KeInitializeTimerEx() {
-	uint32_t magic;
-	log("STUB KeInitializeTimerEx called from 0x%08x", (&magic)[4]);
 	halt();
 }
 

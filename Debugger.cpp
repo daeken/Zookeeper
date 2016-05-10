@@ -1,13 +1,13 @@
 #include "Zookeeper.hpp"
 
 Breakpoint::Breakpoint(uint32_t _addr) : addr(_addr) {
-	saved = box->cpu->read_memory<uint8_t>(addr);
 	enable();
 }
 
 void Breakpoint::enable() {
 	if(enabled)
 		return;
+	saved = box->cpu->read_memory<uint8_t>(addr);
 	box->cpu->write_memory<uint8_t>(addr, 0xCC);
 	box->cpu->invalidate_tlb();
 	enabled = true;

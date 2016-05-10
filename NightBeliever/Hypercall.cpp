@@ -58,3 +58,7 @@ uint32_t create_thread(thread_ep_t eip, void *esp, uint32_t targ) {
 
 	return vmcall(VMCALL_CREATETHREAD, &arg);
 }
+
+uint32_t query_eeprom(uint32_t index) {
+	return vmcall(VMCALL_QUERYEEPROM, (void *) index);
+}

@@ -27,6 +27,7 @@ using namespace boost::algorithm;
 #include "Cpu.hpp"
 #include "PageManager.hpp"
 #include "ThreadManager.hpp"
+#include "Eeprom.hpp"
 #include "VmCall.hpp"
 #include "vmcalls.hpp"
 #include "Debugger.hpp"

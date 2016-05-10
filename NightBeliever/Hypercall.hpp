@@ -13,3 +13,5 @@ XbeHeader_t *get_xbebase();
 
 typedef void (*thread_ep_t)(uint32_t, uint32_t);
 uint32_t create_thread(thread_ep_t eip, void *esp, uint32_t arg);
+
+uint32_t query_eeprom(uint32_t index);

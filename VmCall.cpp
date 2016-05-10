@@ -43,6 +43,9 @@ int vmcall_dispatch(uint32_t call, uint32_t addr) {
 			box->cpu->write_memory(arg.esp + 8, arg.arg);
 			return tid;
 		}
+		case VMCALL_QUERYEEPROM: {
+			return query_eeprom(addr);
+		}
 		default:
 			cout << "Unknown VMCall: 0x" << hex << call << " -- " << hex << addr << endl;
 	}

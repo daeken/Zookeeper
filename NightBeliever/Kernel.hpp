@@ -45,3 +45,16 @@ void NTAPI kernel_KeInitializeDpc(
     PKDEFERRED_ROUTINE   DeferredRoutine,
     PVOID                DeferredContext
 );
+
+void NTAPI kernel_KeInitializeTimerEx(
+    IN PKTIMER      Timer,
+    IN TIMER_TYPE   Type
+);
+
+NTSTATUS NTAPI kernel_ExQueryNonVolatileSetting(
+    IN  DWORD               ValueIndex,
+    OUT DWORD              *Type,
+    OUT PUCHAR              Value,
+    IN  SIZE_T              ValueLength,
+    OUT PSIZE_T             ResultLength OPTIONAL
+);

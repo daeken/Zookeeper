@@ -137,9 +137,43 @@ void NTAPI kernel_KeInitializeDpc(
 	PVOID                DeferredContext
 ) {
 	log("KeInitializeDPC");
-	
+
 	Dpc->Number = 0;
 	Dpc->DeferredRoutine = DeferredRoutine;
 	Dpc->Type = DpcObject;
 	Dpc->DeferredContext = DeferredContext;
+}
+
+void NTAPI kernel_KeInitializeTimerEx(
+	IN PKTIMER      Timer,
+	IN TIMER_TYPE   Type
+) {
+	Timer->Header.Type               = Type + 8;
+	Timer->Header.Inserted           = 0;
+	Timer->Header.Size               = sizeof(*Timer) / sizeof(ULONG);
+	Timer->Header.SignalState        = 0;
+	Timer->TimerListEntry.Blink      = NULL;
+	Timer->TimerListEntry.Flink      = NULL;
+	Timer->Header.WaitListHead.Flink = &Timer->Header.WaitListHead;
+	Timer->Header.WaitListHead.Blink = &Timer->Header.WaitListHead;
+	Timer->DueTime.QuadPart          = 0;
+	Timer->Period                    = 0;
+}
+
+NTSTATUS NTAPI kernel_ExQueryNonVolatileSetting(
+	IN  DWORD               ValueIndex,
+	OUT DWORD              *Type,
+	OUT PUCHAR              Value,
+	IN  SIZE_T              ValueLength,
+	OUT PSIZE_T             ResultLength OPTIONAL
+) {
+	auto val = query_eeprom(ValueIndex);
+	if(Type)
+		*Type = 4;
+	if(Value)
+		*((uint32_t *) Value) = val;
+	if(ResultLength)
+		*ResultLength = 4;
+
+	return 0;
 }

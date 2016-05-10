@@ -20,3 +20,4 @@ typedef struct create_thread {
 #define VMCALL_UNMAP 3
 #define VMCALL_XBEBASE 4
 #define VMCALL_CREATETHREAD 5
+#define VMCALL_QUERYEEPROM 6
