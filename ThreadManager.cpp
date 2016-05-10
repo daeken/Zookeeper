@@ -28,6 +28,10 @@ void ThreadManager::next() {
 	(*iterator)->restore();
 }
 
+uint32_t ThreadManager::current_thread() {
+	return (*iterator)->id;
+}
+
 #define REGMAGIC() do {\
 	REG(RIP, eip); \
 	REG(RFLAGS, eflags); \

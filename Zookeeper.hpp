@@ -19,15 +19,6 @@ using namespace boost::algorithm;
 
 #define pagepad(expr) (((expr) & 0xFFF) ? ((expr) & ~0xFFF) + 4096 : (expr))
 
-inline uint32_t parse_num(string s) {
-	if(starts_with(s, "0x"))
-		return stoul(s.substr(2), nullptr, 16);
-	else if(starts_with(s, "0b"))
-		return stoul(s.substr(2), nullptr, 2);
-	else
-		return stoul(s, nullptr, 10);
-}
-
 #define RAM_SIZE 128*1024*1024
 #define KRAM_SIZE 128*1024*1024
 

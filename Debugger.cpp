@@ -25,10 +25,10 @@ Debugger::Debugger() {
 }
 
 #define MAX_FRAMES 8
-void Debugger::dump_stack() {
+void Debugger::stack_trace() {
 	cout << "Stack trace:" << endl;
 
-	auto ebp = (uint32_t) box->cpu->rreg(HV_X86_RBP);
+	auto ebp = box->cpu->rreg(HV_X86_RBP);
 	for(auto i = 0; i < MAX_FRAMES; ++i) {
 		if(ebp == 0)
 			break;
@@ -38,6 +38,13 @@ void Debugger::dump_stack() {
 	}
 
 	cout << endl;
+}
+
+#define MAX_LENGTH 20
+void Debugger::dump_stack() {
+	auto esp = box->cpu->rreg(HV_X86_RSP);
+	for(auto i = 0; i < MAX_LENGTH; ++i)
+		cout << format("%08x") % box->cpu->read_memory<uint32_t>(esp + i * 4) << endl;
 }
 
 void Debugger::enter(uint32_t reason) {
@@ -50,7 +57,7 @@ void Debugger::enter(uint32_t reason) {
 	}
 
 	while(1) {
-		cout << format("%08x > ") % eip << flush;
+		cout << format("[%i] %08x > ") % box->tm->current_thread() % eip << flush;
 
 		string line;
 		if(!getline(cin, line)) {
@@ -69,13 +76,15 @@ void Debugger::enter(uint32_t reason) {
 			break;
 		else if(cmd == "b" || cmd == "bp" || cmd == "break") {
 			assert(v.size() >= 2);
-			auto addr = parse_num(v[1]);
+			auto addr = stoul(v[1], nullptr, 16);
 			if(breakpoints.find(addr) != breakpoints.end())
 				cout << format("Breakpoint already exists at %08x") % addr << endl;
 			else {
 				breakpoints[addr] = new Breakpoint(addr);
 				cout << format("Added breakpoint at addr %08x") % addr << endl;
 			}
+		} else if(cmd == "t" || cmd == "trace") {
+			stack_trace();
 		} else if(cmd == "s" || cmd == "stack") {
 			dump_stack();
 		} else if(cmd == "r" || cmd == "regs") {

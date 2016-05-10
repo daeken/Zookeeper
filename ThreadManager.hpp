@@ -19,6 +19,7 @@ public:
 	ThreadManager();
 	uint32_t create(uint32_t eip, uint32_t esp);
 	void next();
+	uint32_t current_thread();
 
 	list<shared_ptr<Thread>> threads;
 	list<shared_ptr<Thread>>::iterator iterator;

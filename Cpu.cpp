@@ -423,9 +423,10 @@ void Cpu::run(uint32_t eip) {
 
 	box->debugger->enter(0);
 
-	uint64_t last_time = systime();
+	auto last_time = systime();
 
-	int stop = 0;
+	auto stop = false;
+	auto swap = true;
 	do {
 		bailout(hv_vcpu_run(vcpu));
 
@@ -433,7 +434,7 @@ void Cpu::run(uint32_t eip) {
 
 		if(exit_reason & 0x80000000) {
 			cout << "Entry failed? " << dec << (exit_reason & 0x7FFFFFFF) << endl;
-			stop = 1;
+			stop = true;
 		} else
 			switch (exit_reason) {
 				case VMX_REASON_EXC_NMI: {
@@ -455,6 +456,7 @@ void Cpu::run(uint32_t eip) {
 									auto flags = rreg(HV_X86_RFLAGS);
 									wreg(HV_X86_RFLAGS, flags & ~(1 << 8));
 									box->debugger->reenable();
+									swap = true;
 									break;
 								}
 								case 6: {
@@ -509,25 +511,29 @@ void Cpu::run(uint32_t eip) {
 				}
 				case VMX_REASON_HLT:
 					cout << "HLT" << endl;
-					stop = 1;
+					stop = true;
 					break;
 				case VMX_REASON_EPT_VIOLATION:
 					// cout << "EPT_VIOLATION" << endl;
 					break;
 				default:
 					cout << "Unhandled VM exit: " << dec << exit_reason << endl;
-					stop = 1;
+					stop = true;
 			}
-		uint64_t cur_time = systime();
-		if(cur_time >= last_time + TASK_TIMER) {
-			box->tm->next();
-			last_time = cur_time;
-		}
 
 		if(single_step) {
 			single_step = false;
 			auto flags = rreg(HV_X86_RFLAGS);
 			wreg(HV_X86_RFLAGS, flags | (1 << 8));
+			swap = false;
+		}
+
+		if(swap) {
+			uint64_t cur_time = systime();
+			if(cur_time >= last_time + TASK_TIMER) {
+				box->tm->next();
+				last_time = cur_time;
+			}
 		}
 	} while(!stop);
 	box->debugger->enter();

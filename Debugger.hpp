@@ -16,6 +16,7 @@ class Debugger {
 public:
 	Debugger();
 	void dump_stack();
+	void stack_trace();
 	void enter(uint32_t reason = -1);
 	void reenable();
 
