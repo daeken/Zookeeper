@@ -455,8 +455,10 @@ void Cpu::run(uint32_t eip) {
 								case 1: { // Single step
 									auto flags = rreg(HV_X86_RFLAGS);
 									wreg(HV_X86_RFLAGS, flags & ~(1 << 8));
-									if(single_step == 2) // Requested
+									if(single_step == 2) { // Requested
+										single_step = 0;
 										box->debugger->enter();
+									}
 									else
 										box->debugger->reenable();
 									swap = true;
