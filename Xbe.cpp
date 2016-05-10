@@ -17,7 +17,7 @@ Xbe::Xbe(char *fn) {
 	memcpy(full_header, file_data, header->soh);
 
 	sections = new XbeSection_t[header->numsects];
-	for(int i = 0; i < header->numsects; ++i)
+	for(auto i = 0; i < header->numsects; ++i)
 		memcpy(&sections[i], &file_data[(header->secthdrs - header->base) + sizeof(XbeSection) * i], sizeof(XbeSection));
 
 	header->oep ^= EPXORKEY;
@@ -31,9 +31,9 @@ uint32_t Xbe::LoadImage() {
 	box->pm->map(header->base, pagepad(file_size) / 4096);
 	box->cpu->write_memory(header->base, file_size, file_data);
 
-	uint32_t end = file_size;
+	auto end = file_size;
 
-	for(int i = 0; i < header->numsects; ++i) {
+	for(auto i = 0; i < header->numsects; ++i) {
 		XbeSection_t *sect = &sections[i];
 		auto psize = pagepad(sect->vsize);
 		auto base = sect->vaddr & ~0xFFF;
@@ -42,7 +42,7 @@ uint32_t Xbe::LoadImage() {
 		box->pm->map(base, psize / 4096);
 		//cout << "Loading section of 0x" << hex << sect->vsize << " bytes (padded to 0x" << psize << ") to 0x" << base << endl;
 		box->cpu->write_memory(sect->vaddr, sect->rsize, &file_data[sect->raddr]);
-		uint32_t nend = (sect->vaddr - header->base) + sect->rsize;
+		auto nend = (sect->vaddr - header->base) + sect->rsize;
 		end = (nend > end) ? nend : end;
 	}
 

@@ -4,9 +4,8 @@ int vmcall_dispatch(uint32_t call, uint32_t addr) {
 	switch(call) {
 		case VMCALL_LOG: {
 			string str = "";
-			char c;
 			do {
-				box->cpu->read_memory(addr++, 1, &c);
+				auto c = box->cpu->read_memory<uint8_t>(addr++);
 				if(c == 0)
 					break;
 				str += c;

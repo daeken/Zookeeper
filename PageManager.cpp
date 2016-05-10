@@ -20,7 +20,7 @@ uint32_t PageManager::map(uint32_t base, uint32_t count) {
 	if(base == 0)
 		base = box->pm->alloc_virt(count);
 	
-	for(int i = 0; i < count; ++i) {
+	for(auto i = 0; i < count; ++i) {
 		auto virt = base + i * 4096;
 		if(!box->cpu->is_mapped(virt))
 			box->cpu->map_pages(virt, box->pm->alloc_phys(), 1);
@@ -31,7 +31,7 @@ uint32_t PageManager::map(uint32_t base, uint32_t count) {
 
 void PageManager::unmap(uint32_t base, uint32_t count) {
 	auto addr = base;
-	for(int i = 0; i < count; ++i) {
+	for(auto i = 0; i < count; ++i) {
 		box->pm->free_phys(box->cpu->virt2phys(addr));
 		addr += 4096;
 	}
@@ -41,7 +41,7 @@ void PageManager::unmap(uint32_t base, uint32_t count) {
 uint32_t PageManager::alloc_phys() {
 	bailout(freePhysPages.size() == 0);
 
-	uint32_t page = freePhysPages.front();
+	auto page = freePhysPages.front();
 	freePhysPages.pop_front();
 	return page;
 }
@@ -68,7 +68,7 @@ uint32_t PageManager::alloc_virt(uint32_t count) {
 }
 
 void PageManager::free_virt(uint32_t start, uint32_t count) {
-	uint32_t end = start + count * 4096;
+	auto end = start + count * 4096;
 	if(virtGroups.size() == 0) {
 		virtgroup_t group;
 		group.start = start;

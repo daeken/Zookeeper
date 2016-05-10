@@ -50,19 +50,19 @@ Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 	wvmcs(VMCS_CTRL_CR4_MASK, 0xffffffff);
 	wvmcs(VMCS_CTRL_CR4_SHADOW, 0xffffffff);
 
-	uint32_t directory = 64*1024*1024; // Page directory base
-	uint32_t *dir = (uint32_t *) (mem + directory);
-	for(int i = 0; i < 1024; ++i) {
+	auto directory = 64*1024*1024; // Page directory base
+	auto dir = (uint32_t *) (mem + directory);
+	for(auto i = 0; i < 1024; ++i) {
 		dir[i] = (directory + 4096 + 4096 * i) | 0x7;
-		uint32_t *table = (uint32_t *) (mem + (dir[i] & ~0xFFF));
-		for(int j = 0; j < 1024; ++j) {
+		auto table = (uint32_t *) (mem + (dir[i] & ~0xFFF));
+		for(auto j = 0; j < 1024; ++j) {
 			table[j] = 0x0;
 		}
 	}
 	wvmcs(VMCS_GUEST_CR3, directory);
 	wvmcs(VMCS_GUEST_CR0, 0x80000000 | 0x20 | 0x01); // Paging | NE | PE
 
-	uint8_t *gdt = ram + 96*1024*1024;
+	auto gdt = ram + 96*1024*1024;
 	memset(gdt, 0, 0x10000);
 	gdt_encode(gdt, 0, 0, 0, 0); // Null entry
 	gdt_encode(gdt, 1, 0, 0xffffffff, 0x9A); // Code
@@ -115,9 +115,9 @@ Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 }
 
 void Cpu::map_pages(uint32_t virt, uint32_t phys, uint32_t count) {
-	uint32_t *dir = (uint32_t *) (mem + 64*1024*1024);
-	for(int i = 0; i < count; ++i) {
-		uint32_t *table = (uint32_t *) (mem + (dir[virt >> 22] & ~0xFFF));
+	auto dir = (uint32_t *) (mem + 64*1024*1024);
+	for(auto i = 0; i < count; ++i) {
+		auto table = (uint32_t *) (mem + (dir[virt >> 22] & ~0xFFF));
 		table[(virt >> 12) & 0x3ff] = phys | 0x7;
 		virt += 4096;
 		phys += 4096;
@@ -130,17 +130,17 @@ void Cpu::invalidate_tlb() {
 }
 
 uint32_t Cpu::virt2phys(uint32_t addr) {
-	uint32_t cr3 = rreg(HV_X86_CR3);
+	auto cr3 = rreg(HV_X86_CR3);
 	if(cr3 == 0)
 		return addr;
 
-	uint32_t *directory = (uint32_t *) (mem + cr3);
-	uint32_t *table = (uint32_t *) (mem + (directory[addr >> 22] & ~0xFFF));
+	auto directory = (uint32_t *) (mem + cr3);
+	auto table = (uint32_t *) (mem + (directory[addr >> 22] & ~0xFFF));
 	return (table[(addr >> 12) & 0x3ff] & ~0xFFF) + (addr & 0xFFF);
 }
 
 bool Cpu::is_mapped(uint32_t addr) {
-	uint32_t cr3 = rreg(HV_X86_CR3);
+	auto cr3 = rreg(HV_X86_CR3);
 	if(cr3 == 0)
 		return true;
 
@@ -160,7 +160,7 @@ void Cpu::read_memory(uint32_t addr, uint32_t size, void *buffer) {
 	}
 	auto buf = (uint8_t *) buffer;
 	auto directory = (uint32_t *) (mem + cr3);
-	for(int i = 0; i < size; ++i) {
+	for(auto i = 0; i < size; ++i) {
 		auto table = (uint32_t *) (mem + (directory[addr >> 22] & ~0xFFF));
 		auto paddr = (table[(addr >> 12) & 0x3ff] & ~0xFFF) + (addr & 0xFFF);
 		if(paddr >= 0xc0000000)
@@ -172,7 +172,7 @@ void Cpu::read_memory(uint32_t addr, uint32_t size, void *buffer) {
 }
 
 void Cpu::write_memory(uint32_t addr, uint32_t size, void *buffer) {
-	uint32_t cr3 = rreg(HV_X86_CR3);
+	auto cr3 = rreg(HV_X86_CR3);
 	if(cr3 == 0) {
 		if(addr >= 0xc0000000)
 			memcpy(&kmem[addr - 0xc0000000], buffer, size);
@@ -180,11 +180,11 @@ void Cpu::write_memory(uint32_t addr, uint32_t size, void *buffer) {
 			memcpy(&mem[addr], buffer, size);
 		return;
 	}
-	uint8_t *buf = (uint8_t *) buffer;
-	uint32_t *directory = (uint32_t *) (mem + cr3);
-	for(int i = 0; i < size; ++i) {
-		uint32_t *table = (uint32_t *) (mem + (directory[addr >> 22] & ~0xFFF));
-		uint32_t paddr = (table[(addr >> 12) & 0x3ff] & ~0xFFF) + (addr & 0xFFF);
+	auto buf = (uint8_t *) buffer;
+	auto directory = (uint32_t *) (mem + cr3);
+	for(auto i = 0; i < size; ++i) {
+		auto table = (uint32_t *) (mem + (directory[addr >> 22] & ~0xFFF));
+		auto paddr = (table[(addr >> 12) & 0x3ff] & ~0xFFF) + (addr & 0xFFF);
 		if(paddr >= 0xc0000000)
 			kmem[paddr - 0xc0000000] = *(buf++);
 		else
@@ -430,7 +430,7 @@ void Cpu::run(uint32_t eip) {
 	do {
 		bailout(hv_vcpu_run(vcpu));
 
-		uint64_t exit_reason = rvmcs(VMCS_RO_EXIT_REASON);
+		auto exit_reason = rvmcs(VMCS_RO_EXIT_REASON);
 
 		if(exit_reason & 0x80000000) {
 			cout << "Entry failed? " << dec << (exit_reason & 0x7FFFFFFF) << endl;
@@ -493,7 +493,7 @@ void Cpu::run(uint32_t eip) {
 					stop = 1;
 					break;
 				case VMX_REASON_RDMSR: {
-					uint64_t msr = 0;
+					auto msr = 0L;
 					cout << "RDMSR " << hex << rreg(HV_X86_RCX);
 					msr = rdmsr(rreg(HV_X86_RCX));
 					cout << " == 0x" << hex << msr << endl;
@@ -503,7 +503,7 @@ void Cpu::run(uint32_t eip) {
 					break;
 				}
 				case VMX_REASON_WRMSR: {
-					uint64_t msr = ((uint64_t) rreg(HV_X86_RDX) << 32) | (uint64_t) rreg(HV_X86_RAX);
+					auto msr = ((uint64_t) rreg(HV_X86_RDX) << 32) | (uint64_t) rreg(HV_X86_RAX);
 					cout << "WRMSR " << hex << rreg(HV_X86_RCX) << " == 0x" << hex << msr << endl;
 					wrmsr(rreg(HV_X86_RCX), msr);
 					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 2);
@@ -529,7 +529,7 @@ void Cpu::run(uint32_t eip) {
 		}
 
 		if(swap) {
-			uint64_t cur_time = systime();
+			auto cur_time = systime();
 			if(cur_time >= last_time + TASK_TIMER) {
 				box->tm->next();
 				last_time = cur_time;
