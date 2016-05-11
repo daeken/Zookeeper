@@ -20,5 +20,5 @@ Hypercall.h: hypercallgen.py hypercalls.yaml
 
 clean:
 	$(MAKE) -C NightBeliever clean
-	rm zookeeper
-	rm *.o
+	rm *.o || true
+	rm zookeeper || true

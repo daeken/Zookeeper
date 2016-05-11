@@ -66,3 +66,11 @@ BOOLEAN NTAPI kernel_KeSetTimer(
     IN LARGE_INTEGER  DueTime,
     IN PKDPC          Dpc OPTIONAL
 );
+
+NTSTATUS NTAPI kernel_NtAllocateVirtualMemory(
+    void **BaseAddress,
+    uint32_t *ZeroBits, 
+    size_t *RegionSize, 
+    uint32_t AllocationType, 
+    uint32_t Protect
+);

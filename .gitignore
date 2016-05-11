@@ -1,4 +1,9 @@
 *.o
 NightBeliever/*.o
+NightBeliever/KernelThunk.*pp
+NightBeliever/Hypercall.*pp
+Hypercall.hpp
+Hypercalls.hpp
+HypercallDispatch.cpp
 nightbeliever.krnl
 zookeeper

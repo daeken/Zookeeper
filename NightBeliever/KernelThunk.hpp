@@ -174,7 +174,6 @@ void NTAPI kernel_MmQueryAllocationSize();
 void NTAPI kernel_MmQueryStatistics();
 void NTAPI kernel_MmSetAddressProtect();
 void NTAPI kernel_MmUnmapIoSpace();
-void NTAPI kernel_NtAllocateVirtualMemory();
 void NTAPI kernel_NtCancelTimer();
 void NTAPI kernel_NtClearEvent();
 void NTAPI kernel_NtClose();

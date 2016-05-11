@@ -2,26 +2,33 @@
 #include "NightBeliever.hpp"
 #include "../Hypercalls.hpp"
 
-void * map(void * virt_base, uint32_t count) {
-	volatile hypercall_map_t _sarg;
+void * map_aligned(void * virt_base, uint32_t count) {
+	volatile hypercall_map_aligned_t _sarg;
 	_sarg.virt_base = (uint32_t) virt_base;
 	_sarg.count = count;
 	return (void *) vmcall(0, (uint32_t) &_sarg);
 }
 
+void * map(void * virt_base, uint32_t count) {
+	volatile hypercall_map_t _sarg;
+	_sarg.virt_base = (uint32_t) virt_base;
+	_sarg.count = count;
+	return (void *) vmcall(1, (uint32_t) &_sarg);
+}
+
 uint32_t query_eeprom(uint32_t arg) {
-	return vmcall(1, arg);
+	return vmcall(2, arg);
 }
 
 void unmap(void * virt_base, uint32_t count) {
 	volatile hypercall_unmap_t _sarg;
 	_sarg.virt_base = (uint32_t) virt_base;
 	_sarg.count = count;
-	vmcall(2, (uint32_t) &_sarg);
+	vmcall(3, (uint32_t) &_sarg);
 }
 
 void log_(const char * arg) {
-	vmcall(3, (uint32_t) arg);
+	vmcall(4, (uint32_t) arg);
 }
 
 uint32_t create_thread(thread_ep_t eip, void * esp, uint32_t arg) {
@@ -29,10 +36,10 @@ uint32_t create_thread(thread_ep_t eip, void * esp, uint32_t arg) {
 	_sarg.eip = (uint32_t) eip;
 	_sarg.esp = (uint32_t) esp;
 	_sarg.arg = arg;
-	return vmcall(4, (uint32_t) &_sarg);
+	return vmcall(5, (uint32_t) &_sarg);
 }
 
 XbeHeader_t * get_xbebase() {
-	return (XbeHeader_t *) vmcall(5, NULL);
+	return (XbeHeader_t *) vmcall(6, NULL);
 }
 

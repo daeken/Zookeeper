@@ -19,5 +19,5 @@ KernelThunk.cpp: thunkgen.py Kernel.hpp
 	i686-elf-g++ $(LD_FLAGS) -o ../nightbeliever.krnl $(OBJ_FILES)
 
 clean:
-	rm *.o
-	rm ../nightbeliever.krnl
+	rm *.o || true
+	rm ../nightbeliever.krnl || true

@@ -15,6 +15,9 @@ void Hypercall::log_(uint32_t message) {
 uint32_t Hypercall::map(uint32_t virt_base, uint32_t count) {
 	return box->pm->map(virt_base, count);
 }
+uint32_t Hypercall::map_aligned(uint32_t virt_base, uint32_t count) {
+	return box->pm->map(virt_base, count, true);
+}
 void Hypercall::unmap(uint32_t virt_base, uint32_t count) {
 	box->pm->unmap(virt_base, count);
 }

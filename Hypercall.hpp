@@ -7,6 +7,7 @@ uint32_t hypercall_dispatch(uint32_t call, uint32_t addr);
 
 class Hypercall {
 public:
+	uint32_t map_aligned(uint32_t virt_base, uint32_t count);
 	uint32_t map(uint32_t virt_base, uint32_t count);
 	uint32_t query_eeprom(uint32_t index);
 	void unmap(uint32_t virt_base, uint32_t count);

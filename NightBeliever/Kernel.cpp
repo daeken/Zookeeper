@@ -189,3 +189,28 @@ BOOLEAN NTAPI kernel_KeSetTimer(
 ) {
 	return true;
 }
+
+NTSTATUS NTAPI kernel_NtAllocateVirtualMemory(
+	void **BaseAddress,
+	uint32_t *ZeroBits, 
+	size_t *RegionSize, 
+	uint32_t AllocationType, 
+	uint32_t Protect
+) {
+	log(
+		"NtAllocateVirtualMemory(0x%08x, %i, 0x%08x, 0x%08x, 0x%08x)", 
+		*BaseAddress, (ZeroBits != NULL) ? *ZeroBits : -1, *RegionSize, AllocationType, Protect
+	);
+	*BaseAddress = (void *) (((uint32_t) *BaseAddress) & ~0xFFF);
+	*RegionSize = pagepad(*RegionSize);
+	if((AllocationType & MEM_COMMIT) == MEM_COMMIT) {
+		*BaseAddress = map_aligned(*BaseAddress, *RegionSize / 4096);
+		log("Allocated memory at 0x%08x", *BaseAddress);
+	} else if((AllocationType & MEM_RESERVE) == MEM_RESERVE) {
+		log("Ignoring memory reserve");
+	} else {
+		bailout("Unsupported allocation type %x", AllocationType);
+	}
+
+	return 0;
+}

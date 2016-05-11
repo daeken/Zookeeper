@@ -3,6 +3,7 @@
 #include "NightBeliever.hpp"
 #include "HypercallSupport.hpp"
 
+void * map_aligned(void *, uint32_t);
 void * map(void *, uint32_t);
 uint32_t query_eeprom(uint32_t);
 void unmap(void *, uint32_t);

@@ -16,9 +16,9 @@ void PageManager::add_region(uint32_t base, uint32_t size) {
 		freePhysPages.push_back(addr);
 }
 
-uint32_t PageManager::map(uint32_t base, uint32_t count) {
+uint32_t PageManager::map(uint32_t base, uint32_t count, bool aligned) {
 	if(base == 0)
-		base = box->pm->alloc_virt(count);
+		base = box->pm->alloc_virt(count, aligned);
 	
 	for(auto i = 0; i < count; ++i) {
 		auto virt = base + i * 4096;
@@ -50,15 +50,35 @@ void PageManager::free_phys(uint32_t page) {
 	freePhysPages.push_back(page);
 }
 
-uint32_t PageManager::alloc_virt(uint32_t count) {
+uint32_t PageManager::alloc_virt(uint32_t count, bool aligned) {
 	for(auto iter = virtGroups.begin(); iter != virtGroups.end(); ++iter) {
 		if(iter->count >= count) {
 			auto start = iter->start;
-			if(iter->count == count)
-				virtGroups.erase(iter);
-			else {
-				iter->count -= count;
-				iter->start += count * 4096;
+			if(aligned && (start & 0xFFF) != 0) {
+				auto pad = start & 0xFFF;
+				if(iter->count == count + pad) {
+					iter->count = pad;
+					iter->end = iter->start + pad;
+					start += pad;
+				} else if(iter->count > count + pad) {
+					auto next = iter->count - (count + pad);
+					start += pad;
+					iter->count = pad;
+					iter->end = iter->start + pad;
+					virtgroup_t group;
+					group.count = next;
+					group.start = start + count;
+					group.end = start + count + next;
+					virtGroups.insert(++iter, group); // Add this group after the current one
+				} else
+					continue; // Too small to fix the padding.
+			} else {
+				if(iter->count == count)
+					virtGroups.erase(iter);
+				else {
+					iter->count -= count;
+					iter->start += count * 4096;
+				}
 			}
 			return start;
 		}

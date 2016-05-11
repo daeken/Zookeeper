@@ -4,6 +4,10 @@ map:
   - return: void *
   - virt_base: void *
   - count: uint32_t
+map_aligned:
+  - return: void *
+  - virt_base: void *
+  - count: uint32_t
 unmap:
   - virt_base: void *
   - count: uint32_t

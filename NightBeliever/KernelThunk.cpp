@@ -1038,12 +1038,6 @@ void NTAPI kernel_MmUnmapIoSpace() {
 	halt();
 }
 
-void NTAPI kernel_NtAllocateVirtualMemory() {
-	uint32_t magic;
-	log("STUB NtAllocateVirtualMemory called from 0x%08x", (&magic)[4]);
-	halt();
-}
-
 void NTAPI kernel_NtCancelTimer() {
 	uint32_t magic;
 	log("STUB NtCancelTimer called from 0x%08x", (&magic)[4]);
