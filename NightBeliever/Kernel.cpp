@@ -177,3 +177,7 @@ NTSTATUS NTAPI kernel_ExQueryNonVolatileSetting(
 
 	return 0;
 }
+
+ULONG NTAPI kernel_RtlNtStatusToDosError(NTSTATUS Status) {
+	return 0;
+}

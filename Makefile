@@ -9,11 +9,14 @@ zookeeper: $(OBJ_FILES)
 
 .PHONY: NightBeliever
 
-NightBeliever:
+NightBeliever: Hypercall.h
 	$(MAKE) -C NightBeliever
 
 %.o: %.cpp
 	clang++ $(CC_FLAGS) -c -g -o $@ $<
+
+Hypercall.h: hypercallgen.py hypercalls.yaml
+	python hypercallgen.py
 
 clean:
 	$(MAKE) -C NightBeliever clean

@@ -8,6 +8,8 @@ Box::Box() {
 	bailout(!(kmem = (uint8_t *) valloc(KRAM_SIZE)));
 
 	cpu = new Cpu(mem, kmem);
+	
+	hypercall = new Hypercall();
 
 	pm = new PageManager();
 	pm->add_region(0, 64 * 1024 * 1024);

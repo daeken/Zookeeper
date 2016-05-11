@@ -287,7 +287,6 @@ void NTAPI kernel_RtlMapGenericMask();
 void NTAPI kernel_RtlMoveMemory();
 void NTAPI kernel_RtlMultiByteToUnicodeN();
 void NTAPI kernel_RtlMultiByteToUnicodeSize();
-void NTAPI kernel_RtlNtStatusToDosError();
 void NTAPI kernel_RtlRaiseException();
 void NTAPI kernel_RtlRaiseStatus();
 void NTAPI kernel_RtlTimeFieldsToTime();

@@ -487,7 +487,7 @@ void Cpu::run(uint32_t eip) {
 					break;
 				}
 				case VMX_REASON_VMCALL: {
-					auto ret = vmcall_dispatch(rreg(HV_X86_RAX), rreg(HV_X86_RDX));
+					auto ret = hypercall_dispatch(rreg(HV_X86_RAX), rreg(HV_X86_RDX));
 					wreg(HV_X86_RAX, ret);
 					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 3);
 					break;

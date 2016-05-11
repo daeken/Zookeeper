@@ -22,13 +22,11 @@ using namespace boost::algorithm;
 #define RAM_SIZE 128*1024*1024
 #define KRAM_SIZE 128*1024*1024
 
+#include "Hypercall.hpp"
 #include "xbetypes.hpp"
 #include "Xbe.hpp"
 #include "Cpu.hpp"
 #include "PageManager.hpp"
 #include "ThreadManager.hpp"
-#include "Eeprom.hpp"
-#include "VmCall.hpp"
-#include "vmcalls.hpp"
 #include "Debugger.hpp"
 #include "Box.hpp"

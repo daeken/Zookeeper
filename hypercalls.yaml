@@ -1,0 +1,19 @@
+log_:
+  - message: const char *
+map:
+  - return: void *
+  - virt_base: void *
+  - count: uint32_t
+unmap:
+  - virt_base: void *
+  - count: uint32_t
+get_xbebase:
+  - return: XbeHeader_t *
+create_thread:
+  - return: uint32_t
+  - eip: thread_ep_t
+  - esp: void *
+  - arg: uint32_t
+query_eeprom:
+  - return: uint32_t
+  - index: uint32_t

@@ -1716,12 +1716,6 @@ void NTAPI kernel_RtlMultiByteToUnicodeSize() {
 	halt();
 }
 
-void NTAPI kernel_RtlNtStatusToDosError() {
-	uint32_t magic;
-	log("STUB RtlNtStatusToDosError called from 0x%08x", (&magic)[4]);
-	halt();
-}
-
 void NTAPI kernel_RtlRaiseException() {
 	uint32_t magic;
 	log("STUB RtlRaiseException called from 0x%08x", (&magic)[4]);

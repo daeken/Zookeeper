@@ -58,3 +58,5 @@ NTSTATUS NTAPI kernel_ExQueryNonVolatileSetting(
     IN  SIZE_T              ValueLength,
     OUT PSIZE_T             ResultLength OPTIONAL
 );
+
+ULONG NTAPI kernel_RtlNtStatusToDosError(NTSTATUS Status);
