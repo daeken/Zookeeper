@@ -28,5 +28,6 @@ using namespace boost::algorithm;
 #include "Cpu.hpp"
 #include "PageManager.hpp"
 #include "ThreadManager.hpp"
+#include "IOManager.hpp"
 #include "Debugger.hpp"
 #include "Box.hpp"

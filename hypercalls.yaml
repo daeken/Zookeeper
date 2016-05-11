@@ -21,3 +21,6 @@ create_thread:
 query_eeprom:
   - return: uint32_t
   - index: uint32_t
+io_open:
+  - return: uint32_t
+  - fn: char *

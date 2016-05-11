@@ -16,5 +16,7 @@ Box::Box() {
 
 	tm = new ThreadManager();
 
+	io = new IOManager();
+
 	debugger = new Debugger();
 }

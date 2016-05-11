@@ -10,6 +10,7 @@ public:
 	Hypercall *hypercall;
 	PageManager *pm;
 	ThreadManager *tm;
+	IOManager *io;
 	Debugger *debugger;
 
 	uint32_t xbebase;
