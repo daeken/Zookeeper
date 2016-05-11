@@ -9,9 +9,11 @@ typedef uint32_t HANDLE;
 typedef HANDLE *PHANDLE;
 
 typedef int8_t CHAR;
+typedef int8_t *PCHAR;
 typedef uint8_t UCHAR;
 typedef uint8_t *PUCHAR;
 typedef int16_t SHORT;
+typedef uint16_t USHORT;
 typedef int32_t LONG;
 typedef uint32_t ULONG;
 typedef uint32_t DWORD;
@@ -171,3 +173,26 @@ typedef enum _TIMER_TYPE {
 #define MEM_MAPPED 0x40000
 #define MEM_RESET 0x80000
 #define MEM_TOP_DOWN 0x100000
+
+typedef uint32_t ACCESS_MASK;
+
+typedef struct _STRING {
+	USHORT  Length;
+	USHORT  MaximumLength;
+	PCHAR   Buffer;
+} STRING, ANSI_STRING, *PSTRING, *PANSI_STRING;
+
+typedef struct _OBJECT_ATTRIBUTES {
+	HANDLE  RootDirectory;
+	PSTRING ObjectName;
+	ULONG   Attributes;
+} OBJECT_ATTRIBUTES, *POBJECT_ATTRIBUTES;
+
+typedef struct _IO_STATUS_BLOCK {
+	union {
+		NTSTATUS Status;
+		PVOID    Pointer;
+	} u1;
+
+	ULONG *Information;
+} IO_STATUS_BLOCK, *PIO_STATUS_BLOCK;

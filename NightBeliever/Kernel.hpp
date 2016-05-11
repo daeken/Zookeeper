@@ -74,3 +74,12 @@ NTSTATUS NTAPI kernel_NtAllocateVirtualMemory(
     uint32_t AllocationType, 
     uint32_t Protect
 );
+
+NTSTATUS NTAPI kernel_NtOpenFile(
+    HANDLE *FileHandle, 
+    ACCESS_MASK DesiredAccess, 
+    OBJECT_ATTRIBUTES *ObjectAttributes, 
+    IO_STATUS_BLOCK *IoStatusBlock, 
+    uint32_t ShareAccess, 
+    uint32_t OpenOptions
+);

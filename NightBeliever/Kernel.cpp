@@ -218,3 +218,14 @@ NTSTATUS NTAPI kernel_NtAllocateVirtualMemory(
 
 	return 0;
 }
+
+NTSTATUS NTAPI kernel_NtOpenFile(
+	HANDLE *FileHandle, 
+	ACCESS_MASK DesiredAccess, 
+	OBJECT_ATTRIBUTES *ObjectAttributes, 
+	IO_STATUS_BLOCK *IoStatusBlock, 
+	uint32_t ShareAccess, 
+	uint32_t OpenOptions
+) {
+	log("Attempting to open file %s", ObjectAttributes->ObjectName->Buffer);
+}
