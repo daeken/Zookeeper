@@ -205,12 +205,16 @@ NTSTATUS NTAPI kernel_NtAllocateVirtualMemory(
 	*RegionSize = pagepad(*RegionSize);
 	if((AllocationType & MEM_COMMIT) == MEM_COMMIT) {
 		*BaseAddress = map_aligned(*BaseAddress, *RegionSize / 4096);
-		log("Allocated memory at 0x%08x", *BaseAddress);
 	} else if((AllocationType & MEM_RESERVE) == MEM_RESERVE) {
-		log("Ignoring memory reserve");
+		// We should just be reserving memory, but it doesn't matter.
+		// Commit will trash this region and we're probably leaking some.
+		// Future coders will deal with this problem.
+		*BaseAddress = map_aligned(*BaseAddress, *RegionSize / 4096);
 	} else {
 		bailout("Unsupported allocation type %x", AllocationType);
 	}
+
+	log("Allocated memory at 0x%08x", *BaseAddress);
 
 	return 0;
 }
