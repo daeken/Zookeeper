@@ -18,6 +18,7 @@ typedef uint32_t DWORD;
 typedef uint32_t SIZE_T;
 typedef uint32_t *PSIZE_T;
 typedef ULONG *PULONG;
+typedef int64_t LONGLONG;
 typedef uint64_t ULONGLONG;
 typedef bool BOOLEAN;
 typedef void VOID;
@@ -26,38 +27,32 @@ typedef VOID *PVOID;
 typedef VOID (NTAPI KSTART_ROUTINE)(IN PVOID StartContext);
 typedef KSTART_ROUTINE *PKSTART_ROUTINE;
 
-typedef struct _NT_TIB
-{
+typedef struct _NT_TIB {
 	PVOID                                   ExceptionList;          // 0x00
 	PVOID                                   StackBase;              // 0x04
 	PVOID                                   StackLimit;             // 0x08
 	PVOID                                   SubSystemTib;           // 0x0C
-	union
-	{
+	union {
 		PVOID FiberData;                                            // 0x10 for TIB
 		ULONG Version;                                              // 0x10 for TEB (?)
-	}
-	u_a;
+	} u_a;
 	PVOID                                   ArbitraryUserPointer;   // 0x14
 	struct _NT_TIB                         *Self;                   // 0x18
 } NT_TIB, *PNT_TIB;
 
-typedef struct _KTHREAD
-{
+typedef struct _KTHREAD {
 	UCHAR           UnknownA[0x28];
 	PVOID           TlsData;        // 0x28
 	UCHAR           UnknownB[0xE4]; // 0x2C
 } KTHREAD, *PKTHREAD;
 
-typedef struct _ETHREAD
-{
+typedef struct _ETHREAD {
 	struct _KTHREAD Tcb;
 	UCHAR           UnknownA[0x1C]; // 0x110
 	DWORD           UniqueThread;   // 0x12C
 } ETHREAD, *PETHREAD;
 
-typedef struct _KPRCB
-{
+typedef struct _KPRCB {
 	struct _KTHREAD* CurrentThread;                                 // 0x00, KPCR : 0x28
 	struct _KTHREAD* NextThread;                                    // 0x04, KPCR : 0x2C
 	struct _KTHREAD* IdleThread;                                    // 0x08, KPCR : 0x30
@@ -66,8 +61,7 @@ typedef struct _KPRCB
 	UCHAR            Unknown[0x250];                                // 0x0C, KPCR : 0x34
 } KPRCB, *PKPRCB;
 
-typedef struct _KPCR
-{
+typedef struct _KPCR {
 	struct _NT_TIB  NtTib;                                          // 0x00
 	struct _KPCR   *SelfPcr;                                        // 0x1C
 	struct _KPRCB  *Prcb;                                           // 0x20
@@ -75,16 +69,14 @@ typedef struct _KPCR
 	struct _KPRCB   PrcbData;                                       // 0x28
 } KPCR, *PKPCR;
 
-typedef struct _RTL_CRITICAL_SECTION
-{
+typedef struct _RTL_CRITICAL_SECTION {
 	DWORD               Unknown[4];                                     // 0x00
 	LONG                LockCount;                                      // 0x10
 	LONG                RecursionCount;                                 // 0x14
 	ULONG               OwningThread;                                   // 0x18
 } RTL_CRITICAL_SECTION, *PRTL_CRITICAL_SECTION;
 
-typedef struct _XBOX_HARDWARE_INFO
-{
+typedef struct _XBOX_HARDWARE_INFO {
 	ULONG Flags;
 	UCHAR Unknown1;
 	UCHAR Unknown2;
@@ -126,25 +118,29 @@ typedef enum _KOBJECTS {
 } KOBJECTS, *PKOBJECTS;
 
 typedef union _ULARGE_INTEGER {
-	struct
-	{
+	struct {
 		DWORD LowPart;
 		DWORD HighPart;
-	}
-	u1;
+	} u1;
 
-	struct
-	{
+	struct {
 		DWORD LowPart;
 		DWORD HighPart;
-	}
-	u;
+	} u;
 
 	ULONGLONG QuadPart;
 } ULARGE_INTEGER, *PULARGE_INTEGER;
 
-typedef struct _DISPATCHER_HEADER
-{
+typedef union _LARGE_INTEGER {
+	struct {
+		DWORD   LowPart;
+		LONG    HighPart;
+	} u;
+
+	LONGLONG QuadPart;
+} LARGE_INTEGER, *PLARGE_INTEGER;
+
+typedef struct _DISPATCHER_HEADER {
 	UCHAR       Type;           // 0x00
 	UCHAR       Absolute;       // 0x01
 	UCHAR       Size;           // 0x02

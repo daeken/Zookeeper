@@ -60,3 +60,9 @@ NTSTATUS NTAPI kernel_ExQueryNonVolatileSetting(
 );
 
 ULONG NTAPI kernel_RtlNtStatusToDosError(NTSTATUS Status);
+
+BOOLEAN NTAPI kernel_KeSetTimer(
+    IN PKTIMER        Timer,
+    IN LARGE_INTEGER  DueTime,
+    IN PKDPC          Dpc OPTIONAL
+);

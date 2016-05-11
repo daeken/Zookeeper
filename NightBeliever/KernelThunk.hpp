@@ -143,7 +143,6 @@ void NTAPI kernel_KeSetEvent();
 void NTAPI kernel_KeSetEventBoostPriority();
 void NTAPI kernel_KeSetPriorityProcess();
 void NTAPI kernel_KeSetPriorityThread();
-void NTAPI kernel_KeSetTimer();
 void NTAPI kernel_KeSetTimerEx();
 void NTAPI kernel_KeStallExecutionProcessor();
 void NTAPI kernel_KeSuspendThread();

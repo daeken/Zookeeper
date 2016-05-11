@@ -852,12 +852,6 @@ void NTAPI kernel_KeSetPriorityThread() {
 	halt();
 }
 
-void NTAPI kernel_KeSetTimer() {
-	uint32_t magic;
-	log("STUB KeSetTimer called from 0x%08x", (&magic)[4]);
-	halt();
-}
-
 void NTAPI kernel_KeSetTimerEx() {
 	uint32_t magic;
 	log("STUB KeSetTimerEx called from 0x%08x", (&magic)[4]);
