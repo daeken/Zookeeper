@@ -13,3 +13,19 @@ void *memset(void *ptr, int value, size_t num) {
 		chrs[num] = (uint8_t) value;
 	return ptr;
 }
+
+void *operator new(size_t size) {
+	return malloc(size);
+}
+
+void *operator new[](size_t size) {
+	return malloc(size);
+}
+
+void operator delete(void *ptr) {
+	free(ptr);
+}
+
+void operator delete[](void *ptr) {
+	free(ptr);
+}

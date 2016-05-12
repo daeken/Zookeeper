@@ -17,19 +17,3 @@
 #include "Kernel.hpp"
 
 #define pagepad(expr) (((expr) & 0xFFF) ? ((expr) & ~0xFFF) + 4096 : (expr))
-
-inline void *operator new(size_t size) {
-	return malloc(size);
-}
-
-inline void *operator new[](size_t size) {
-	return malloc(size);
-}
-
-inline void operator delete(void *ptr) {
-	free(ptr);
-}
-
-inline void operator delete[](void *ptr) {
-	free(ptr);
-}
