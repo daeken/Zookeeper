@@ -1,19 +1,21 @@
 CPP_FILES := $(wildcard *.cpp)
 ASM_FILES := $(wildcard *.S)
-OBJ_FILES := $(CPP_FILES:.cpp=.o) $(ASM_FILES:.S=.o)
-CC_FLAGS := -std=c++11 -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -Wno-unused-parameter -Wno-uninitialized
-LD_FLAGS := -T linker.ld -ffreestanding -fno-use-linker-plugin -O2 -nostdlib
+OBJ_FILES := $(ASM_FILES:.S=.o) $(CPP_FILES:.cpp=.o)
+TARGET_FLAGS := -m32 -target i686-apple-darwin-macho
+CC_FLAGS := -std=c++11 -ffreestanding -c -nostdlib -nodefaultlibs -O2 -Wall -Wextra -fno-exceptions -fno-rtti $(TARGET_FLAGS)
+AS_FLAGS := -c $(TARGET_FLAGS)
+LD_FLAGS := -v $(TARGET_FLAGS) -ffreestanding -nostdlib -nodefaultlibs -Wl,-image_base,0xC0000000
 
 all: KernelThunk.hpp ../nightbeliever.krnl
 
 %.o: %.cpp
-	i686-elf-g++ $(CC_FLAGS) -c -o $@ $<
+	clang $(CC_FLAGS) -c -o $@ $<
 
 %.o: %.S
-	i686-elf-as -o $@ $<
+	clang $(AS_FLAGS) -o $@ $<
 
 ../nightbeliever.krnl: $(OBJ_FILES) linker.ld
-	i686-elf-g++ $(LD_FLAGS) -o ../nightbeliever.krnl $(OBJ_FILES)
+	clang $(LD_FLAGS) -o ../nightbeliever.krnl $(OBJ_FILES)
 
 KernelThunk.hpp: thunkgen.py Kernel.hpp
 	python thunkgen.py

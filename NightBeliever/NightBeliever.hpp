@@ -3,6 +3,7 @@
 #define halt() do { asm("hlt"); } while(0)
 #define NTAPI __attribute__((stdcall))
 
+
 #include <stdint.h>
 #include "Log.hpp"
 #include "C.hpp"
@@ -17,11 +18,11 @@
 
 #define pagepad(expr) (((expr) & 0xFFF) ? ((expr) & ~0xFFF) + 4096 : (expr))
 
-inline void *operator new(uint32_t size) {
+inline void *operator new(size_t size) {
 	return malloc(size);
 }
 
-inline void *operator new[](uint32_t size) {
+inline void *operator new[](size_t size) {
 	return malloc(size);
 }
 
