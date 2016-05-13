@@ -4,7 +4,7 @@ IOManager::IOManager() {
 	root = make_shared<Directory>();
 	auto dirs = {
 		"/Device", 
-		"/Device/Harddisk0"
+		"/Device/Harddisk0", 
 		"/D:", 
 		"/T:", 
 		"/U:", 
@@ -18,12 +18,16 @@ shared_ptr<IOHandle> IOManager::open(string path) {
 	auto type = lookup_type(path);
 	switch(type) {
 		case IO_DIRECTORY:
-			return static_pointer_cast<IOHandle>(lookup_directory(path)->open());
+			return lookup_directory(path)->open();
 		case IO_FILE:
-			return static_pointer_cast<IOHandle>(lookup_file(path)->open());
+			return lookup_file(path)->open();
 		case IO_VOLUME:
+			cout << "Can't open volumes" << endl;
+			bailout(true);
 			return NULL;
 		case IO_UNKNOWN:
+			cout << "Unknown file!" << endl;
+			bailout(true);
 			return NULL;
 	}
 }
@@ -72,7 +76,7 @@ shared_ptr<Directory> IOManager::lookup_directory(list<string> path) {
 	for(auto e : path) {
 		if(dir->subdirectories.find(e) == dir->subdirectories.end()) {
 			cout << "Could not find " << e << " in path " << join(path, "\\") << endl;
-			return NULL;
+			bailout(true);
 		}
 
 		dir = dir->subdirectories[e];
@@ -90,7 +94,7 @@ shared_ptr<File> IOManager::lookup_file(string path) {
 
 	if(dir->files.find(fn) == dir->files.end()) {
 		cout << "Could not find file " << path << endl;
-		return NULL;
+		bailout(true);
 	}
 	return dir->files[fn];
 }
@@ -100,9 +104,7 @@ shared_ptr<Directory> IOManager::create_directory(string path) {
 	auto dn = p.back();
 	p.pop_back();
 	auto dir = lookup_directory(p);
-	if(dir == NULL)
-		return NULL;
-
+	
 	auto ndir = make_shared<Directory>();
 	dir->subdirectories[dn] = ndir;
 	return ndir;
@@ -112,10 +114,24 @@ IOHandle::IOHandle() {
 	handle = box->io->create_handle();
 }
 
-shared_ptr<FileHandle> File::open() {
-	return NULL;
+shared_ptr<IOHandle> File::open() {
+	return static_pointer_cast<IOHandle>(make_shared<FileHandle>());
 }
 
-shared_ptr<DirHandle> Directory::open() {
-	return NULL;
+shared_ptr<IOHandle> Directory::open() {
+	return static_pointer_cast<IOHandle>(make_shared<DirHandle>());
+}
+
+void FileHandle::read() {
+}
+void FileHandle::write() {
+}
+void FileHandle::close() {
+}
+
+void DirHandle::read() {
+}
+void DirHandle::write() {
+}
+void DirHandle::close() {
 }

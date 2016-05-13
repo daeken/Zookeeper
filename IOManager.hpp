@@ -22,23 +22,32 @@ public:
 
 class FileHandle : public IOHandle {
 public:
+	void read();
+	void write();
+	void close();
 };
 
 class DirHandle : public IOHandle {
 public:
+	void read();
+	void write();
+	void close();
 };
 
 class File {
 public:
-	shared_ptr<FileHandle> open();
+	shared_ptr<IOHandle> open();
+
+	string path;
 };
 
 class Directory {
 public:
+	shared_ptr<IOHandle> open();
+
 	map<string, shared_ptr<Directory>> subdirectories;
 	map<string, shared_ptr<File>> files;
-
-	shared_ptr<DirHandle> open();
+	string path;
 };
 
 class IOManager {
