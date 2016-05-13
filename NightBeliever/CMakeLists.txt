@@ -1,4 +1,10 @@
-file(GLOB nightbeliever_SRC "*.cpp")
+add_custom_command(
+        OUTPUT KernelThunk.cpp KernelThunk.hpp
+        COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/thunkgen.py ${CMAKE_CURRENT_SOURCE_DIR}
+        DEPENDS Kernel.hpp thunkgen.py
+        COMMENT "Regenerating kernel thunks"
+)
+
 add_executable(nightbeliever.krnl
         bootstrap.s
         C.cpp

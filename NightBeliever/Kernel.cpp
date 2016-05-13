@@ -227,6 +227,6 @@ NTSTATUS NTAPI kernel_NtOpenFile(
 	uint32_t ShareAccess, 
 	uint32_t OpenOptions
 ) {
-	*FileHandle = io_open((char *) ObjectAttributes->ObjectName->Buffer);
+	*FileHandle = io_open(ObjectAttributes->RootDirectory, (char *) ObjectAttributes->ObjectName->Buffer);
 	return 0;
 }

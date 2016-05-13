@@ -43,6 +43,12 @@ uint32_t Hypercall::query_eeprom(uint32_t index) {
 	return 0;
 }
 
-uint32_t Hypercall::io_open(uint32_t fn) {
-	return box->io->open(read_string(fn));
+uint32_t Hypercall::io_open(uint32_t dir_handle, uint32_t fn) {
+	auto fnstr = read_string(fn);
+	if(dir_handle == 0) {
+		auto dirhnd = box->io->get_handle(dir_handle);
+		assert(dirhnd->type == IOType::IO_DIRECTORY);
+		fnstr = dirhnd->path + "\\" + fnstr;
+	}
+	return box->io->open(fnstr)->handle;
 }

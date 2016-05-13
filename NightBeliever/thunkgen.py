@@ -1,4 +1,4 @@
-import re
+import re, sys
 
 imports = '''AvGetSavedDataAddress 80000001
 AvSendTVEncoderOption 80000002
@@ -367,7 +367,7 @@ vsprintf 8000016C
 HalEnableSecureTrayEject 8000016D
 HalWriteSMCScratchRegister 8000016E'''.split('\n')
 
-rh = file('Kernel.hpp', 'r').read()
+rh = file(('' if len(sys.argv) == 1 else sys.argv[1] + '/') + 'Kernel.hpp', 'r').read()
 def defined(sym):
 	if re.search(r'[\s^]kernel_' + sym + r'[;\s(]', rh, re.M | re.S):
 		return True

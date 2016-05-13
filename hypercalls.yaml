@@ -23,4 +23,5 @@ query_eeprom:
   - index: uint32_t
 io_open:
   - return: uint32_t
+  - dir_handle: uint32_t
   - fn: char *

@@ -1,17 +1,17 @@
 CPP_FILES := $(wildcard *.cpp)
-ASM_FILES := $(wildcard *.S)
-OBJ_FILES := $(ASM_FILES:.S=.o) $(CPP_FILES:.cpp=.o)
+ASM_FILES := $(wildcard *.s)
+OBJ_FILES := $(ASM_FILES:.s=.o) $(CPP_FILES:.cpp=.o)
 TARGET_FLAGS := -m32 -target i686-apple-darwin-macho
-CC_FLAGS := -std=c++11 -ffreestanding -c -nostdlib -nodefaultlibs -O2 -Wall -Wextra -fno-exceptions -fno-rtti $(TARGET_FLAGS)
+CC_FLAGS := -std=c++11 -ffreestanding -c -nostdlib -O2 -fno-exceptions -fno-rtti -Wno-implicit-exception-spec-mismatch $(TARGET_FLAGS)
 AS_FLAGS := -c $(TARGET_FLAGS)
-LD_FLAGS := -v $(TARGET_FLAGS) -ffreestanding -nostdlib -nodefaultlibs -Wl,-image_base,0xC0000000
+LD_FLAGS := $(TARGET_FLAGS) -ffreestanding -nostdlib -Wl,-image_base,0xC0000000
 
 all: KernelThunk.hpp ../nightbeliever.krnl
 
 %.o: %.cpp
 	clang $(CC_FLAGS) -c -o $@ $<
 
-%.o: %.S
+%.o: %.s
 	clang $(AS_FLAGS) -o $@ $<
 
 ../nightbeliever.krnl: $(OBJ_FILES) linker.ld
