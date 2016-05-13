@@ -5,13 +5,15 @@ IOManager::IOManager() {
 	auto dirs = {
 		"/Device", 
 		"/Device/Harddisk0", 
-		"/D:", 
-		"/T:", 
-		"/U:", 
-		"/Z:"
+		"D:", 
+		"T:", 
+		"U:", 
+		"Z:"
 	};
 	for(auto dir : dirs)
 		create_directory(dir);
+
+	create_file("/Device/Harddisk0/partition1", [] { return make_shared<FileHandle>(); });
 }
 
 shared_ptr<IOHandle> IOManager::open(string path) {
@@ -21,10 +23,6 @@ shared_ptr<IOHandle> IOManager::open(string path) {
 			return lookup_directory(path)->open();
 		case IO_FILE:
 			return lookup_file(path)->open();
-		case IO_VOLUME:
-			cout << "Can't open volumes" << endl;
-			bailout(true);
-			return NULL;
 		case IO_UNKNOWN:
 			cout << "Unknown file!" << endl;
 			bailout(true);
@@ -110,16 +108,37 @@ shared_ptr<Directory> IOManager::create_directory(string path) {
 	return ndir;
 }
 
+shared_ptr<File> IOManager::create_file(string path, function<shared_ptr<IOHandle>()> init) {
+	auto p = parse_path(path);
+	auto fn = p.back();
+	p.pop_back();
+	auto dir = lookup_directory(p);
+	
+	auto nf = make_shared<File>(init);
+	dir->files[fn] = nf;
+	return nf;
+}
+
 IOHandle::IOHandle() {
 	handle = box->io->create_handle();
 }
 
+File::File(function<shared_ptr<IOHandle>()> _init) {
+	init = _init;
+}
+
 shared_ptr<IOHandle> File::open() {
-	return static_pointer_cast<IOHandle>(make_shared<FileHandle>());
+	auto hnd = init();
+	hnd->type = IOType::IO_FILE;
+	hnd->path = path;
+	return hnd;
 }
 
 shared_ptr<IOHandle> Directory::open() {
-	return static_pointer_cast<IOHandle>(make_shared<DirHandle>());
+	auto hnd = static_pointer_cast<IOHandle>(make_shared<DirHandle>());
+	hnd->type = IOType::IO_DIRECTORY;
+	hnd->path = path;
+	return hnd;
 }
 
 void FileHandle::read() {

@@ -4,8 +4,7 @@
 enum IOType {
 	IO_UNKNOWN,
 	IO_FILE,
-	IO_DIRECTORY,
-	IO_VOLUME
+	IO_DIRECTORY
 };
 
 class IOHandle {
@@ -36,9 +35,11 @@ public:
 
 class File {
 public:
+	File(function<shared_ptr<IOHandle>()> _init);
 	shared_ptr<IOHandle> open();
 
 	string path;
+	function<shared_ptr<IOHandle>()> init;
 };
 
 class Directory {
@@ -63,7 +64,7 @@ public:
 	shared_ptr<Directory> lookup_directory(list<string> path);
 
 	shared_ptr<Directory> create_directory(string path);
-	shared_ptr<File> create_file(string path);
+	shared_ptr<File> create_file(string path, function<shared_ptr<IOHandle>()>);
 
 	map<uint32_t, shared_ptr<IOHandle>> handles;
 	uint32_t handle_id;
