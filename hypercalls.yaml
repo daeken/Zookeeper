@@ -18,6 +18,7 @@ create_thread:
   - eip: thread_ep_t
   - esp: void *
   - arg: uint32_t
+terminate_thread:
 query_eeprom:
   - return: uint32_t
   - index: uint32_t

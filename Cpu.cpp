@@ -425,7 +425,6 @@ void Cpu::run(uint32_t eip) {
 
 	auto last_time = systime();
 
-	auto stop = false;
 	auto swap = true;
 	do {
 		bailout(hv_vcpu_run(vcpu));
@@ -487,9 +486,8 @@ void Cpu::run(uint32_t eip) {
 					break;
 				}
 				case VMX_REASON_VMCALL: {
-					auto ret = hypercall_dispatch(rreg(HV_X86_RAX), rreg(HV_X86_RDX));
-					wreg(HV_X86_RAX, ret);
 					wreg(HV_X86_RIP, rreg(HV_X86_RIP) + 3);
+					hypercall_dispatch(rreg(HV_X86_RAX), rreg(HV_X86_RDX));
 					break;
 				}
 				case VMX_REASON_IRQ:

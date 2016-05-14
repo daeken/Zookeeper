@@ -83,3 +83,5 @@ NTSTATUS NTAPI kernel_NtOpenFile(
     uint32_t ShareAccess, 
     uint32_t OpenOptions
 );
+
+NTSTATUS NTAPI kernel_NtClose(HANDLE handle);

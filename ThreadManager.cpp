@@ -17,6 +17,29 @@ uint32_t ThreadManager::create(uint32_t eip, uint32_t esp) {
 	return thread->id;
 }
 
+void ThreadManager::terminate(uint32_t thread) {
+	if(thread == -1)
+		thread = current_thread();
+
+	if(thread == current_thread())
+		next();
+	
+	if(threads.size() == 1) {
+		cout << "Last thread ending" << endl;
+		box->cpu->stop = true;
+		return;
+	}
+	
+	for(auto iter = threads.begin(); iter != threads.end(); ++iter) {
+		if((*iter)->id == thread) {
+			threads.erase(iter);
+			return;
+		}
+	}
+	cout << "Could not find thread with id " << dec << thread << endl;
+	bailout(true);
+}
+
 void ThreadManager::next() {
 	if(threads.size() < 2)
 		return;

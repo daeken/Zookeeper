@@ -27,8 +27,8 @@ void threadex_proxy(uint32_t tid, uint32_t up) {
 		:: "r"(s.StartRoutine), "r"(s.StartContext2), "r"(s.StartContext1)
 	);
 
-	log("Thread complete");
-	halt(); // XXX: Need to terminate threads safely
+	log("Thread %i complete", tid);
+	terminate_thread();
 }
 
 NTSTATUS NTAPI kernel_PsCreateSystemThreadEx(
@@ -53,7 +53,9 @@ NTSTATUS NTAPI kernel_PsCreateSystemThreadEx(
 	p->StartContext1 = StartContext1;
 	p->StartContext2 = StartContext2;
 
-	create_thread(threadex_proxy, ((uint8_t *) malloc(1024*1024)) + 1024 * 1024, (uint32_t) p);
+	*ThreadHandle = create_thread(threadex_proxy, ((uint8_t *) malloc(1024*1024)) + 1024 * 1024, (uint32_t) p);
+	if(ThreadId != NULL)
+		*ThreadId = *ThreadHandle;
 
 	return STATUS_SUCCESS;
 }
@@ -229,5 +231,10 @@ NTSTATUS NTAPI kernel_NtOpenFile(
 	*FileHandle = io_open(ObjectAttributes->RootDirectory, (char *) ObjectAttributes->ObjectName->Buffer);
 	if(*FileHandle == 0)
 		return STATUS_OBJECT_NAME_NOT_FOUND;
+	return STATUS_SUCCESS;
+}
+
+NTSTATUS NTAPI kernel_NtClose(HANDLE handle) {
+	log("NtClose %08x", handle);
 	return STATUS_SUCCESS;
 }

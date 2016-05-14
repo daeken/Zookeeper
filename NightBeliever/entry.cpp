@@ -24,6 +24,6 @@ void entrypoint() {
 	log("Calling entrypoint.");
 	auto ep = (xbe_ep_t) xbe->oep;
 	ep();
-
 	log("Returned from entrypoint.");
+	terminate_thread();
 }

@@ -35,6 +35,10 @@ uint32_t Hypercall::create_thread(uint32_t eip, uint32_t esp, uint32_t arg) {
 	return tid;
 }
 
+void Hypercall::terminate_thread() {
+	box->tm->terminate();
+}
+
 uint32_t Hypercall::get_xbebase() {
 	return box->xbebase;
 }

@@ -18,6 +18,7 @@ class ThreadManager {
 public:
 	ThreadManager();
 	uint32_t create(uint32_t eip, uint32_t esp);
+	void terminate(uint32_t thread = -1);
 	void next();
 	uint32_t current_thread();
 
