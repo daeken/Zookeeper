@@ -96,6 +96,22 @@ void Debugger::enter(uint32_t reason) {
 			cout << format("edi  %08x    esi  %08x") % box->cpu->rreg(HV_X86_RDI) % box->cpu->rreg(HV_X86_RSI) << endl;
 			cout << format("ebp  %08x    esp  %08x") % box->cpu->rreg(HV_X86_RBP) % box->cpu->rreg(HV_X86_RSP) << endl;
 			cout << format("eflags  %08x") % box->cpu->rreg(HV_X86_RFLAGS) << endl;
+		} else if(cmd == "rm" || cmd == "read") {
+			string type = "u32";
+			auto offset = 1;
+			if(v.size() == 3) {
+				type = v[1];
+				offset = 2;
+			}
+			auto addr = stoul(v[offset], nullptr, 16);
+			if(type == "u8")
+				cout << format("*0x%08x == 0x%02x") % addr % (uint32_t) box->cpu->read_memory<uint8_t>(addr) << endl;
+			else if(type == "u16")
+				cout << format("*0x%08x == 0x%04x") % addr % (uint32_t) box->cpu->read_memory<uint16_t>(addr) << endl;
+			else if(type == "u32")
+				cout << format("*0x%08x == 0x%08x") % addr % box->cpu->read_memory<uint32_t>(addr) << endl;
+			else
+				cout << "Unknown type (try u8, u16, or u32)" << endl;
 		} else {
 			cout << "Unknown command" << endl;
 		}
