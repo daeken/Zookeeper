@@ -24,8 +24,7 @@ shared_ptr<IOHandle> IOManager::open(string path) {
 		case IO_FILE:
 			return lookup_file(path)->open();
 		case IO_UNKNOWN:
-			cout << "Unknown file!" << endl;
-			bailout(true);
+			cout << "Attempted to open unknown file/directory: " << path << endl;
 			return NULL;
 	}
 }

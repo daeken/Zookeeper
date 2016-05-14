@@ -28,7 +28,7 @@ void threadex_proxy(uint32_t tid, uint32_t up) {
 	);
 
 	log("Thread complete");
-	halt();
+	halt(); // XXX: Need to terminate threads safely
 }
 
 NTSTATUS NTAPI kernel_PsCreateSystemThreadEx(
@@ -55,7 +55,7 @@ NTSTATUS NTAPI kernel_PsCreateSystemThreadEx(
 
 	create_thread(threadex_proxy, ((uint8_t *) malloc(1024*1024)) + 1024 * 1024, (uint32_t) p);
 
-	return 0;
+	return STATUS_SUCCESS;
 }
 
 void NTAPI kernel_MmPersistContiguousMemory(
@@ -88,9 +88,8 @@ void kernel_DbgPrint(char *format, ...) {
 }
 
 void NTAPI kernel_HalReturnToFirmware() {
-	uint32_t magic;
-	log("STUB HalReturnToFirmware called from 0x%08x", (&magic)[4]);
-	while(1) {}
+	log("HalReturnToFirmware");
+	halt();
 }
 
 void NTAPI kernel_RtlAssert(char *message, char *filename, uint32_t line, uint32_t unk) {
@@ -175,7 +174,7 @@ NTSTATUS NTAPI kernel_ExQueryNonVolatileSetting(
 	if(ResultLength)
 		*ResultLength = 4;
 
-	return 0;
+	return STATUS_SUCCESS;
 }
 
 ULONG NTAPI kernel_RtlNtStatusToDosError(NTSTATUS Status) {
@@ -216,7 +215,7 @@ NTSTATUS NTAPI kernel_NtAllocateVirtualMemory(
 
 	log("Allocated memory at 0x%08x", *BaseAddress);
 
-	return 0;
+	return STATUS_SUCCESS;
 }
 
 NTSTATUS NTAPI kernel_NtOpenFile(
@@ -228,5 +227,7 @@ NTSTATUS NTAPI kernel_NtOpenFile(
 	uint32_t OpenOptions
 ) {
 	*FileHandle = io_open(ObjectAttributes->RootDirectory, (char *) ObjectAttributes->ObjectName->Buffer);
-	return 0;
+	if(*FileHandle == 0)
+		return STATUS_OBJECT_NAME_NOT_FOUND;
+	return STATUS_SUCCESS;
 }

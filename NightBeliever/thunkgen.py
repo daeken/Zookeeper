@@ -391,8 +391,7 @@ for line in imports:
 	id = int(id, 16)
 	if not defined(name):
 		print >>ks, 'void NTAPI kernel_%s() {' % name
-		print >>ks, '\tuint32_t magic;'
-		print >>ks, '\tlog("STUB %s called from 0x%%08x", (&magic)[4]);' % name
+		print >>ks, '\tlog("STUB %s");' % name
 		print >>ks, '\thalt();'
 		print >>ks, '}'
 		print >>ks

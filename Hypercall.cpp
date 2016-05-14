@@ -45,12 +45,13 @@ uint32_t Hypercall::query_eeprom(uint32_t index) {
 
 uint32_t Hypercall::io_open(uint32_t dir_handle, uint32_t fn) {
 	auto fnstr = read_string(fn);
-	cout << "Trying to open " << fnstr << endl;
 	if(dir_handle != 0) {
 		auto dirhnd = box->io->get_handle(dir_handle);
 		assert(dirhnd->type == IOType::IO_DIRECTORY);
 		fnstr = dirhnd->path + "\\" + fnstr;
 	}
-	cout << "Opening now" << endl;
-	return box->io->open(fnstr)->handle;
+	auto file = box->io->open(fnstr);
+	if(file == NULL)
+		return 0;
+	return file->handle;
 }

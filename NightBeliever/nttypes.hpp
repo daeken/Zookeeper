@@ -1,3 +1,5 @@
+// These types owe a ton to CXBX and Wine!
+
 #pragma once
 
 #define OUT
@@ -28,6 +30,25 @@ typedef VOID *PVOID;
 
 typedef VOID (NTAPI KSTART_ROUTINE)(IN PVOID StartContext);
 typedef KSTART_ROUTINE *PKSTART_ROUTINE;
+
+#define NT_SUCCESS(Status)              ((NTSTATUS) (Status) >= 0)
+#define STATUS_SUCCESS                   ((DWORD   )0x00000000L)  
+#define STATUS_PENDING                   ((DWORD   )0x00000103L)    
+#define STATUS_TIMER_RESUME_IGNORED      ((DWORD   )0x40000025L)  
+#define STATUS_UNSUCCESSFUL              ((DWORD   )0xC0000001)  
+#define STATUS_UNRECOGNIZED_MEDIA        ((DWORD   )0xC0000014)  
+#define STATUS_NO_MEMORY                 ((DWORD   )0xC0000017L)    
+#define STATUS_ALERTED                   ((DWORD   )0x00000101)  
+#define STATUS_USER_APC                  ((DWORD   )0x000000C0L)    
+// The SCSI input buffer was too large (not necessarily an error!)
+#define STATUS_DATA_OVERRUN              ((DWORD   )0xC000003CL)  
+#define STATUS_INVALID_IMAGE_FORMAT      ((DWORD   )0xC000007BL)  
+#define STATUS_INSUFFICIENT_RESOURCES    ((DWORD   )0xC000009AL)  
+#define STATUS_TOO_MANY_SECRETS          ((DWORD   )0xC0000156L)  
+#define STATUS_XBE_REGION_MISMATCH       ((DWORD   )0xC0050001L)  
+#define STATUS_XBE_MEDIA_MISMATCH        ((DWORD   )0xC0050002L)  
+#define STATUS_OBJECT_NAME_NOT_FOUND     ((DWORD   )0xC0000034L)
+#define STATUS_OBJECT_NAME_COLLISION     ((DWORD   )0xC0000035L)
 
 typedef struct _NT_TIB {
 	PVOID                                   ExceptionList;          // 0x00

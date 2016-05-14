@@ -50,10 +50,11 @@ def cast(a, b):
 	return '(%s) ' % b
 
 for i, (name, args) in enumerate(calls.items()):
+	args = args if args is not None else []
 	ret = ''
 	nret = ''
 	rettype = 'void'
-	if 'return' in args[0]:
+	if args and 'return' in args[0]:
 		rettype = args[0]['return']
 		ret = 'return %s' % (cast(typemap(rettype), 'uint32_t'))
 		nret = 'return %s' % (cast('uint32_t', rettype))
