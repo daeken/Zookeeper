@@ -15,6 +15,25 @@ NTSTATUS NTAPI kernel_NtOpenFile(
 	return STATUS_SUCCESS;
 }
 
+NTSTATUS NTAPI kernel_NtCreateFile(
+	OUT PHANDLE             FileHandle, 
+	IN  ACCESS_MASK         DesiredAccess,
+	IN  POBJECT_ATTRIBUTES  ObjectAttributes,
+	OUT PIO_STATUS_BLOCK    IoStatusBlock,
+	IN  PLARGE_INTEGER      AllocationSize, 
+	IN  ULONG               FileAttributes, 
+	IN  ULONG               ShareAccess, 
+	IN  ULONG               CreateDisposition, 
+	IN  ULONG               CreateOptions 
+) {
+	log("NtCreateFile('%s')", ObjectAttributes->ObjectName->Buffer);
+	*FileHandle = io_open(ObjectAttributes->RootDirectory, (char *) ObjectAttributes->ObjectName->Buffer);
+	if(*FileHandle == 0) {
+		return STATUS_OBJECT_NAME_NOT_FOUND;
+	}
+	return STATUS_SUCCESS;
+}
+
 NTSTATUS NTAPI kernel_NtClose(HANDLE handle) {
 	log("NtClose %08x", handle);
 	return STATUS_SUCCESS;
@@ -52,24 +71,5 @@ NTSTATUS NTAPI kernel_IoCreateSymbolicLink(
 	IN PSTRING DeviceName
 ) {
 	log("IoCreateSymbolicLink('%s', '%s')", SymbolicLinkName->Buffer, DeviceName->Buffer);
-	return STATUS_SUCCESS;
-}
-
-NTSTATUS NTAPI kernel_NtCreateFile(
-	OUT PHANDLE             FileHandle, 
-	IN  ACCESS_MASK         DesiredAccess,
-	IN  POBJECT_ATTRIBUTES  ObjectAttributes,
-	OUT PIO_STATUS_BLOCK    IoStatusBlock,
-	IN  PLARGE_INTEGER      AllocationSize, 
-	IN  ULONG               FileAttributes, 
-	IN  ULONG               ShareAccess, 
-	IN  ULONG               CreateDisposition, 
-	IN  ULONG               CreateOptions 
-) {
-	log("NtCreateFile('%s')", ObjectAttributes->ObjectName->Buffer);
-	*FileHandle = io_open(ObjectAttributes->RootDirectory, (char *) ObjectAttributes->ObjectName->Buffer);
-	if(*FileHandle == 0) {
-		return STATUS_OBJECT_NAME_NOT_FOUND;
-	}
 	return STATUS_SUCCESS;
 }

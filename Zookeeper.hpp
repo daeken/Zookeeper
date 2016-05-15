@@ -26,6 +26,7 @@ using namespace boost::algorithm;
 #include "xbetypes.hpp"
 #include "Xbe.hpp"
 #include "Cpu.hpp"
+#include "HandleManager.hpp"
 #include "PageManager.hpp"
 #include "ThreadManager.hpp"
 #include "IOManager.hpp"

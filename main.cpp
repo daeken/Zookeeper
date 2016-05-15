@@ -44,7 +44,7 @@ uint32_t load_kernel(Cpu *cpu) {
 }
 
 int main(int argc, char **argv) {
-	box = new Box;
+	new Box;
 
 	uint32_t entry = load_kernel(box->cpu);
 	auto xbe = new Xbe((char *) "test1.xbe");

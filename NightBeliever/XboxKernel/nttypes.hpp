@@ -200,7 +200,7 @@ typedef uint32_t ACCESS_MASK;
 typedef struct _STRING {
 	USHORT  Length;
 	USHORT  MaximumLength;
-	char   *Buffer;
+	PCHAR   Buffer;
 } STRING, ANSI_STRING, *PSTRING, *PANSI_STRING;
 
 typedef struct _OBJECT_ATTRIBUTES {

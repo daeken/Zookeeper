@@ -8,6 +8,7 @@ public:
 
 	Cpu *cpu;
 	Hypercall *hypercall;
+	HandleManager *hm;
 	PageManager *pm;
 	ThreadManager *tm;
 	IOManager *io;

@@ -1,46 +1,5 @@
 #include "Zookeeper.hpp"
 
-IOManager::IOManager() {
-	root = make_shared<Directory>();
-	auto dirs = {
-		"/Device", 
-		"/Device/CdRom0", 
-		"/Device/Harddisk0", 
-		"/Device/Harddisk0/partition0", 
-		"/Device/Harddisk0/partition1", 
-		"/Device/Harddisk0/partition1/TDATA", 
-		"/Device/Harddisk0/partition1/UDATA", 
-	};
-	for(auto dir : dirs)
-		create_directory(dir);
-
-	create_link("D:", "/Device/CdRom0");
-	create_link("T:", "/Device/Harddisk0/partition1/TDATA");
-	create_link("U:", "/Device/Harddisk0/partition1/UDATA");
-}
-
-shared_ptr<IOHandle> IOManager::open(string path) {
-	auto type = lookup_type(path);
-	switch(type) {
-		case IO_DIRECTORY:
-			return lookup_directory(path)->open();
-		case IO_FILE:
-			return lookup_file(path)->open();
-		case IO_UNKNOWN:
-			cout << "Attempted to open unknown file/directory: " << path << endl;
-			return NULL;
-	}
-}
-
-uint32_t IOManager::create_handle() {
-	assert(handle_id < 0xFFFFFFFF);
-	return ++handle_id;
-}
-
-shared_ptr<IOHandle> IOManager::get_handle(uint32_t handle_id) {
-	return handles[handle_id];
-}
-
 list<string> parse_path(string path) {
 	list<string> vec;
 	to_lower(path);
@@ -52,19 +11,39 @@ list<string> parse_path(string path) {
 	return vec;
 }
 
-IOType IOManager::lookup_type(string path) {
-	auto p = parse_path(path);
-	auto fn = p.back();
-	p.pop_back();
-	auto dir = lookup_directory(p);
-	if(dir == NULL)
-		return IOType::IO_UNKNOWN;
+IOManager::IOManager() {
+	root = make_shared<Directory>();
+	auto dirs = {
+		"/Device", 
+		"/Device/CdRom0", 
+		"/Device/Harddisk0", 
+		"/Device/Harddisk0/partition0", 
+		"/Device/Harddisk0/partition1", 
+	};
+	for(auto dir : dirs)
+		create_directory(dir);
 
-	if(dir->subdirectories.find(fn) != dir->subdirectories.end())
-		return IOType::IO_DIRECTORY;
-	else if(dir->files.find(fn) != dir->files.end())
-		return IOType::IO_FILE;
-	return IOType::IO_UNKNOWN;
+	create_map("/Device/Harddisk0/partition1/TDATA", "fs/tdata");
+	create_map("/Device/Harddisk0/partition1/UDATA", "fs/udata");
+
+	create_link("D:", "/Device/CdRom0");
+	create_link("T:", "/Device/Harddisk0/partition1/TDATA");
+	create_link("U:", "/Device/Harddisk0/partition1/UDATA");
+
+	open("/Device");
+	open("T:/foo");
+}
+
+shared_ptr<IOHandle> IOManager::open(string pathstr) {
+	auto path = parse_path(pathstr);
+	auto dir = lookup_directory(pathstr);
+	if(dir != NULL)
+		return dir->open();
+
+	auto mapped = lookup_map(pathstr);
+	auto file = static_pointer_cast<IOHandle>(make_shared<FileHandle>(pathstr, mapped));
+	box->hm->add_handle(file);
+	return file;
 }
 
 shared_ptr<Directory> IOManager::lookup_directory(string path) {
@@ -76,7 +55,7 @@ shared_ptr<Directory> IOManager::lookup_directory(list<string> path) {
 	for(auto e : path) {
 		if(dir->subdirectories.find(e) == dir->subdirectories.end()) {
 			cout << "Could not find " << e << " in path " << join(path, "\\") << endl;
-			bailout(true);
+			return NULL;
 		}
 
 		dir = dir->subdirectories[e];
@@ -84,19 +63,29 @@ shared_ptr<Directory> IOManager::lookup_directory(list<string> path) {
 	return dir;
 }
 
-shared_ptr<File> IOManager::lookup_file(string path) {
-	auto p = parse_path(path);
-	auto fn = p.back();
-	p.pop_back();
-	auto dir = lookup_directory(p);
-	if(dir == NULL)
-		return NULL;
-
-	if(dir->files.find(fn) == dir->files.end()) {
-		cout << "Could not find file " << path << endl;
-		bailout(true);
+string IOManager::lookup_map(string pathstr) {
+	auto path = parse_path(pathstr);
+	auto dir = root;
+	auto i = 0;
+	for(auto e : path) {
+		++i;
+		if(dir->subdirectories.find(e) != dir->subdirectories.end())
+			dir = dir->subdirectories[e];
+		else if(dir->dirmaps.find(e) != dir->dirmaps.end()) {
+			auto base = dir->dirmaps[e];
+			if(i == path.size())
+				return base;
+			else {
+				auto bi = next(path.begin(), i);
+				list<string> sub(bi, path.end());
+				return base + "/" + join(sub, "/");
+			}
+		} else {
+			cout << "Could not find " << e << " in path " << pathstr << endl;
+			return NULL;
+		}
 	}
-	return dir->files[fn];
+	return NULL;
 }
 
 shared_ptr<Directory> IOManager::create_directory(string path) {
@@ -110,61 +99,41 @@ shared_ptr<Directory> IOManager::create_directory(string path) {
 	return ndir;
 }
 
-shared_ptr<File> IOManager::create_file(string path, function<shared_ptr<IOHandle>()> init) {
-	auto p = parse_path(path);
-	auto fn = p.back();
-	p.pop_back();
-	auto dir = lookup_directory(p);
-	
-	auto nf = make_shared<File>(init);
-	dir->files[fn] = nf;
-	return nf;
-}
-
 void IOManager::create_link(string from, string to) {
 	auto p = parse_path(from);
 	auto fn = p.back();
 	p.pop_back();
 	auto dir = lookup_directory(p);
 
-	switch(lookup_type(to)) {
-		case IO_DIRECTORY: {
-			auto target = lookup_directory(to);
-			dir->subdirectories[fn] = target;
-			break;
-		}
-		case IO_FILE: {
-			auto target = lookup_file(to);
-			dir->files[fn] = target;
-			break;
-		}
-		case IO_UNKNOWN:
-			bailout("Could not find link target");
+	auto target = lookup_directory(to);
+	if(target != NULL) {
+		dir->subdirectories[fn] = target;
+		return;
 	}
+	auto target_map = lookup_map(to);
+	dir->dirmaps[fn] = target_map;
 }
 
-IOHandle::IOHandle() {
-	handle = box->io->create_handle();
-}
-
-File::File(function<shared_ptr<IOHandle>()> _init) {
-	init = _init;
-}
-
-shared_ptr<IOHandle> File::open() {
-	auto hnd = init();
-	hnd->type = IOType::IO_FILE;
-	hnd->path = path;
-	return hnd;
+void IOManager::create_map(string from, string to) {
+	auto p = parse_path(from);
+	auto fn = p.back();
+	p.pop_back();
+	auto dir = lookup_directory(p);
+	dir->dirmaps[fn] = to;
 }
 
 shared_ptr<IOHandle> Directory::open() {
-	auto hnd = static_pointer_cast<IOHandle>(make_shared<DirHandle>());
-	hnd->type = IOType::IO_DIRECTORY;
-	hnd->path = path;
+	auto hnd = static_pointer_cast<IOHandle>(make_shared<DirHandle>(path));
+	box->hm->add_handle(hnd);
 	return hnd;
 }
 
+IOHandle::IOHandle(IOType type, string path) : type(type), path(path) {
+}
+
+FileHandle::FileHandle(string path, string mapped_path) : IOHandle(IOType::IO_FILE, path), mapped_path(mapped_path) {
+	cout << "Creating file handle for virtual path " << path << " to real path " << mapped_path << endl;
+}
 void FileHandle::read() {
 }
 void FileHandle::write() {
@@ -172,9 +141,7 @@ void FileHandle::write() {
 void FileHandle::close() {
 }
 
-void DirHandle::read() {
-}
-void DirHandle::write() {
+DirHandle::DirHandle(string path) : IOHandle(IOType::IO_DIRECTORY, path) {
 }
 void DirHandle::close() {
 }

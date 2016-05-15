@@ -5,7 +5,7 @@ void NTAPI kernel_RtlInitAnsiString(
 	char *SourceString
 ) {
 	auto len = DestinationString->Length = DestinationString->MaximumLength = strlen(SourceString);
-	DestinationString->Buffer = new char[len + 1];
+	DestinationString->Buffer = new CHAR[len + 1];
 	memcpy(DestinationString->Buffer, SourceString, len + 1);
 }
 
@@ -15,7 +15,7 @@ bool NTAPI kernel_RtlEqualString(
 	bool CaseInsensitive
 ) {
 	if(CaseInsensitive)
-		return stricmp(String1->Buffer, String2->Buffer) == 0;
+		return stricmp((char *) String1->Buffer, (char *) String2->Buffer) == 0;
 	else
-		return strcmp(String1->Buffer, String2->Buffer) == 0;
+		return strcmp((char *) String1->Buffer, (char *) String2->Buffer) == 0;
 }

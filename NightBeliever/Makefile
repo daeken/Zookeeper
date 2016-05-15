@@ -6,7 +6,7 @@ CC_FLAGS := -std=c++11 -I. -ffreestanding -c -nostdlib -O2 -fno-exceptions -fno-
 AS_FLAGS := -c $(TARGET_FLAGS)
 LD_FLAGS := $(TARGET_FLAGS) -ffreestanding -nostdlib -Wl,-image_base,0xC0000000
 
-KH_FILES := $(wildcard XboxKernel/*.hpp)
+KH_FILES := $(filter-out XboxKernel/KernelThunk.hpp, $(wildcard XboxKernel/*.hpp))
 
 # This needs to be explicit because KernelThunk doesn't exist before generation.
 ifeq ($(wildcard XboxKernel/KernelThunk.cpp),)
