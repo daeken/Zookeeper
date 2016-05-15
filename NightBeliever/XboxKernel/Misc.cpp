@@ -11,10 +11,16 @@ uint32_t kernel_XboxKrnlVersion = 0;
 void kernel_DbgPrint(char *format, ...) {
 	va_list arglist;
 
+	auto prefix = "DbgPrint: ";
+	auto cf = new char[strlen(prefix) + strlen(format) + 1];
+	memcpy(cf, prefix, strlen(prefix));
+	memcpy(cf + strlen(prefix), format, strlen(format) + 1);
+
 	va_start(arglist, format);
-	log("DbgPrint:");
-	log(format, arglist);
+	log(cf, arglist);
 	va_end(arglist);
+	
+	delete cf;
 }
 
 void NTAPI kernel_RtlAssert(char *message, char *filename, uint32_t line, uint32_t unk) {

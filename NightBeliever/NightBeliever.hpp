@@ -5,9 +5,10 @@
 
 
 #include <stdint.h>
+#include <stdarg.h>
+#include "mini-printf.hpp"
 #include "Log.hpp"
 #include "C.hpp"
-#include "mini-printf.hpp"
 #include "../xbetypes.hpp"
 #include "XboxKernel/nttypes.hpp"
 #include "TIB.hpp"

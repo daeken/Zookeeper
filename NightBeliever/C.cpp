@@ -17,7 +17,7 @@ void *memset(void *ptr, int value, size_t num) {
 size_t strlen(const char *str) {
 	auto i = 0;
 	while(str[i++] != 0);
-	return i;
+	return i - 1;
 }
 
 int tolower(int c) {
