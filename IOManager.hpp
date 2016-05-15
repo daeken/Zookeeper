@@ -65,6 +65,7 @@ public:
 
 	shared_ptr<Directory> create_directory(string path);
 	shared_ptr<File> create_file(string path, function<shared_ptr<IOHandle>()>);
+	void create_link(string from, string to);
 
 	map<uint32_t, shared_ptr<IOHandle>> handles;
 	uint32_t handle_id;

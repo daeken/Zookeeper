@@ -13,7 +13,7 @@ IOManager::IOManager() {
 	for(auto dir : dirs)
 		create_directory(dir);
 
-	create_file("/Device/Harddisk0/partition1", [] { return make_shared<FileHandle>(); });
+	create_link("/Device/Harddisk0/partition1", "D:");
 }
 
 shared_ptr<IOHandle> IOManager::open(string path) {
@@ -116,6 +116,28 @@ shared_ptr<File> IOManager::create_file(string path, function<shared_ptr<IOHandl
 	auto nf = make_shared<File>(init);
 	dir->files[fn] = nf;
 	return nf;
+}
+
+void IOManager::create_link(string from, string to) {
+	auto p = parse_path(from);
+	auto fn = p.back();
+	p.pop_back();
+	auto dir = lookup_directory(p);
+
+	switch(lookup_type(to)) {
+		case IO_DIRECTORY: {
+			auto target = lookup_directory(to);
+			dir->subdirectories[fn] = target;
+			break;
+		}
+		case IO_FILE: {
+			auto target = lookup_file(to);
+			dir->files[fn] = target;
+			break;
+		}
+		case IO_UNKNOWN:
+			bailout("Could not find link target");
+	}
 }
 
 IOHandle::IOHandle() {
