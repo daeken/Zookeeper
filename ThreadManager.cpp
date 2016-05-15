@@ -9,12 +9,12 @@ ThreadManager::ThreadManager() {
 
 uint32_t ThreadManager::create(uint32_t eip, uint32_t esp) {
 	auto thread = make_shared<Thread>();
+	box->hm->add(thread);
 	thread->eflags = 2;
-	thread->id = ++tid;
 	thread->eip = eip;
 	thread->esp = esp;
 	threads.push_back(thread);
-	return thread->id;
+	return thread->handle;
 }
 
 void ThreadManager::terminate(uint32_t thread) {
@@ -31,11 +31,13 @@ void ThreadManager::terminate(uint32_t thread) {
 	}
 	
 	for(auto iter = threads.begin(); iter != threads.end(); ++iter) {
-		if((*iter)->id == thread) {
+		if((*iter)->handle == thread) {
 			threads.erase(iter);
+			(*iter)->close();
 			return;
 		}
 	}
+
 	cout << "Could not find thread with id " << dec << thread << endl;
 	bailout(true);
 }
@@ -52,7 +54,7 @@ void ThreadManager::next() {
 }
 
 uint32_t ThreadManager::current_thread() {
-	return (*iterator)->id;
+	return (*iterator)->handle;
 }
 
 #define REGMAGIC() do {\

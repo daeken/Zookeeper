@@ -42,7 +42,7 @@ shared_ptr<IOHandle> IOManager::open(string pathstr) {
 
 	auto mapped = lookup_map(pathstr);
 	auto file = static_pointer_cast<IOHandle>(make_shared<FileHandle>(pathstr, mapped));
-	box->hm->add_handle(file);
+	box->hm->add(file);
 	return file;
 }
 
@@ -124,7 +124,7 @@ void IOManager::create_map(string from, string to) {
 
 shared_ptr<IOHandle> Directory::open() {
 	auto hnd = static_pointer_cast<IOHandle>(make_shared<DirHandle>(path));
-	box->hm->add_handle(hnd);
+	box->hm->add(hnd);
 	return hnd;
 }
 

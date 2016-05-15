@@ -1,7 +1,7 @@
 #pragma once
 #include "Zookeeper.hpp"
 
-class Thread {
+class Thread : public Handle {
 public:
 	void save();
 	void restore();
@@ -24,5 +24,4 @@ public:
 
 	list<shared_ptr<Thread>> threads;
 	list<shared_ptr<Thread>>::iterator iterator;
-	uint32_t tid = 0;
 };
