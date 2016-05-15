@@ -7,10 +7,9 @@ extern XBOX_HARDWARE_INFO kernel_XboxHardwareInfo;
 extern uint32_t kernel_XboxKrnlVersion;
 
 void kernel_DbgPrint(char *format, ...);
-void NTAPI kernel_HalReturnToFirmware();
-
 void NTAPI kernel_RtlAssert(char *message, char *filename, uint32_t line, uint32_t unk);
 
+void NTAPI kernel_HalReturnToFirmware();
 void NTAPI kernel_HalRegisterShutdownNotification(
     PHAL_SHUTDOWN_REGISTRATION ShutdownRegistration, 
     CHAR Register

@@ -17,16 +17,15 @@ void kernel_DbgPrint(char *format, ...) {
 	va_end(arglist);
 }
 
-void NTAPI kernel_HalReturnToFirmware() {
-	log("HalReturnToFirmware");
-	halt();
-}
-
 void NTAPI kernel_RtlAssert(char *message, char *filename, uint32_t line, uint32_t unk) {
 	if(message == NULL) message = (char *) "~NULL~";
 	if(filename == NULL) filename = (char *) "~NULL~";
 	log("Failed assert %s in %s on line %i (unknown %i == 0x%x)", message, filename, line, unk, unk);
-	log("Around address 0x%08x", ((uint32_t *) &message)[-1]);
+	halt();
+}
+
+void NTAPI kernel_HalReturnToFirmware() {
+	log("HalReturnToFirmware");
 	halt();
 }
 
