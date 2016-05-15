@@ -238,3 +238,30 @@ NTSTATUS NTAPI kernel_NtClose(HANDLE handle) {
 	log("NtClose %08x", handle);
 	return STATUS_SUCCESS;
 }
+
+NTSTATUS NTAPI kernel_NtQueryVolumeInformationFile(
+    IN  HANDLE                      FileHandle,
+    OUT PIO_STATUS_BLOCK            IoStatusBlock,
+    OUT PVOID                       FileInformation,
+    IN  ULONG                       Length,
+    IN  FS_INFORMATION_CLASS        FileInformationClass
+) {
+	if(IoStatusBlock)
+		debug("Ignoring status block");
+	
+	switch(FileInformationClass) {
+		case FileFsSizeInformation: {
+			log("FsSizeInformation");
+			auto info = (FILE_FS_SIZE_INFORMATION *) FileInformation;
+			// Test XBE *requires* bytes per allocation unit == 16kb!
+			info->BytesPerSector = 4096; // 4KB sectors
+			info->SectorsPerAllocationUnit = 4; // 16KB allocation units
+			info->TotalAllocationUnits.QuadPart = 524288; // 8GB drive
+			info->AvailableAllocationUnits.QuadPart = 458752; // 7GB free
+			break;
+		}
+		default:
+			bailout("Unknown FS_INFORMATION_CLASS %i", FileInformationClass);
+	}
+	return STATUS_SUCCESS;
+}

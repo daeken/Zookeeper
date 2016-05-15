@@ -85,3 +85,11 @@ NTSTATUS NTAPI kernel_NtOpenFile(
 );
 
 NTSTATUS NTAPI kernel_NtClose(HANDLE handle);
+
+NTSTATUS NTAPI kernel_NtQueryVolumeInformationFile(
+    IN  HANDLE                      FileHandle,
+    OUT PIO_STATUS_BLOCK            IoStatusBlock,
+    OUT PVOID                       FileInformation,
+    IN  ULONG                       Length,
+    IN  FS_INFORMATION_CLASS        FileInformationClass
+);

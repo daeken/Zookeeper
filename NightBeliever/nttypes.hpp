@@ -217,3 +217,22 @@ typedef struct _IO_STATUS_BLOCK {
 
 	ULONG *Information;
 } IO_STATUS_BLOCK, *PIO_STATUS_BLOCK;
+
+typedef enum _FSINFOCLASS {
+	FileFsVolumeInformation       = 1,
+	FileFsLabelInformation,      // 2
+	FileFsSizeInformation,       // 3
+	FileFsDeviceInformation,     // 4
+	FileFsAttributeInformation,  // 5
+	FileFsControlInformation,    // 6
+	FileFsFullSizeInformation,   // 7
+	FileFsObjectIdInformation,   // 8
+	FileFsMaximumInformation
+} FS_INFORMATION_CLASS, *PFS_INFORMATION_CLASS;
+
+typedef struct _FILE_FS_SIZE_INFORMATION {
+	LARGE_INTEGER   TotalAllocationUnits; // 0
+	LARGE_INTEGER   AvailableAllocationUnits; // 08h
+	ULONG           SectorsPerAllocationUnit; // 10h
+	ULONG           BytesPerSector; // 14h
+} FILE_FS_SIZE_INFORMATION, *PFILE_FS_SIZE_INFORMATION;
