@@ -4,16 +4,19 @@ IOManager::IOManager() {
 	root = make_shared<Directory>();
 	auto dirs = {
 		"/Device", 
+		"/Device/CdRom0", 
 		"/Device/Harddisk0", 
-		"D:", 
-		"T:", 
-		"U:", 
-		"Z:"
+		"/Device/Harddisk0/partition0", 
+		"/Device/Harddisk0/partition1", 
+		"/Device/Harddisk0/partition1/TDATA", 
+		"/Device/Harddisk0/partition1/UDATA", 
 	};
 	for(auto dir : dirs)
 		create_directory(dir);
 
-	create_link("/Device/Harddisk0/partition1", "T:");
+	create_link("D:", "/Device/CdRom0");
+	create_link("T:", "/Device/Harddisk0/partition1/TDATA");
+	create_link("U:", "/Device/Harddisk0/partition1/UDATA");
 }
 
 shared_ptr<IOHandle> IOManager::open(string path) {

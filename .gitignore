@@ -1,6 +1,6 @@
 *.o
 NightBeliever/*.o
-NightBeliever/KernelThunk.*pp
+NightBeliever/XboxKernel/KernelThunk.*pp
 NightBeliever/Hypercall.*pp
 Hypercall.hpp
 Hypercalls.hpp
