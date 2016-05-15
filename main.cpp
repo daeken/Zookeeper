@@ -5,7 +5,7 @@ uint32_t load_multiboot(Cpu *cpu, uint32_t *header) {
 
 	uint8_t *rel = (uint8_t *) header;
 
-	uint32_t memsize = header[6] - header[3];
+	uint32_t memsize = header[6] - 0xC0000000;
 	if(memsize & 0xFFF)
 		memsize = (memsize & ~0xFFF) + 0x1000;
 	assert(memsize <= KRAM_SIZE);
