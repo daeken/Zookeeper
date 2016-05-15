@@ -1,4 +1,4 @@
-import re, sys
+import glob, re, sys
 
 imports = '''AvGetSavedDataAddress 80000001
 AvSendTVEncoderOption 80000002
@@ -367,7 +367,10 @@ vsprintf 8000016C
 HalEnableSecureTrayEject 8000016D
 HalWriteSMCScratchRegister 8000016E'''.split('\n')
 
-rh = file(('' if len(sys.argv) == 1 else sys.argv[1] + '/') + 'XboxKernel/Kernel.hpp', 'r').read()
+rh = ''
+for fn in glob.glob('XboxKernel/*.hpp'):
+	if fn != 'XboxKernel/KernelThunk.hpp':
+		rh += file(('' if len(sys.argv) == 1 else sys.argv[1] + '/') + fn, 'r').read() + '\n'
 def defined(sym):
 	if re.search(r'[\s^]kernel_' + sym + r'[;\s(]', rh, re.M | re.S):
 		return True
