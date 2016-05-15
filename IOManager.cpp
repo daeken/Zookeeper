@@ -13,7 +13,7 @@ IOManager::IOManager() {
 	for(auto dir : dirs)
 		create_directory(dir);
 
-	create_link("/Device/Harddisk0/partition1", "D:");
+	create_link("/Device/Harddisk0/partition1", "T:");
 }
 
 shared_ptr<IOHandle> IOManager::open(string path) {

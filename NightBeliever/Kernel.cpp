@@ -33,15 +33,15 @@ void threadex_proxy(uint32_t tid, uint32_t up) {
 
 NTSTATUS NTAPI kernel_PsCreateSystemThreadEx(
 	OUT PHANDLE         ThreadHandle,
-    IN  ULONG           ThreadExtraSize,
-    IN  ULONG           KernelStackSize,
-    IN  ULONG           TlsDataSize,
-    OUT PULONG          ThreadId OPTIONAL,
-    IN  PVOID           StartContext1,
-    IN  PVOID           StartContext2,
-    IN  BOOLEAN         CreateSuspended,
-    IN  BOOLEAN         DebugStack,
-    IN  PKSTART_ROUTINE StartRoutine
+	IN  ULONG           ThreadExtraSize,
+	IN  ULONG           KernelStackSize,
+	IN  ULONG           TlsDataSize,
+	OUT PULONG          ThreadId OPTIONAL,
+	IN  PVOID           StartContext1,
+	IN  PVOID           StartContext2,
+	IN  BOOLEAN         CreateSuspended,
+	IN  BOOLEAN         DebugStack,
+	IN  PKSTART_ROUTINE StartRoutine
 ) {
 	if(CreateSuspended) {
 		log("Suspended threads not supported.");
@@ -62,8 +62,8 @@ NTSTATUS NTAPI kernel_PsCreateSystemThreadEx(
 
 void NTAPI kernel_MmPersistContiguousMemory(
 	IN PVOID   BaseAddress,
-    IN ULONG   NumberOfBytes,
-    IN BOOLEAN Persist
+	IN ULONG   NumberOfBytes,
+	IN BOOLEAN Persist
 ) {
 	//log("Ignore MmPersistContiguousMemory");
 }
@@ -75,8 +75,8 @@ PVOID NTAPI kernel_MmAllocateContiguousMemory(IN ULONG NumberOfBytes) {
 uint32_t kernel_LaunchDataPage = 0;
 uint32_t kernel_IdexChannelObject = 0;
 XBOX_HARDWARE_INFO kernel_XboxHardwareInfo = {
-    0xC0000035,
-    0,0,0,0
+	0xC0000035,
+	0,0,0,0
 };
 uint32_t kernel_XboxKrnlVersion = 0;
 
@@ -240,11 +240,11 @@ NTSTATUS NTAPI kernel_NtClose(HANDLE handle) {
 }
 
 NTSTATUS NTAPI kernel_NtQueryVolumeInformationFile(
-    IN  HANDLE                      FileHandle,
-    OUT PIO_STATUS_BLOCK            IoStatusBlock,
-    OUT PVOID                       FileInformation,
-    IN  ULONG                       Length,
-    IN  FS_INFORMATION_CLASS        FileInformationClass
+	IN  HANDLE                      FileHandle,
+	OUT PIO_STATUS_BLOCK            IoStatusBlock,
+	OUT PVOID                       FileInformation,
+	IN  ULONG                       Length,
+	IN  FS_INFORMATION_CLASS        FileInformationClass
 ) {
 	if(IoStatusBlock)
 		debug("Ignoring status block");
@@ -263,5 +263,28 @@ NTSTATUS NTAPI kernel_NtQueryVolumeInformationFile(
 		default:
 			bailout("Unknown FS_INFORMATION_CLASS %i", FileInformationClass);
 	}
+	return STATUS_SUCCESS;
+}
+
+NTSTATUS NTAPI kernel_IoCreateSymbolicLink(
+	IN PSTRING SymbolicLinkName,
+	IN PSTRING DeviceName
+) {
+	log("IoCreateSymbolicLink('%s', '%s')", SymbolicLinkName->Buffer, DeviceName->Buffer);
+	return STATUS_SUCCESS;
+}
+
+NTSTATUS NTAPI kernel_NtCreateFile(
+	OUT PHANDLE             FileHandle, 
+	IN  ACCESS_MASK         DesiredAccess,
+	IN  POBJECT_ATTRIBUTES  ObjectAttributes,
+	OUT PIO_STATUS_BLOCK    IoStatusBlock,
+	IN  PLARGE_INTEGER      AllocationSize, 
+	IN  ULONG               FileAttributes, 
+	IN  ULONG               ShareAccess, 
+	IN  ULONG               CreateDisposition, 
+	IN  ULONG               CreateOptions 
+) {
+	log("NtCreateFile('%s')", ObjectAttributes->ObjectName->Buffer);
 	return STATUS_SUCCESS;
 }
