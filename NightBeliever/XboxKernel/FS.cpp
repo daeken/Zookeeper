@@ -8,7 +8,8 @@ NTSTATUS NTAPI kernel_NtOpenFile(
 	uint32_t ShareAccess, 
 	uint32_t OpenOptions
 ) {
-	log("NtOpenFile('%s')", ObjectAttributes->ObjectName->Buffer);
+	log("NtOpenFile('%s', 0x%08x, 0x%08x)", ObjectAttributes->ObjectName->Buffer, DesiredAccess, OpenOptions);
+	
 	*FileHandle = io_open(ObjectAttributes->RootDirectory, (char *) ObjectAttributes->ObjectName->Buffer);
 	if(*FileHandle == 0)
 		return STATUS_OBJECT_NAME_NOT_FOUND;
@@ -26,7 +27,12 @@ NTSTATUS NTAPI kernel_NtCreateFile(
 	IN  ULONG               CreateDisposition, 
 	IN  ULONG               CreateOptions 
 ) {
-	log("NtCreateFile('%s')", ObjectAttributes->ObjectName->Buffer);
+	log("NtCreateFile('%s', 0x%08x, 0x%08x, 0x%08x)", 
+		ObjectAttributes->ObjectName->Buffer, 
+		DesiredAccess, 
+		CreateDisposition, 
+		CreateOptions
+	);
 	*FileHandle = io_open(ObjectAttributes->RootDirectory, (char *) ObjectAttributes->ObjectName->Buffer);
 	if(*FileHandle == 0) {
 		return STATUS_OBJECT_NAME_NOT_FOUND;

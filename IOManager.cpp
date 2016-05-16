@@ -29,9 +29,6 @@ IOManager::IOManager() {
 	create_link("D:", "/Device/CdRom0");
 	create_link("T:", "/Device/Harddisk0/partition1/TDATA");
 	create_link("U:", "/Device/Harddisk0/partition1/UDATA");
-
-	open("/Device");
-	open("T:/foo");
 }
 
 shared_ptr<IOHandle> IOManager::open(string pathstr) {
