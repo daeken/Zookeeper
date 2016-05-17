@@ -1,4 +1,6 @@
 #include "Zookeeper.hpp"
+#include <Hypervisor/hv.h>
+#include <Hypervisor/hv_vmx.h>
 
 class HVMac : public HV {
 public:

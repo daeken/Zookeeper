@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Hypervisor/hv.h>
-#include <Hypervisor/hv_vmx.h>
 #include <boost/format.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/regex.hpp>
