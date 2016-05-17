@@ -2,11 +2,6 @@
 
 #include "Zookeeper.hpp"
 
-#define cap2ctrl(cap, ctrl) ((ctrl) | ((cap) & 0xffffffff)) & ((cap) >> 32)
-#define VMCS_PRI_PROC_BASED_CTLS_HLT           (1 << 7)
-#define VMCS_PRI_PROC_BASED_CTLS_CR8_LOAD      (1 << 19)
-#define VMCS_PRI_PROC_BASED_CTLS_CR8_STORE     (1 << 20)
-
 class Cpu {
 public:
 	Cpu(uint8_t *ram, uint8_t *kram);
@@ -28,33 +23,11 @@ public:
 		write_memory(addr, sizeof(T), &value);
 	}
 
-	void invalidate_tlb();
-
-	uint64_t rdmsr(uint32_t msr);
-	void wrmsr(uint32_t msr, uint64_t val);
-
-	/* read GPR */
-	uint32_t rreg(hv_x86_reg_t reg) {
-		uint64_t v;
-		bailout(hv_vcpu_read_register(vcpu, reg, &v));
-		return (uint32_t) v;
-	}
-	/* write GPR */
-	void wreg(hv_x86_reg_t reg, uint32_t v) {
-		bailout(hv_vcpu_write_register(vcpu, reg, (uint32_t) v));
-	}
-	/* read VMCS field */
-	uint64_t rvmcs(uint32_t field) {
-		uint64_t v;
-		bailout(hv_vmx_vcpu_read_vmcs(vcpu, field, &v));
-		return v;
-	}
-	/* write VMCS field */
-	void wvmcs(uint32_t field, uint64_t v) {
-		bailout(hv_vmx_vcpu_write_vmcs(vcpu, field, v));
+	void invalidate_tlb() {
+		hv->invalidate_tlb();
 	}
 
-	hv_vcpuid_t vcpu;
+	HV *hv;
 	uint8_t *mem, *kmem;
 	int single_step = 0;
 	bool stop = false;

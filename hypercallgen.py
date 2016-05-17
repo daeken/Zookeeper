@@ -73,7 +73,7 @@ for i, (name, args) in enumerate(calls.items()):
 		print >>zhc, '\t\t\tauto sarg = box->cpu->read_memory<hypercall_%s_t>(addr);' % (name)
 		print >>zhc, '\t\t\t%sbox->hypercall->%s(%s);' % (ret, name, ', '.join('sarg.' + arg for arg, _, _ in args))
 		if rettype != 'void':
-			print >>zhc, '\t\t\tbox->cpu->wreg(HV_X86_RAX, ret);'
+			print >>zhc, '\t\t\tbox->cpu->hv->reg(EAX, ret);'
 
 		print >>zhl, '\t%s %s(%s);' % (typemap(rettype), name, ', '.join('%s %s' % (mapped, name) for name, _, mapped in args))
 
@@ -89,7 +89,7 @@ for i, (name, args) in enumerate(calls.items()):
 	elif len(args) == 1:
 		print >>zhc, '\t\t\t%sbox->hypercall->%s(%saddr);' % (ret, name, cast('uint32_t', args[0][2]))
 		if rettype != 'void':
-			print >>zhc, '\t\t\tbox->cpu->wreg(HV_X86_RAX, ret);'
+			print >>zhc, '\t\t\tbox->cpu->hv->reg(EAX, ret);'
 
 		print >>zhl, '\t%s %s(%s %s);' % (typemap(rettype), name, args[0][2], args[0][0])
 
@@ -102,7 +102,7 @@ for i, (name, args) in enumerate(calls.items()):
 	else:
 		print >>zhc, '\t\t\t%sbox->hypercall->%s();' % (ret, name)
 		if rettype != 'void':
-			print >>zhc, '\t\t\tbox->cpu->wreg(HV_X86_RAX, ret);'
+			print >>zhc, '\t\t\tbox->cpu->hv->reg(EAX, ret);'
 
 		print >>zhl, '\t%s %s();' % (typemap(rettype), name)
 

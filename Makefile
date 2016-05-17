@@ -1,6 +1,17 @@
 CPP_FILES := $(wildcard *.cpp)
+CC_FLAGS := -std=c++14 -I.
+
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	CC_FLAGS += -DLINUX
+	CPP_FILES += $(wildcard Linux/*.cpp)
+endif
+ifeq ($(UNAME_S),Darwin)
+	CC_FLAGS += -DMAC
+	CPP_FILES += $(wildcard Mac/*.cpp)
+endif
+
 OBJ_FILES := $(CPP_FILES:.cpp=.o)
-CC_FLAGS := -std=c++14
 
 all: NightBeliever zookeeper
 

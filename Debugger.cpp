@@ -28,7 +28,7 @@ Debugger::Debugger() {
 void Debugger::stack_trace() {
 	cout << "Stack trace:" << endl;
 
-	auto ebp = box->cpu->rreg(HV_X86_RBP);
+	auto ebp = box->cpu->hv->reg(EBP);
 	for(auto i = 0; i < MAX_FRAMES; ++i) {
 		if(ebp == 0)
 			break;
@@ -42,13 +42,13 @@ void Debugger::stack_trace() {
 
 #define MAX_LENGTH 20
 void Debugger::dump_stack() {
-	auto esp = box->cpu->rreg(HV_X86_RSP);
+	auto esp = box->cpu->hv->reg(ESP);
 	for(auto i = 0; i < MAX_LENGTH; ++i)
 		cout << format("%08x") % box->cpu->read_memory<uint32_t>(esp + i * 4) << endl;
 }
 
 void Debugger::enter(uint32_t reason) {
-	auto eip = box->cpu->rreg(HV_X86_RIP);
+	auto eip = box->cpu->hv->reg(EIP);
 
 	if(breakpoints.find(eip) != breakpoints.end()) {
 		cout << format("Hit breakpoint at 0x%08x") % eip << endl;
@@ -91,11 +91,11 @@ void Debugger::enter(uint32_t reason) {
 		} else if(cmd == "stack") {
 			dump_stack();
 		} else if(cmd == "r" || cmd == "regs") {
-			cout << format("eax  %08x    ebx  %08x") % box->cpu->rreg(HV_X86_RAX) % box->cpu->rreg(HV_X86_RBX) << endl;
-			cout << format("ecx  %08x    edx  %08x") % box->cpu->rreg(HV_X86_RCX) % box->cpu->rreg(HV_X86_RDX) << endl;
-			cout << format("edi  %08x    esi  %08x") % box->cpu->rreg(HV_X86_RDI) % box->cpu->rreg(HV_X86_RSI) << endl;
-			cout << format("ebp  %08x    esp  %08x") % box->cpu->rreg(HV_X86_RBP) % box->cpu->rreg(HV_X86_RSP) << endl;
-			cout << format("eflags  %08x") % box->cpu->rreg(HV_X86_RFLAGS) << endl;
+			cout << format("eax  %08x    ebx  %08x") % box->cpu->hv->reg(EAX) % box->cpu->hv->reg(EBX) << endl;
+			cout << format("ecx  %08x    edx  %08x") % box->cpu->hv->reg(ECX) % box->cpu->hv->reg(EDX) << endl;
+			cout << format("edi  %08x    esi  %08x") % box->cpu->hv->reg(EDI) % box->cpu->hv->reg(ESI) << endl;
+			cout << format("ebp  %08x    esp  %08x") % box->cpu->hv->reg(EBP) % box->cpu->hv->reg(ESP) << endl;
+			cout << format("eflags  %08x") % box->cpu->hv->reg(EFLAGS) << endl;
 		} else if(cmd == "rm" || cmd == "read") {
 			string type = "u32";
 			auto offset = 1;

@@ -22,6 +22,11 @@ using namespace boost::algorithm;
 #define RAM_SIZE 128*1024*1024
 #define KRAM_SIZE 128*1024*1024
 
+#include "HV.hpp"
+#ifdef MAC
+#include "Mac/HVMac.hpp"
+#endif
+
 #include "Hypercall.hpp"
 #include "xbetypes.hpp"
 #include "Xbe.hpp"

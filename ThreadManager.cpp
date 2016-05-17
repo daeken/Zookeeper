@@ -58,16 +58,16 @@ uint32_t ThreadManager::current_thread() {
 }
 
 #define REGMAGIC() do {\
-	REG(RIP, eip); \
-	REG(RFLAGS, eflags); \
-	REG(RAX, eax); \
-	REG(RCX, ecx); \
-	REG(RDX, edx); \
-	REG(RBX, ebx); \
-	REG(RSI, esi); \
-	REG(RDI, edi); \
-	REG(RSP, esp); \
-	REG(RBP, ebp); \
+	REG(EIP, eip); \
+	REG(EFLAGS, eflags); \
+	REG(EAX, eax); \
+	REG(ECX, ecx); \
+	REG(EDX, edx); \
+	REG(EBX, ebx); \
+	REG(ESI, esi); \
+	REG(EDI, edi); \
+	REG(ESP, esp); \
+	REG(EBP, ebp); \
 	REG(CS, cs); \
 	REG(SS, ss); \
 	REG(DS, ds); \
@@ -77,7 +77,7 @@ uint32_t ThreadManager::current_thread() {
 } while(0)
 
 void Thread::save() {
-#define REG(reg, name) (name = (uint32_t) box->cpu->rreg(HV_X86_##reg))
+#define REG(_reg, name) (name = box->cpu->hv->reg(_reg))
 	REGMAGIC();
 #undef REG
 #ifdef THREADDEBUG
@@ -89,7 +89,7 @@ void Thread::save() {
 }
 
 void Thread::restore() {
-#define REG(reg, name) (box->cpu->wreg(HV_X86_##reg, (uint64_t) name))
+#define REG(_reg, name) (box->cpu->hv->reg(_reg, name))
 	REGMAGIC();
 #undef REG
 #ifdef THREADDEBUG
