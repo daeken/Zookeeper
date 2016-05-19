@@ -26,3 +26,28 @@ io_open:
   - return: uint32_t
   - dir_handle: uint32_t
   - fn: char *
+  - flags: FSFlags
+io_read:
+  - return: bool
+  - handle: uint32_t
+  - buf: void *
+  - count: uint32_t
+  - offset: int64_t
+io_write:
+  - return: bool
+  - handle: uint32_t
+  - buf: void *
+  - count: uint32_t
+  - offset: int64_t
+io_ioctl:
+  - return: bool
+  - handle: uint32_t
+  - code: uint32_t
+  - ibuf: void *
+  - isize: uint32_t
+  - obuf: void *
+  - osize: uint32_t
+close:
+  - handle: uint32_t
+get_system_time:
+  - time: uint64_t *

@@ -151,6 +151,10 @@ void Cpu::run(uint32_t eip) {
 
 	auto swap = true;
 	do {
+		if(break_in) {
+			box->debugger->enter();
+			break_in = false;
+		}
 		auto exit = hv->enter();
 
 		switch (exit.reason) {

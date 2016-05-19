@@ -31,6 +31,9 @@ start:
 .Lhang:
 	jmp .Lhang
 
+.section __DATA, __data
+.long 0xDEADBEEF # Prevent __data from ending up after __ass
+
 .section __DATA, __ass
 bss:
 .skip 16384 # 16 KiB

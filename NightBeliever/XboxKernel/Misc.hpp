@@ -24,3 +24,5 @@ NTSTATUS NTAPI kernel_ExQueryNonVolatileSetting(
 );
 
 ULONG NTAPI kernel_RtlNtStatusToDosError(NTSTATUS Status);
+
+void NTAPI kernel_KeQuerySystemTime(uint64_t *time);

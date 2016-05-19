@@ -43,6 +43,10 @@ uint32_t load_kernel(Cpu *cpu) {
 	return entry;
 }
 
+void intHandler(int _) {
+	box->cpu->break_in = true;
+}
+
 int main(int argc, char **argv) {
 	new Box;
 
@@ -50,6 +54,8 @@ int main(int argc, char **argv) {
 	auto xbe = new Xbe((char *) "test1.xbe");
 	xbe->LoadImage();
 	
+	signal(SIGINT, intHandler);
+
 	box->cpu->run(entry);
 	
 	return 0;

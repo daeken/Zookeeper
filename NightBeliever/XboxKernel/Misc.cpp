@@ -26,7 +26,7 @@ void kernel_DbgPrint(char *format, ...) {
 void NTAPI kernel_RtlAssert(char *message, char *filename, uint32_t line, uint32_t unk) {
 	if(message == NULL) message = (char *) "~NULL~";
 	if(filename == NULL) filename = (char *) "~NULL~";
-	log("Failed assert %s in %s on line %i (unknown %i == 0x%x)", message, filename, line, unk, unk);
+	log("Failed assert %s in %s on line %i", message, filename, line);
 	halt();
 }
 
@@ -62,4 +62,8 @@ NTSTATUS NTAPI kernel_ExQueryNonVolatileSetting(
 
 ULONG NTAPI kernel_RtlNtStatusToDosError(NTSTATUS Status) {
 	return 0;
+}
+
+void NTAPI kernel_KeQuerySystemTime(uint64_t *time) {
+	get_system_time(time);
 }

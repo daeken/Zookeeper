@@ -9,8 +9,13 @@ NTSTATUS NTAPI kernel_NtOpenFile(
 	uint32_t OpenOptions
 ) {
 	log("NtOpenFile('%s', 0x%08x, 0x%08x)", ObjectAttributes->ObjectName->Buffer, DesiredAccess, OpenOptions);
+	auto flags = FSFlags::READ;
+	if(FLAG(DesiredAccess, FILE_WRITE_DATA))
+		flags |= FSFlags::WRITE;
+	if(FLAG(OpenOptions, FILE_DIRECTORY_FILE))
+		flags |= FSFlags::DIRECTORY;
 	
-	*FileHandle = io_open(ObjectAttributes->RootDirectory, (char *) ObjectAttributes->ObjectName->Buffer);
+	*FileHandle = io_open(ObjectAttributes->RootDirectory, (char *) ObjectAttributes->ObjectName->Buffer, flags);
 	if(*FileHandle == 0)
 		return STATUS_OBJECT_NAME_NOT_FOUND;
 	return STATUS_SUCCESS;
@@ -33,15 +38,76 @@ NTSTATUS NTAPI kernel_NtCreateFile(
 		CreateDisposition, 
 		CreateOptions
 	);
-	*FileHandle = io_open(ObjectAttributes->RootDirectory, (char *) ObjectAttributes->ObjectName->Buffer);
+	auto flags = FSFlags::READ;
+	if(CreateDisposition == FILE_CREATE || CreateDisposition == FILE_OPEN_IF)
+		flags |= FSFlags::CREATE;
+	else if(CreateDisposition == FILE_OVERWRITE || CreateDisposition == FILE_OVERWRITE_IF)
+		flags |= FSFlags::OVERWRITE;
+	if(FLAG(DesiredAccess, FILE_WRITE_DATA))
+		flags |= FSFlags::WRITE;
+	if(FLAG(CreateOptions, FILE_DIRECTORY_FILE))
+		flags |= FSFlags::DIRECTORY;
+	*FileHandle = io_open(ObjectAttributes->RootDirectory, (char *) ObjectAttributes->ObjectName->Buffer, flags);
 	if(*FileHandle == 0) {
 		return STATUS_OBJECT_NAME_NOT_FOUND;
 	}
 	return STATUS_SUCCESS;
 }
 
+NTSTATUS NTAPI kernel_NtReadFile(
+	HANDLE          FileHandle,
+	HANDLE          Event,
+	PVOID           ApcRoutine,
+	PVOID           ApcContext,
+	PVOID           IoStatusBlock,
+	PVOID           Buffer,
+	ULONG           Length,
+	PLARGE_INTEGER  ByteOffset
+) {
+	auto offset = (ByteOffset == NULL || ByteOffset->u.HighPart == -1) ? -1 : ByteOffset->QuadPart;
+	if(io_read(FileHandle, Buffer, Length, offset))
+		return STATUS_SUCCESS;
+	bailout("Unknown failure");
+	return -1;
+}
+
+NTSTATUS NTAPI kernel_NtWriteFile(
+	HANDLE          FileHandle,
+	HANDLE          Event,
+	PVOID           ApcRoutine,
+	PVOID           ApcContext,
+	PVOID           IoStatusBlock,
+	PVOID           Buffer,
+	ULONG           Length,
+	PLARGE_INTEGER  ByteOffset
+) {
+	auto offset = (ByteOffset == NULL || ByteOffset->u.HighPart == -1) ? -1 : ByteOffset->QuadPart;
+	if(io_write(FileHandle, Buffer, Length, offset))
+		return STATUS_SUCCESS;
+	bailout("Unknown failure");
+	return -1;
+}
+
+NTSTATUS NTAPI kernel_NtDeviceIoControlFile(
+	HANDLE          FileHandle,
+	HANDLE          Event,
+	PVOID           ApcRoutine,
+	PVOID           ApcContext,
+	PVOID           IoStatusBlock,
+	ULONG           IoControlCode,
+	PVOID           InputBuffer,
+	ULONG           InputLength,
+	PVOID           OutputBuffer,
+	ULONG           OutputLength
+) {
+	if(io_ioctl(FileHandle, IoControlCode, InputBuffer, InputLength, OutputBuffer, OutputLength))
+		return STATUS_SUCCESS;
+	bailout("Unknown failure");
+	return -1;
+}
+
 NTSTATUS NTAPI kernel_NtClose(HANDLE handle) {
-	log("NtClose %08x", handle);
+	close(handle);
 	return STATUS_SUCCESS;
 }
 
@@ -79,3 +145,5 @@ NTSTATUS NTAPI kernel_IoCreateSymbolicLink(
 	log("IoCreateSymbolicLink('%s', '%s')", SymbolicLinkName->Buffer, DeviceName->Buffer);
 	return STATUS_SUCCESS;
 }
+
+uint32_t kernel_HalDiskCachePartitionCount = 1;

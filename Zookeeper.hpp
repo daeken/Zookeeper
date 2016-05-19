@@ -8,6 +8,8 @@
 #include <iomanip>
 #include <cassert>
 #include <sys/time.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 #include <list>
 using namespace std;
 using boost::format;
@@ -25,6 +27,7 @@ using namespace boost::algorithm;
 #include "Mac/HVMac.hpp"
 #endif
 
+#include "Shared.hpp"
 #include "Hypercall.hpp"
 #include "xbetypes.hpp"
 #include "Xbe.hpp"
@@ -32,6 +35,7 @@ using namespace boost::algorithm;
 #include "HandleManager.hpp"
 #include "PageManager.hpp"
 #include "ThreadManager.hpp"
+#include "Ioctls.hpp"
 #include "IOManager.hpp"
 #include "Debugger.hpp"
 #include "Box.hpp"

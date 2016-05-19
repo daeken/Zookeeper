@@ -31,4 +31,5 @@ public:
 	uint8_t *mem, *kmem;
 	int single_step = 0;
 	bool stop = false;
+	bool break_in = false;
 };

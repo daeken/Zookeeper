@@ -1,6 +1,9 @@
 #pragma once
 #include "Kernel.hpp"
 
+// ACCESS_MASK
+#define FILE_WRITE_DATA                         0x00000002
+
 // CreateDisposition
 #define FILE_SUPERSEDE                          0x00000000
 #define FILE_OPEN                               0x00000001
@@ -47,6 +50,41 @@ NTSTATUS NTAPI kernel_NtOpenFile(
     uint32_t OpenOptions
 );
 
+NTSTATUS NTAPI kernel_NtReadFile(
+    HANDLE          FileHandle,
+    HANDLE          Event,
+    PVOID           ApcRoutine,
+    PVOID           ApcContext,
+    PVOID           IoStatusBlock,
+    PVOID           Buffer,
+    ULONG           Length,
+    PLARGE_INTEGER  ByteOffset
+);
+
+NTSTATUS NTAPI kernel_NtWriteFile(
+    HANDLE          FileHandle,
+    HANDLE          Event,
+    PVOID           ApcRoutine,
+    PVOID           ApcContext,
+    PVOID           IoStatusBlock,
+    PVOID           Buffer,
+    ULONG           Length,
+    PLARGE_INTEGER  ByteOffset
+);
+
+NTSTATUS NTAPI kernel_NtDeviceIoControlFile(
+    HANDLE          FileHandle,
+    HANDLE          Event,
+    PVOID           ApcRoutine,
+    PVOID           ApcContext,
+    PVOID           IoStatusBlock,
+    ULONG           IoControlCode,
+    PVOID           InputBuffer,
+    ULONG           InputLength,
+    PVOID           OutputBuffer,
+    ULONG           OutputLength
+);
+
 NTSTATUS NTAPI kernel_NtClose(HANDLE handle);
 
 NTSTATUS NTAPI kernel_NtQueryVolumeInformationFile(
@@ -73,3 +111,5 @@ NTSTATUS NTAPI kernel_NtCreateFile(
     IN  ULONG               CreateDisposition, 
     IN  ULONG               CreateOptions 
 );
+
+extern uint32_t kernel_HalDiskCachePartitionCount;
