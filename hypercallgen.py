@@ -64,7 +64,7 @@ for i, (name, args) in enumerate(calls.items()):
 	print >>zhc, '\t\tcase %i: { // %s' % (i, name)
 
 	if len(args) > 1:
-		print >>zhh, 'typedef struct hypercall_%s {' % name
+		print >>zhh, 'typedef struct __attribute__((packed)) hypercall_%s {' % name
 		for arg, type, mapped in args:
 			print >>zhh, '\t%s %s;' % (mapped, arg)
 		print >>zhh, '} hypercall_%s_t;' % name

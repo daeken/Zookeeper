@@ -7,6 +7,7 @@ XBOX_HARDWARE_INFO kernel_XboxHardwareInfo = {
 	0,0,0,0
 };
 uint32_t kernel_XboxKrnlVersion = 0;
+char *kernel_XeImageFileName = 0;
 
 void kernel_DbgPrint(char *format, ...) {
 	va_list arglist;
@@ -39,7 +40,7 @@ void NTAPI kernel_HalRegisterShutdownNotification(
 	PHAL_SHUTDOWN_REGISTRATION ShutdownRegistration, 
 	CHAR Register
 ) {
-	log("HalRegisterShutdownNotification");
+	// XXX: Implement
 }
 
 NTSTATUS NTAPI kernel_ExQueryNonVolatileSetting(

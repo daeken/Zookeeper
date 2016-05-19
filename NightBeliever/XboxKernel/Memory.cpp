@@ -19,10 +19,6 @@ NTSTATUS NTAPI kernel_NtAllocateVirtualMemory(
 	uint32_t AllocationType, 
 	uint32_t Protect
 ) {
-	log(
-		"NtAllocateVirtualMemory(0x%08x, %i, 0x%08x, 0x%08x, 0x%08x)", 
-		*BaseAddress, (ZeroBits != NULL) ? *ZeroBits : -1, *RegionSize, AllocationType, Protect
-	);
 	*BaseAddress = (void *) (((uint32_t) *BaseAddress) & ~0xFFF);
 	*RegionSize = pagepad(*RegionSize);
 	if((AllocationType & MEM_COMMIT) == MEM_COMMIT) {
@@ -36,7 +32,18 @@ NTSTATUS NTAPI kernel_NtAllocateVirtualMemory(
 		bailout("Unsupported allocation type %x", AllocationType);
 	}
 
-	log("Allocated memory at 0x%08x", *BaseAddress);
+	return STATUS_SUCCESS;
+}
 
+NTSTATUS NTAPI kernel_NtFreeVirtualMemory(
+	void **BaseAddress,
+	uint32_t *FreeSize,
+	uint32_t FreeType
+) {
+	*BaseAddress = (void *) (((uint32_t) *BaseAddress) & ~0xFFF);
+	*FreeSize = pagepad(*FreeSize);
+
+	unmap(*BaseAddress, *FreeSize / 4096);
+	
 	return STATUS_SUCCESS;
 }

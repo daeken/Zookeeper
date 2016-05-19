@@ -50,6 +50,18 @@ NTSTATUS NTAPI kernel_NtOpenFile(
     uint32_t OpenOptions
 );
 
+NTSTATUS NTAPI kernel_NtCreateFile(
+    OUT PHANDLE             FileHandle, 
+    IN  ACCESS_MASK         DesiredAccess,
+    IN  POBJECT_ATTRIBUTES  ObjectAttributes,
+    OUT PIO_STATUS_BLOCK    IoStatusBlock,
+    IN  PLARGE_INTEGER      AllocationSize, 
+    IN  ULONG               FileAttributes, 
+    IN  ULONG               ShareAccess, 
+    IN  ULONG               CreateDisposition, 
+    IN  ULONG               CreateOptions 
+);
+
 NTSTATUS NTAPI kernel_NtReadFile(
     HANDLE          FileHandle,
     HANDLE          Event,
@@ -85,6 +97,19 @@ NTSTATUS NTAPI kernel_NtDeviceIoControlFile(
     ULONG           OutputLength
 );
 
+NTSTATUS NTAPI kernel_NtFsControlFile(
+    HANDLE          FileHandle,
+    HANDLE          Event,
+    PVOID           ApcRoutine,
+    PVOID           ApcContext,
+    PVOID           IoStatusBlock,
+    ULONG           IoControlCode,
+    PVOID           InputBuffer,
+    ULONG           InputLength,
+    PVOID           OutputBuffer,
+    ULONG           OutputLength
+);
+
 NTSTATUS NTAPI kernel_NtClose(HANDLE handle);
 
 NTSTATUS NTAPI kernel_NtQueryVolumeInformationFile(
@@ -100,16 +125,15 @@ NTSTATUS NTAPI kernel_IoCreateSymbolicLink(
     IN PSTRING DeviceName
 );
 
-NTSTATUS NTAPI kernel_NtCreateFile(
-    OUT PHANDLE             FileHandle, 
-    IN  ACCESS_MASK         DesiredAccess,
-    IN  POBJECT_ATTRIBUTES  ObjectAttributes,
-    OUT PIO_STATUS_BLOCK    IoStatusBlock,
-    IN  PLARGE_INTEGER      AllocationSize, 
-    IN  ULONG               FileAttributes, 
-    IN  ULONG               ShareAccess, 
-    IN  ULONG               CreateDisposition, 
-    IN  ULONG               CreateOptions 
+NTSTATUS NTAPI kernel_NtOpenSymbolicLinkObject(
+    HANDLE *LinkHandle, 
+    OBJECT_ATTRIBUTES *ObjectAttributes
+);
+
+NTSTATUS NTAPI kernel_NtQuerySymbolicLinkObject(
+    HANDLE LinkHandle, 
+    STRING *LinkTarget, 
+    uint32_t *ReturnedLength
 );
 
 extern uint32_t kernel_HalDiskCachePartitionCount;

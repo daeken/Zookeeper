@@ -372,7 +372,7 @@ for fn in glob.glob('XboxKernel/*.hpp'):
 	if fn != 'XboxKernel/KernelThunk.hpp':
 		rh += file(('' if len(sys.argv) == 1 else sys.argv[1] + '/') + fn, 'r').read() + '\n'
 def defined(sym):
-	if re.search(r'[\s^]kernel_' + sym + r'[;\s(]', rh, re.M | re.S):
+	if re.search(r'kernel_' + sym + r'[;\s(]', rh, re.M | re.S):
 		return True
 	return False
 

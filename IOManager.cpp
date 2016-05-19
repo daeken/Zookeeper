@@ -167,26 +167,31 @@ DirHandle::DirHandle(string path, string mapped_path, FSFlags flags) : IOHandle(
 		mkdir(mapped_path.c_str(), 0700);
 }
 void DirHandle::read(void *buf, uint32_t count, int64_t offset) {
-	cout << "Attempting to read " << count << " bytes from directory " << path << endl;
-	cout << "Offset " << hex << offset << endl;
+	//cout << "Attempting to read " << count << " bytes from directory " << path << endl;
+	//cout << "Offset " << hex << offset << endl;
 }
 void DirHandle::write(void *buf, uint32_t count, int64_t offset) {
-	cout << "Attempting to write " << count << " bytes to directory " << path << endl;
-	cout << "Offset " << hex << offset << endl;
 	if(count == 0) {
+		cout << "Attempting to write " << count << " bytes to directory " << path << endl;
+		cout << "Offset " << hex << offset << endl;
 		cout << "Null write" << endl;
 		box->cpu->break_in = true;
 	}
 }
 void DirHandle::ioctl(uint32_t code, void *ibuf, uint32_t isize, void *obuf, uint32_t osize) {
 	switch(code) {
+		case IOCTL_DISK_GET_DRIVE_GEOMETRY: {
+			auto geom = (DISK_GEOMETRY *) obuf;
+			geom->BytesPerSector = 1024*1024;
+			break;
+		}
 		case IOCTL_DISK_GET_PARTITION_INFO: {
 			auto part = (PARTITION_INFORMATION *) obuf;
 			part->StartingOffset = 0;
 			part->PartitionLength = 1 * 1024 * 1024 * 1024; // 1GB
 			part->HiddenSectors = 0;
 			part->PartitionNumber = 5; // Who cares?
-			part->PartitionType = 0;
+			part->PartitionType = 8;
 			part->BootIndicator = 1;
 			part->RecognizedPartition = 1;
 			part->RewritePartition = 0;

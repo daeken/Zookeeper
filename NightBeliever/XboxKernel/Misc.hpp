@@ -5,6 +5,7 @@ extern uint32_t kernel_LaunchDataPage;
 extern uint32_t kernel_IdexChannelObject;
 extern XBOX_HARDWARE_INFO kernel_XboxHardwareInfo;
 extern uint32_t kernel_XboxKrnlVersion;
+extern char *kernel_XeImageFileName;
 
 void kernel_DbgPrint(char *format, ...);
 void NTAPI kernel_RtlAssert(char *message, char *filename, uint32_t line, uint32_t unk);

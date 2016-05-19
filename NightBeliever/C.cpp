@@ -7,6 +7,10 @@ void *memcpy(void *dest, const void *src, size_t n) {
 	return dest;
 }
 
+char *strcpy(char *dest, const char *src) {
+	return (char *) memcpy(dest, src, strlen(src) + 1);
+}
+
 void *memset(void *ptr, int value, size_t num) {
 	auto chrs = (uint8_t *) ptr;
 	while(num--)

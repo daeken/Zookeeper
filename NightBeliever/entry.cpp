@@ -3,8 +3,6 @@
 typedef void(*xbe_ep_t)();
 
 void entrypoint() {
-	log("NightBeliever initializing...");
-
 	auto xbe = get_xbebase();
 	auto thunk = (uint32_t *) xbe->thunk;
 	while(*thunk) {
@@ -21,7 +19,6 @@ void entrypoint() {
 	auto hack2 = new uint8_t[0x20];
 	hack[0x3c / 4] = (uint32_t) hack2 + 0x7FFF0000;
 
-	log("Calling entrypoint.");
 	auto ep = (xbe_ep_t) xbe->oep;
 	ep();
 	log("Returned from entrypoint.");

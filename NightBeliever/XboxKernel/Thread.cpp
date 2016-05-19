@@ -13,8 +13,6 @@ void threadex_proxy(uint32_t tid, uint32_t up) {
 	init_tib(tid);
 
 	log("Starting xbthread at %08x", s.StartRoutine);
-	log("StartContext1 %08x", s.StartContext1);
-	log("StartContext2 %08x", s.StartContext2);
 
 	asm(
 		"mov %0, %%esi\n"
@@ -73,12 +71,12 @@ NTSTATUS NTAPI kernel_RtlInitializeCriticalSection(RTL_CRITICAL_SECTION *crit) {
 }
 
 NTSTATUS NTAPI kernel_RtlEnterCriticalSection(RTL_CRITICAL_SECTION *crit) {
-	log("RtlEnterCriticalSection");
+	// XXX: Implement
 	kernel_RtlInitializeCriticalSection(crit); // XBEs don't seem to do this.
 
 	return 0;
 }
 
 void NTAPI kernel_RtlLeaveCriticalSection(RTL_CRITICAL_SECTION *crit) {
-	log("RtlLeaveCriticalSection");
+	// XXX: Implement
 }

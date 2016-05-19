@@ -280,7 +280,6 @@ void *malloc(size_t size)
 
 		if ( l_initialized == 0 )
 		{
-			log("initializing malloc");
 			#ifdef DEBUG
 			printf("%s\n","liballoc initializing.");
 			#endif

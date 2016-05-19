@@ -15,3 +15,9 @@ NTSTATUS NTAPI kernel_NtAllocateVirtualMemory(
     uint32_t AllocationType, 
     uint32_t Protect
 );
+
+NTSTATUS NTAPI kernel_NtFreeVirtualMemory(
+	void **BaseAddress,
+	uint32_t *FreeSize,
+	uint32_t FreeType
+);

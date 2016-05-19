@@ -5,8 +5,6 @@ void NTAPI kernel_KeInitializeDpc(
 	PKDEFERRED_ROUTINE   DeferredRoutine,
 	PVOID                DeferredContext
 ) {
-	log("KeInitializeDPC");
-
 	Dpc->Number = 0;
 	Dpc->DeferredRoutine = DeferredRoutine;
 	Dpc->Type = DpcObject;

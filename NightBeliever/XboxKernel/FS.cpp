@@ -8,7 +8,6 @@ NTSTATUS NTAPI kernel_NtOpenFile(
 	uint32_t ShareAccess, 
 	uint32_t OpenOptions
 ) {
-	log("NtOpenFile('%s', 0x%08x, 0x%08x)", ObjectAttributes->ObjectName->Buffer, DesiredAccess, OpenOptions);
 	auto flags = FSFlags::READ;
 	if(FLAG(DesiredAccess, FILE_WRITE_DATA))
 		flags |= FSFlags::WRITE;
@@ -32,12 +31,6 @@ NTSTATUS NTAPI kernel_NtCreateFile(
 	IN  ULONG               CreateDisposition, 
 	IN  ULONG               CreateOptions 
 ) {
-	log("NtCreateFile('%s', 0x%08x, 0x%08x, 0x%08x)", 
-		ObjectAttributes->ObjectName->Buffer, 
-		DesiredAccess, 
-		CreateDisposition, 
-		CreateOptions
-	);
 	auto flags = FSFlags::READ;
 	if(CreateDisposition == FILE_CREATE || CreateDisposition == FILE_OPEN_IF)
 		flags |= FSFlags::CREATE;
@@ -106,6 +99,25 @@ NTSTATUS NTAPI kernel_NtDeviceIoControlFile(
 	return -1;
 }
 
+NTSTATUS NTAPI kernel_NtFsControlFile(
+	HANDLE          FileHandle,
+	HANDLE          Event,
+	PVOID           ApcRoutine,
+	PVOID           ApcContext,
+	PVOID           IoStatusBlock,
+	ULONG           IoControlCode,
+	PVOID           InputBuffer,
+	ULONG           InputLength,
+	PVOID           OutputBuffer,
+	ULONG           OutputLength
+) {
+	return kernel_NtDeviceIoControlFile(
+		FileHandle, Event, ApcRoutine, ApcContext, IoStatusBlock, 
+		IoControlCode, InputBuffer, InputLength, 
+		OutputBuffer, OutputLength
+	);
+}
+
 NTSTATUS NTAPI kernel_NtClose(HANDLE handle) {
 	close(handle);
 	return STATUS_SUCCESS;
@@ -118,12 +130,8 @@ NTSTATUS NTAPI kernel_NtQueryVolumeInformationFile(
 	IN  ULONG                       Length,
 	IN  FS_INFORMATION_CLASS        FileInformationClass
 ) {
-	if(IoStatusBlock)
-		debug("Ignoring status block");
-	
 	switch(FileInformationClass) {
 		case FileFsSizeInformation: {
-			log("FsSizeInformation");
 			auto info = (FILE_FS_SIZE_INFORMATION *) FileInformation;
 			// Test XBE *requires* bytes per allocation unit == 16kb!
 			info->BytesPerSector = 4096; // 4KB sectors
@@ -139,10 +147,30 @@ NTSTATUS NTAPI kernel_NtQueryVolumeInformationFile(
 }
 
 NTSTATUS NTAPI kernel_IoCreateSymbolicLink(
-	IN PSTRING SymbolicLinkName,
-	IN PSTRING DeviceName
+	PSTRING SymbolicLinkName,
+	PSTRING DeviceName
 ) {
-	log("IoCreateSymbolicLink('%s', '%s')", SymbolicLinkName->Buffer, DeviceName->Buffer);
+	// XXX: Implement
+	return STATUS_SUCCESS;
+}
+
+NTSTATUS NTAPI kernel_NtOpenSymbolicLinkObject(
+	HANDLE *LinkHandle, 
+	OBJECT_ATTRIBUTES *ObjectAttributes
+) {
+	// XXX: Implement
+	*LinkHandle = 0xDEADBEEF;
+	return STATUS_SUCCESS;
+}
+
+NTSTATUS NTAPI kernel_NtQuerySymbolicLinkObject(
+	HANDLE LinkHandle, 
+	STRING *LinkTarget, 
+	uint32_t *ReturnedLength
+) {
+	strcpy((char *) LinkTarget->Buffer, "\\Device\\CdRom0");
+	LinkTarget->Length = strlen((char *) LinkTarget->Buffer);
+	if(ReturnedLength != NULL) *ReturnedLength = LinkTarget->Length;
 	return STATUS_SUCCESS;
 }
 
