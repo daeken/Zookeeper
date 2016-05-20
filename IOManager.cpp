@@ -59,7 +59,7 @@ shared_ptr<Directory> IOManager::lookup_directory(string path) {
 shared_ptr<Directory> IOManager::lookup_directory(list<string> path) {
 	auto dir = root;
 	for(auto e : path) {
-		if(dir->subdirectories.find(e) == dir->subdirectories.end()) {
+		if(!IN(e, dir->subdirectories)) {
 			//cout << "Could not find " << e << " in path " << join(path, "\\") << endl;
 			return NULL;
 		}
@@ -75,9 +75,9 @@ string IOManager::lookup_map(string pathstr) {
 	auto i = 0;
 	for(auto e : path) {
 		++i;
-		if(dir->subdirectories.find(e) != dir->subdirectories.end())
+		if(IN(e, dir->subdirectories))
 			dir = dir->subdirectories[e];
-		else if(dir->dirmaps.find(e) != dir->dirmaps.end()) {
+		else if(IN(e, dir->dirmaps)) {
 			auto base = dir->dirmaps[e];
 			if(i == path.size())
 				return base;

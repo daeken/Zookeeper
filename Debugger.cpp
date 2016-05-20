@@ -50,7 +50,7 @@ void Debugger::dump_stack() {
 void Debugger::enter(uint32_t reason) {
 	auto eip = box->cpu->hv->reg(EIP);
 
-	if(breakpoints.find(eip) != breakpoints.end()) {
+	if(IN(eip, breakpoints)) {
 		cout << format("Hit breakpoint at 0x%08x") % eip << endl;
 		breakpoints[eip]->disable();
 		box->cpu->single_step = 1;
@@ -80,7 +80,7 @@ void Debugger::enter(uint32_t reason) {
 		} else if(cmd == "b" || cmd == "bp" || cmd == "break") {
 			assert(v.size() >= 2);
 			auto addr = stoul(v[1], nullptr, 16);
-			if(breakpoints.find(addr) != breakpoints.end())
+			if(IN(addr, breakpoints))
 				cout << format("Breakpoint already exists at %08x") % addr << endl;
 			else {
 				breakpoints[addr] = new Breakpoint(addr);
