@@ -16,9 +16,9 @@ void PageManager::add_region(uint32_t base, uint32_t size) {
 		freePhysPages.push_back(addr);
 }
 
-uint32_t PageManager::map(uint32_t base, uint32_t count, bool aligned) {
+uint32_t PageManager::map(uint32_t base, uint32_t count) {
 	if(base == 0)
-		base = box->pm->alloc_virt(count, aligned);
+		base = box->pm->alloc_virt(count);
 	
 	for(auto i = 0; i < count; ++i) {
 		auto virt = base + i * 4096;
@@ -26,6 +26,16 @@ uint32_t PageManager::map(uint32_t base, uint32_t count, bool aligned) {
 			box->cpu->map_pages(virt, box->pm->alloc_phys(), 1);
 	}
 
+	return base;
+}
+
+uint32_t PageManager::map_contiguous(uint32_t base, uint32_t phys_low, uint32_t phys_high, uint32_t count) {
+	if(base == 0)
+		base = box->pm->alloc_virt(count, 0x80000000); // D3D wants a higher half address
+
+	auto phys_base = box->pm->alloc_phys(count, phys_low, phys_high);
+	box->cpu->map_pages(base, phys_base, count);
+	
 	return base;
 }
 
@@ -38,49 +48,78 @@ void PageManager::unmap(uint32_t base, uint32_t count) {
 	box->pm->free_virt(base, count);
 }
 
-uint32_t PageManager::alloc_phys() {
-	bailout(freePhysPages.size() == 0);
+uint32_t PageManager::alloc_phys(uint32_t count, uint32_t phys_low, uint32_t phys_high) {
+	bailout(freePhysPages.size() < count);
 
-	auto page = freePhysPages.front();
-	freePhysPages.pop_front();
-	return page;
+	if(count == 1) {
+		for(auto iter = freePhysPages.begin(); iter != freePhysPages.end(); ++iter) {
+			if(phys_low < *iter && phys_high >= (*iter + 4096)) {
+				auto page = *iter;
+				freePhysPages.erase(iter);
+				return page;
+			}
+		}
+		bailout(true); // Could not find page in range
+	} else {
+		for(auto base : freePhysPages) {
+			if(!(phys_low < base && (base + count * 4096) <= phys_high))
+				continue;
+			// This is the least efficient search ever.
+			auto found = true;
+			for(auto i = 1; i < count; ++i) {
+				if(find(freePhysPages.begin(), freePhysPages.end(), base + i * 4096) == freePhysPages.end()) {
+					found = false;
+					break;
+				}
+			}
+			if(found) {
+				for(auto i = 0; i < count; ++i) {
+					auto iter = find(freePhysPages.begin(), freePhysPages.end(), base + i * 4096);
+					freePhysPages.erase(iter);
+				}
+				return base;
+			}
+		}
+		bailout(true); // Could not find enough contiguous pages in range
+	}
 }
 
 void PageManager::free_phys(uint32_t page) {
 	freePhysPages.push_back(page);
 }
 
-uint32_t PageManager::alloc_virt(uint32_t count, bool aligned) {
+uint32_t PageManager::alloc_virt(uint32_t count, uint32_t low) {
 	for(auto iter = virtGroups.begin(); iter != virtGroups.end(); ++iter) {
-		if(iter->count >= count) {
-			auto start = iter->start;
-			if(aligned && (start & 0xFFF) != 0) {
-				auto pad = start & 0xFFF;
-				if(iter->count == count + pad) {
-					iter->count = pad;
-					iter->end = iter->start + pad;
-					start += pad;
-				} else if(iter->count > count + pad) {
-					auto next = iter->count - (count + pad);
-					start += pad;
-					iter->count = pad;
-					iter->end = iter->start + pad;
-					virtgroup_t group;
-					group.count = next;
-					group.start = start + count;
-					group.end = start + count + next;
-					virtGroups.insert(++iter, group); // Add this group after the current one
-				} else
-					continue; // Too small to fix the padding.
-			} else {
+		if(iter->count >= count && iter->end > low + count) {
+			if(iter->start >= low) {
+				auto start = iter->start;
 				if(iter->count == count)
 					virtGroups.erase(iter);
 				else {
 					iter->count -= count;
 					iter->start += count * 4096;
 				}
+				return start;
+			} else {
+				auto off = low - iter->start;
+				auto coff = off / 4096;
+				auto start = low;
+				if(iter->count == coff + count) {
+					iter->count -= count;
+					iter->end -= count * 4096;
+				} else {
+					auto oend = iter->end;
+					auto ocount = iter->count;
+					iter->count = coff;
+					iter->end = low;
+					virtgroup_t group;
+					group.count = ocount - count - coff;
+					group.start = low + count * 4096;
+					group.end = oend;
+					virtGroups.insert(++iter, group);
+				}
+				return start;
 			}
-			return start;
 		}
 	}
 

@@ -53,15 +53,33 @@ Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 	hv->reg(CR4, 0x2000);
 }
 
-void Cpu::map_pages(uint32_t virt, uint32_t phys, uint32_t count) {
+void Cpu::map_pages(uint32_t virt, uint32_t phys, uint32_t count, bool present) {
 	auto dir = (uint32_t *) (mem + 64*1024*1024);
 	for(auto i = 0; i < count; ++i) {
 		auto table = (uint32_t *) (mem + (dir[virt >> 22] & ~0xFFF));
-		table[(virt >> 12) & 0x3ff] = phys | 0x7;
+		table[(virt >> 12) & 0x3ff] = phys | 0x6 | (present ? 1 : 0);
 		virt += 4096;
 		phys += 4096;
 	}
 	hv->invalidate_tlb(); // Do we really need to do this all the time?
+}
+
+void Cpu::map_io(uint32_t base, uint32_t pages, MMIOReceiver *recv) {
+	auto memblock = new uint8_t[pages * 4096];
+	hv->map_phys(memblock, base, pages * 4096);
+	for(auto i = 0; i < pages; ++i) {
+		mmio[base] = recv;
+		recv->buffers[base] = memblock;
+		map_pages(base, base, 1, false); // Pages are not marked present
+		base += 4096;
+		memblock += 4096;
+	}
+}
+
+void Cpu::flip_page(uint32_t base, bool val) {
+	auto dir = (uint32_t *) (mem + 64*1024*1024);
+	auto table = (uint32_t *) (mem + (dir[base >> 22] & ~0xFFF));
+	table[(base >> 12) & 0x3ff] = (table[(base >> 12) & 0x3ff] & ~1) | (val ? 1 : 0);
 }
 
 uint32_t Cpu::virt2phys(uint32_t addr) {
@@ -150,6 +168,7 @@ void Cpu::run(uint32_t eip) {
 	auto last_time = systime();
 
 	auto swap = true;
+	uint32_t in_mmio;
 	do {
 		if(break_in) {
 			box->debugger->enter();
@@ -173,12 +192,36 @@ void Cpu::run(uint32_t eip) {
 					case 1: { // Single step
 						auto flags = hv->reg(EFLAGS);
 						hv->reg(EFLAGS, flags & ~(1 << 8));
-						if(single_step == 2) { // Requested
-							single_step = 0;
-							box->debugger->enter();
+						switch(single_step) {
+							case 1: { // Debugger requested
+								box->debugger->reenable();
+								break;
+							}
+							case 2: { // User requested
+								single_step = 0;
+								box->debugger->enter();
+								break;
+							}
+							case 3: { // MMIO Read
+								auto page = in_mmio & ~0xFFF;
+								flip_page(page, false);
+								single_step = 0;
+								in_mmio = 0;
+								break;
+							}
+							case 4: { // MMIO Write
+								auto page = in_mmio & ~0xFFF;
+								flip_page(page, false);
+								auto dev = mmio[page];
+								auto buf = dev->buffers[page];
+								auto off = in_mmio & 0xFFF;
+								volatile auto val = *((uint32_t *) ((uint8_t *) buf + off));
+								dev->write(in_mmio, val);
+								single_step = 0;
+								in_mmio = 0;
+								break;
+							}
 						}
-						else
-							box->debugger->reenable();
 						swap = true;
 						break;
 					}
@@ -188,8 +231,24 @@ void Cpu::run(uint32_t eip) {
 						break;
 					}
 					case 14: {
-						cout << format("Page fault reading %08x") % exit.address << endl;
-						stop = true;
+						auto page = exit.address & ~0xFFF;
+						if(IN(page, mmio)) {
+							auto off = exit.address & 0xFFF;
+							auto dev = mmio[page];
+							auto buf = dev->buffers[page];
+							auto write = FLAG(exit.error_code, 2);
+							in_mmio = exit.address;
+							flip_page(page, true);
+							if(write) {
+								single_step = 4;
+							} else {
+								*((uint32_t *) ((uint8_t *) buf + off)) = dev->read(exit.address);
+								single_step = 3;
+							}
+						} else {
+							cout << format("Page fault reading %08x") % exit.address << endl;
+							stop = true;
+						}
 						break;
 					}
 					default:

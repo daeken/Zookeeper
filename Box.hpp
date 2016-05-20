@@ -7,6 +7,7 @@ public:
 	Box();
 
 	Cpu *cpu;
+	Gpu *gpu;
 	Hypercall *hypercall;
 	HandleManager *hm;
 	PageManager *pm;

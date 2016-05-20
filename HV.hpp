@@ -29,6 +29,7 @@ enum HVExitReason {
 
 typedef struct exit {
 	HVExitReason reason;
+	uint32_t error_code;
 	uint32_t instruction_length;
 	uint32_t interrupt_no;
 	uint32_t address; // Used for page faults

@@ -19,6 +19,8 @@ using namespace boost::algorithm;
 
 #define pagepad(expr) (((expr) & 0xFFF) ? ((expr) & ~0xFFF) + 4096 : (expr))
 
+#define IN(a, b) (((b).find(a)) != (b).end())
+
 #define RAM_SIZE 128*1024*1024
 #define KRAM_SIZE 128*1024*1024
 
@@ -32,6 +34,7 @@ using namespace boost::algorithm;
 #include "xbetypes.hpp"
 #include "Xbe.hpp"
 #include "Cpu.hpp"
+#include "Gpu.hpp"
 #include "HandleManager.hpp"
 #include "PageManager.hpp"
 #include "ThreadManager.hpp"

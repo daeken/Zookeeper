@@ -20,8 +20,14 @@ void Hypercall::log_(uint32_t message) {
 uint32_t Hypercall::map(uint32_t virt_base, uint32_t count) {
 	return box->pm->map(virt_base, count);
 }
-uint32_t Hypercall::map_aligned(uint32_t virt_base, uint32_t count) {
-	return box->pm->map(virt_base, count, true);
+uint32_t Hypercall::map_contiguous(uint32_t virt_base, uint32_t phys_low, uint32_t phys_high, uint32_t count) {
+	return box->pm->map_contiguous(virt_base, phys_low, phys_high, count);
+}
+uint32_t Hypercall::query_map_size(uint32_t base) {
+	auto count = 0;
+	while(box->cpu->is_mapped(base + count * 4096))
+		count++;
+	return count * 4096;
 }
 void Hypercall::unmap(uint32_t virt_base, uint32_t count) {
 	box->pm->unmap(virt_base, count);

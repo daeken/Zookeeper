@@ -12,13 +12,12 @@ Box::Box() {
 	hypercall = new Hypercall();
 
 	hm = new HandleManager();
-
 	pm = new PageManager();
 	pm->add_region(0, 64 * 1024 * 1024);
-
 	tm = new ThreadManager();
-
 	io = new IOManager();
 
 	debugger = new Debugger();
+
+	gpu = new Gpu();
 }

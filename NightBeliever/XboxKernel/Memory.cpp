@@ -8,8 +8,17 @@ void NTAPI kernel_MmPersistContiguousMemory(
 	//log("Ignore MmPersistContiguousMemory");
 }
 
-PVOID NTAPI kernel_MmAllocateContiguousMemory(IN ULONG NumberOfBytes) {
-	return (PVOID) new uint8_t[NumberOfBytes];
+void * NTAPI kernel_MmAllocateContiguousMemory(uint32_t NumberOfBytes) {
+	return kernel_MmAllocateContiguousMemoryEx(NumberOfBytes, 0, 0xFFFFFFFF, 0, 0);
+}
+
+void * NTAPI kernel_MmAllocateContiguousMemoryEx(
+	uint32_t NumberOfBytes, 
+	uint32_t low, uint32_t high, 
+	uint32_t unk, uint32_t flags
+) {
+	NumberOfBytes = pagepad(NumberOfBytes);
+	return map_contiguous(0, low, high, NumberOfBytes / 4096);
 }
 
 NTSTATUS NTAPI kernel_NtAllocateVirtualMemory(
@@ -22,12 +31,12 @@ NTSTATUS NTAPI kernel_NtAllocateVirtualMemory(
 	*BaseAddress = (void *) (((uint32_t) *BaseAddress) & ~0xFFF);
 	*RegionSize = pagepad(*RegionSize);
 	if((AllocationType & MEM_COMMIT) == MEM_COMMIT) {
-		*BaseAddress = map_aligned(*BaseAddress, *RegionSize / 4096);
+		*BaseAddress = map(*BaseAddress, *RegionSize / 4096);
 	} else if((AllocationType & MEM_RESERVE) == MEM_RESERVE) {
 		// We should just be reserving memory, but it doesn't matter.
 		// Commit will trash this region and we're probably leaking some.
 		// Future coders will deal with this problem.
-		*BaseAddress = map_aligned(*BaseAddress, *RegionSize / 4096);
+		*BaseAddress = map(*BaseAddress, *RegionSize / 4096);
 	} else {
 		bailout("Unsupported allocation type %x", AllocationType);
 	}
@@ -46,4 +55,16 @@ NTSTATUS NTAPI kernel_NtFreeVirtualMemory(
 	unmap(*BaseAddress, *FreeSize / 4096);
 	
 	return STATUS_SUCCESS;
+}
+
+uint32_t NTAPI kernel_MmQueryAllocationSize(void *base) {
+	// XXX: This won't return the size of a given allocation,
+	// but how many pages are mapped after that point.
+	// This might blow up sometime.
+	return query_map_size(base);
+}
+
+uint32_t NTAPI kernel_MmQueryAddressProtect(void *base) {
+	// XXX: Implement
+	return 0xFFFFFFFF;
 }

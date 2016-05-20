@@ -165,6 +165,7 @@ exit_t HVMac::enter() {
 	switch(exit_reason) {
 		case VMX_REASON_EXC_NMI: {
 			auto vec_val = rvmcs(VMCS_RO_VMEXIT_IRQ_INFO) & 0xFFFF;
+			_exit.error_code = rvmcs(VMCS_RO_VMEXIT_IRQ_ERROR);
 			switch((vec_val >> 8) & 7) {
 				case 6: {
 					_exit.reason = Interrupt;

@@ -6,7 +6,12 @@ void NTAPI kernel_MmPersistContiguousMemory(
     IN ULONG   NumberOfBytes,
     IN BOOLEAN Persist
 );
-PVOID NTAPI kernel_MmAllocateContiguousMemory(IN ULONG NumberOfBytes);
+void * NTAPI kernel_MmAllocateContiguousMemory(uint32_t NumberOfBytes);
+void * NTAPI kernel_MmAllocateContiguousMemoryEx(
+    uint32_t NumberOfBytes, 
+    uint32_t low, uint32_t high, 
+    uint32_t unk, uint32_t flags
+);
 
 NTSTATUS NTAPI kernel_NtAllocateVirtualMemory(
     void **BaseAddress,
@@ -21,3 +26,6 @@ NTSTATUS NTAPI kernel_NtFreeVirtualMemory(
 	uint32_t *FreeSize,
 	uint32_t FreeType
 );
+
+uint32_t NTAPI kernel_MmQueryAllocationSize(void *base);
+uint32_t NTAPI kernel_MmQueryAddressProtect(void *base);
