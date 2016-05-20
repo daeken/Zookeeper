@@ -44,7 +44,7 @@ uint32_t load_kernel(Cpu *cpu) {
 }
 
 void intHandler(int _) {
-	box->cpu->break_in = true;
+	break_in();
 }
 
 int main(int argc, char **argv) {
