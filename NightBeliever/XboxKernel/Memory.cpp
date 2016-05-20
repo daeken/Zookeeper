@@ -68,3 +68,13 @@ uint32_t NTAPI kernel_MmQueryAddressProtect(void *base) {
 	// XXX: Implement
 	return 0xFFFFFFFF;
 }
+
+uint32_t NTAPI kernel_MmClaimGpuInstanceMemory(
+    uint32_t NumberOfBytes, 
+    uint32_t *NumberOfPaddingBytes
+) {
+	// XXX: Implement properly
+	log("MmClaimGpuInstanceMemory(0x%08x)", NumberOfBytes);
+	*NumberOfPaddingBytes = 0;
+	return NumberOfBytes;
+}

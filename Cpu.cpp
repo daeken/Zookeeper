@@ -80,6 +80,7 @@ void Cpu::flip_page(uint32_t base, bool val) {
 	auto dir = (uint32_t *) (mem + 64*1024*1024);
 	auto table = (uint32_t *) (mem + (dir[base >> 22] & ~0xFFF));
 	table[(base >> 12) & 0x3ff] = (table[(base >> 12) & 0x3ff] & ~1) | (val ? 1 : 0);
+	hv->invalidate_tlb();
 }
 
 uint32_t Cpu::virt2phys(uint32_t addr) {
@@ -260,7 +261,7 @@ void Cpu::run(uint32_t eip) {
 			}
 
 			case VmCall: {
-				hv->reg(EIP, hv->reg(EIP) + 3);
+				hv->reg(EIP, hv->reg(EIP) + exit.instruction_length);
 				hypercall_dispatch(hv->reg(EAX), hv->reg(EDX));
 				break;
 			}
@@ -272,6 +273,11 @@ void Cpu::run(uint32_t eip) {
 				cout << "HLT" << endl;
 				stop = true;
 				break;
+			case PortIO: {
+				hv->reg(EIP, hv->reg(EIP) + exit.instruction_length);
+				cout << "Port IO: " << hex << exit.port << endl;
+				break;
+			}
 			case Ignore:
 				break;
 			default:

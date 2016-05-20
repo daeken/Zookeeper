@@ -8,3 +8,4 @@
 #include "String.hpp"
 #include "Thread.hpp"
 #include "Timer.hpp"
+#include "Interrupt.hpp"

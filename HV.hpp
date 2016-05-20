@@ -23,6 +23,7 @@ enum HVExitReason {
 	Interrupt, 
 	Exception, 
 	VmCall, 
+	PortIO, 
 	TripleFault, 
 	Hlt
 };
@@ -32,7 +33,14 @@ typedef struct exit {
 	uint32_t error_code;
 	uint32_t instruction_length;
 	uint32_t interrupt_no;
-	uint32_t address; // Used for page faults
+
+	// Used for page faults
+	uint32_t address;
+
+	// Used for port IO
+	uint32_t port;
+	uint32_t access_size; // 8, 16, or 32 bits
+	bool port_direction; // true is OUT, false is IN
 } exit_t;
 
 class HV {

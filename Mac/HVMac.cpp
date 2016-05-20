@@ -160,7 +160,8 @@ exit_t HVMac::enter() {
 		return _exit;
 	}
 
-	_exit.address = rvmcs(VMCS_RO_EXIT_QUALIFIC);
+	_exit.instruction_length = rvmcs(VMCS_RO_VMEXIT_INSTR_LEN);
+	auto qual = _exit.address = rvmcs(VMCS_RO_EXIT_QUALIFIC);
 
 	switch(exit_reason) {
 		case VMX_REASON_EXC_NMI: {
@@ -196,8 +197,21 @@ exit_t HVMac::enter() {
 			_exit.reason = Hlt;
 			break;
 		}
-		default: {
+		case VMX_REASON_IO: {
+			_exit.reason = PortIO;
+			_exit.access_size = ((qual & 3) + 1) << 3;
+			_exit.port = qual >> 16;
+			_exit.port_direction = ((qual >> 3) & 1) == 0;
+			break;
+		}
+		case VMX_REASON_IRQ:
+		case VMX_REASON_EPT_VIOLATION: {
 			_exit.reason = Ignore;
+			break;
+		}
+		default: {
+			cout << "Unknown VM exit " << dec << exit_reason << endl;
+			_exit.reason = Unknown;
 		}
 	}
 	return _exit;

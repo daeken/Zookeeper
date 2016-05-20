@@ -5,6 +5,7 @@
 
 #include <stdint.h>
 #include <stdarg.h>
+
 #include "mini-printf.hpp"
 #include "Log.hpp"
 #include "C.hpp"

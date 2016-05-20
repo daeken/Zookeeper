@@ -29,3 +29,8 @@ NTSTATUS NTAPI kernel_NtFreeVirtualMemory(
 
 uint32_t NTAPI kernel_MmQueryAllocationSize(void *base);
 uint32_t NTAPI kernel_MmQueryAddressProtect(void *base);
+
+uint32_t NTAPI kernel_MmClaimGpuInstanceMemory(
+    uint32_t NumberOfBytes, 
+    uint32_t *NumberOfPaddingBytes
+);

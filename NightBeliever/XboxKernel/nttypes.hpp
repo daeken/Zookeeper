@@ -12,6 +12,7 @@ typedef HANDLE *PHANDLE;
 
 typedef int8_t CHAR;
 typedef int8_t *PCHAR;
+typedef uint8_t BYTE;
 typedef uint8_t UCHAR;
 typedef uint8_t *PUCHAR;
 typedef int16_t SHORT;
@@ -27,6 +28,8 @@ typedef uint64_t ULONGLONG;
 typedef bool BOOLEAN;
 typedef void VOID;
 typedef VOID *PVOID;
+
+typedef uint8_t KIRQL;
 
 typedef VOID (NTAPI KSTART_ROUTINE)(IN PVOID StartContext);
 typedef KSTART_ROUTINE *PKSTART_ROUTINE;
