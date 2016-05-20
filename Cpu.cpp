@@ -215,8 +215,8 @@ void Cpu::run(uint32_t eip) {
 								auto dev = mmio[page];
 								auto buf = dev->buffers[page];
 								auto off = in_mmio & 0xFFF;
-								volatile auto val = *((uint32_t *) ((uint8_t *) buf + off));
-								dev->write(in_mmio, val);
+								volatile auto val = (uint32_t *) ((uint8_t *) buf + off);
+								dev->write(in_mmio, *val);
 								single_step = 0;
 								in_mmio = 0;
 								break;
@@ -242,7 +242,8 @@ void Cpu::run(uint32_t eip) {
 							if(write) {
 								single_step = 4;
 							} else {
-								*((uint32_t *) ((uint8_t *) buf + off)) = dev->read(exit.address);
+								volatile auto val = (uint32_t *) ((uint8_t *) buf + off);
+								*val = dev->read(exit.address);
 								single_step = 3;
 							}
 						} else {
