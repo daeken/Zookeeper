@@ -107,3 +107,29 @@ void Hypercall::get_system_time(uint32_t addr) {
 	auto time = ((uint64_t) stime.tv_sec) * 10000000 + ((uint64_t) stime.tv_usec) * 10;
 	box->cpu->write_memory<uint64_t>(addr, time);
 }
+
+void Hypercall::pci_read(uint32_t bus, uint32_t slot, uint32_t reg, uint32_t buffer, uint32_t length) {
+	auto addr = (bus << 16) | slot;
+	auto buf = new uint8_t[length];
+	if(IN(addr, box->pci)) {
+		auto dev = box->pci[addr];
+		dev->readPci(reg, buf, length);
+		box->cpu->write_memory(buffer, length, buf);
+	} else {
+		cout << format("Read from PCI device at %04x:%04x") % bus % slot << endl;
+		break_in(true);
+	}
+}
+
+void Hypercall::pci_write(uint32_t bus, uint32_t slot, uint32_t reg, uint32_t buffer, uint32_t length) {
+	auto addr = (bus << 16) | slot;
+	auto buf = new uint8_t[length];
+	box->cpu->read_memory(buffer, length, buf);
+	if(IN(addr, box->pci)) {
+		auto dev = box->pci[addr];
+		dev->writePci(reg, buf, length);
+	} else {
+		cout << format("Write to unknown PCI device at %04x:%04x") % bus % slot << endl;
+		break_in(true);
+	}
+}

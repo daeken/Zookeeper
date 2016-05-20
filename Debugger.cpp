@@ -1,5 +1,12 @@
 #include "Zookeeper.hpp"
 
+void break_in(bool fatal) {
+	if(fatal)
+		box->cpu->stop = true;
+	else
+		box->cpu->do_break_in = true;
+}
+
 Breakpoint::Breakpoint(uint32_t _addr) : addr(_addr) {
 	enable();
 }

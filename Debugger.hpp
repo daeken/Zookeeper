@@ -1,6 +1,8 @@
 #pragma once
 #include "Zookeeper.hpp"
 
+void break_in(bool fatal=false);
+
 class Breakpoint {
 public:
 	Breakpoint(uint32_t _addr);

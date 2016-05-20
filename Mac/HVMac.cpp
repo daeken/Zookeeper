@@ -198,10 +198,12 @@ exit_t HVMac::enter() {
 			break;
 		}
 		case VMX_REASON_IO: {
+			// "Table 24-5. Exit Qualification for I/O Instructions"
 			_exit.reason = PortIO;
-			_exit.access_size = ((qual & 3) + 1) << 3;
 			_exit.port = qual >> 16;
-			_exit.port_direction = ((qual >> 3) & 1) == 0;
+			_exit.port_size = ((qual & 3) + 1) << 3;
+			_exit.port_direction = !FLAG(qual >> 3, 1);
+			bailout(FLAG(qual >> 5, 1)); // No rep support
 			break;
 		}
 		case VMX_REASON_IRQ:

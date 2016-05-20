@@ -17,5 +17,3 @@
 #include "liballoc.hpp"
 #include "XboxKernel/KernelThunk.hpp"
 #include "XboxKernel/Kernel.hpp"
-
-#define pagepad(expr) (((expr) & 0xFFF) ? ((expr) & ~0xFFF) + 4096 : (expr))

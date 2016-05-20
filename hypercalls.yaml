@@ -56,3 +56,15 @@ close:
   - handle: uint32_t
 get_system_time:
   - time: uint64_t *
+pci_read:
+  - bus: uint32_t
+  - slot: uint32_t
+  - reg: uint32_t
+  - buffer: void *
+  - length: uint32_t
+pci_write:
+  - bus: uint32_t
+  - slot: uint32_t
+  - reg: uint32_t
+  - buffer: void *
+  - length: uint32_t

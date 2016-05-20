@@ -39,7 +39,7 @@ typedef struct exit {
 
 	// Used for port IO
 	uint32_t port;
-	uint32_t access_size; // 8, 16, or 32 bits
+	uint32_t port_size; // 8, 16, or 32 bits
 	bool port_direction; // true is OUT, false is IN
 } exit_t;
 

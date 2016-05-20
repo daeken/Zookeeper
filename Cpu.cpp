@@ -64,18 +64,6 @@ void Cpu::map_pages(uint32_t virt, uint32_t phys, uint32_t count, bool present) 
 	hv->invalidate_tlb(); // Do we really need to do this all the time?
 }
 
-void Cpu::map_io(uint32_t base, uint32_t pages, MMIOReceiver *recv) {
-	auto memblock = new uint8_t[pages * PAGE_SIZE];
-	hv->map_phys(memblock, base, pages * PAGE_SIZE);
-	for(auto i = 0; i < pages; ++i) {
-		mmio[base] = recv;
-		recv->buffers[base] = memblock;
-		map_pages(base, base, 1, false); // Pages are not marked present
-		base += PAGE_SIZE;
-		memblock += PAGE_SIZE;
-	}
-}
-
 void Cpu::flip_page(uint32_t base, bool val) {
 	auto dir = (uint32_t *) (mem + 64*ONE_MB);
 	auto table = (uint32_t *) (mem + (dir[base >> 22] & ~PAGE_MASK));
@@ -171,9 +159,9 @@ void Cpu::run(uint32_t eip) {
 	auto swap = true;
 	uint32_t in_mmio;
 	do {
-		if(break_in) {
+		if(do_break_in) {
 			box->debugger->enter();
-			break_in = false;
+			do_break_in = false;
 		}
 		auto exit = hv->enter();
 
@@ -213,11 +201,11 @@ void Cpu::run(uint32_t eip) {
 							case 4: { // MMIO Write
 								auto page = in_mmio & ~PAGE_MASK;
 								flip_page(page, false);
-								auto dev = mmio[page];
-								auto buf = dev->buffers[page];
+								auto dev = box->mmio[page];
+								auto buf = dev->mmioBuffers[page];
 								auto off = in_mmio & PAGE_MASK;
 								volatile auto val = (uint32_t *) ((uint8_t *) buf + off);
-								dev->write(in_mmio, *val);
+								dev->writeMmio(in_mmio, *val);
 								single_step = 0;
 								in_mmio = 0;
 								break;
@@ -233,10 +221,10 @@ void Cpu::run(uint32_t eip) {
 					}
 					case 14: {
 						auto page = exit.address & ~PAGE_MASK;
-						if(IN(page, mmio)) {
+						if(IN(page, box->mmio)) {
 							auto off = exit.address & PAGE_MASK;
-							auto dev = mmio[page];
-							auto buf = dev->buffers[page];
+							auto dev = box->mmio[page];
+							auto buf = dev->mmioBuffers[page];
 							auto write = FLAG(exit.error_code, 2);
 							in_mmio = exit.address;
 							flip_page(page, true);
@@ -244,7 +232,7 @@ void Cpu::run(uint32_t eip) {
 								single_step = 4;
 							} else {
 								volatile auto val = (uint32_t *) ((uint8_t *) buf + off);
-								*val = dev->read(exit.address);
+								*val = dev->readMmio(exit.address);
 								single_step = 3;
 							}
 						} else {
@@ -274,8 +262,30 @@ void Cpu::run(uint32_t eip) {
 				stop = true;
 				break;
 			case PortIO: {
-				hv->reg(EIP, hv->reg(EIP) + exit.instruction_length);
-				cout << "Port IO: " << hex << exit.port << endl;
+				if(IN(exit.port, box->ports)) {
+					auto dev = box->ports[exit.port];
+					if(exit.port_direction) {
+						auto val = hv->reg(EAX);
+						if(exit.port_size == 8)
+							val &= 0xFF;
+						else if(exit.port_size == 16)
+							val &= 0xFFFF;
+						dev->writePort(exit.port, exit.port_size, val);
+					}
+					else {
+						auto val = dev->readPort(exit.port, exit.port_size);
+						if(exit.port_size == 8)
+							hv->reg(EAX, (hv->reg(EAX) & 0xFFFFFF00) | (val & 0xFF));
+						else if(exit.port_size == 16)
+							hv->reg(EAX, (hv->reg(EAX) & 0xFFFF0000) | (val & 0xFFFF));
+						else
+							hv->reg(EAX, val);
+					}
+					hv->reg(EIP, hv->reg(EIP) + exit.instruction_length);
+				} else {
+					cout << "Unknown port: " << hex << exit.port << endl;
+					stop = true;
+				}
 				break;
 			}
 			case Ignore:
