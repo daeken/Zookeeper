@@ -4,15 +4,15 @@ PageManager::PageManager() {
 	virtgroup_t group;
 	group.start = 0x10000000;
 	group.end = 0xc0000000;
-	group.count = (group.end - group.start) / 4096;
+	group.count = (group.end - group.start) / PAGE_SIZE;
 	virtGroups.push_back(group);
 }
 
 void PageManager::add_region(uint32_t base, uint32_t size) {
 	if(size & 0xFFF)
-		size = (size & ~0xFFF) + 4096;
+		size = (size & ~0xFFF) + PAGE_SIZE;
 
-	for(uint32_t addr = 0; addr < base + size; addr += 4096)
+	for(uint32_t addr = 0; addr < base + size; addr += PAGE_SIZE)
 		freePhysPages.push_back(addr);
 }
 
@@ -21,7 +21,7 @@ uint32_t PageManager::map(uint32_t base, uint32_t count) {
 		base = box->pm->alloc_virt(count);
 	
 	for(auto i = 0; i < count; ++i) {
-		auto virt = base + i * 4096;
+		auto virt = base + i * PAGE_SIZE;
 		if(!box->cpu->is_mapped(virt))
 			box->cpu->map_pages(virt, box->pm->alloc_phys(), 1);
 	}
@@ -43,7 +43,7 @@ void PageManager::unmap(uint32_t base, uint32_t count) {
 	auto addr = base;
 	for(auto i = 0; i < count; ++i) {
 		box->pm->free_phys(box->cpu->virt2phys(addr));
-		addr += 4096;
+		addr += PAGE_SIZE;
 	}
 	box->pm->free_virt(base, count);
 }
@@ -53,7 +53,7 @@ uint32_t PageManager::alloc_phys(uint32_t count, uint32_t phys_low, uint32_t phy
 
 	if(count == 1) {
 		for(auto iter = freePhysPages.begin(); iter != freePhysPages.end(); ++iter) {
-			if(phys_low < *iter && phys_high >= (*iter + 4096)) {
+			if(phys_low < *iter && phys_high >= (*iter + PAGE_SIZE)) {
 				auto page = *iter;
 				freePhysPages.erase(iter);
 				return page;
@@ -62,19 +62,19 @@ uint32_t PageManager::alloc_phys(uint32_t count, uint32_t phys_low, uint32_t phy
 		bailout(true); // Could not find page in range
 	} else {
 		for(auto base : freePhysPages) {
-			if(!(phys_low < base && (base + count * 4096) <= phys_high))
+			if(!(phys_low < base && (base + count * PAGE_SIZE) <= phys_high))
 				continue;
 			// This is the least efficient search ever.
 			auto found = true;
 			for(auto i = 1; i < count; ++i) {
-				if(find(freePhysPages.begin(), freePhysPages.end(), base + i * 4096) == freePhysPages.end()) {
+				if(find(freePhysPages.begin(), freePhysPages.end(), base + i * PAGE_SIZE) == freePhysPages.end()) {
 					found = false;
 					break;
 				}
 			}
 			if(found) {
 				for(auto i = 0; i < count; ++i) {
-					auto iter = find(freePhysPages.begin(), freePhysPages.end(), base + i * 4096);
+					auto iter = find(freePhysPages.begin(), freePhysPages.end(), base + i * PAGE_SIZE);
 					freePhysPages.erase(iter);
 				}
 				return base;
@@ -97,16 +97,16 @@ uint32_t PageManager::alloc_virt(uint32_t count, uint32_t low) {
 					virtGroups.erase(iter);
 				else {
 					iter->count -= count;
-					iter->start += count * 4096;
+					iter->start += count * PAGE_SIZE;
 				}
 				return start;
 			} else {
 				auto off = low - iter->start;
-				auto coff = off / 4096;
+				auto coff = off / PAGE_SIZE;
 				auto start = low;
 				if(iter->count == coff + count) {
 					iter->count -= count;
-					iter->end -= count * 4096;
+					iter->end -= count * PAGE_SIZE;
 				} else {
 					auto oend = iter->end;
 					auto ocount = iter->count;
@@ -114,7 +114,7 @@ uint32_t PageManager::alloc_virt(uint32_t count, uint32_t low) {
 					iter->end = low;
 					virtgroup_t group;
 					group.count = ocount - count - coff;
-					group.start = low + count * 4096;
+					group.start = low + count * PAGE_SIZE;
 					group.end = oend;
 					virtGroups.insert(++iter, group);
 				}
@@ -127,7 +127,7 @@ uint32_t PageManager::alloc_virt(uint32_t count, uint32_t low) {
 }
 
 void PageManager::free_virt(uint32_t start, uint32_t count) {
-	auto end = start + count * 4096;
+	auto end = start + count * PAGE_SIZE;
 	if(virtGroups.size() == 0) {
 		virtgroup_t group;
 		group.start = start;

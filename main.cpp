@@ -12,7 +12,7 @@ uint32_t load_multiboot(Cpu *cpu, uint32_t *header) {
 
 	memcpy(cpu->kmem + (header[4] - 0xC0000000), rel + (header[4] - header[3]), memsize);
 	memset(cpu->kmem + (header[5] - 0xC0000000), 0, header[6] - header[5]);
-	cpu->map_pages(0xC0000000, 0xC0000000, memsize / 4096);
+	cpu->map_pages(0xC0000000, 0xC0000000, memsize / PAGE_SIZE);
 
 	return header[7];
 }

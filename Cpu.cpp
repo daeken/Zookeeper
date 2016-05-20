@@ -29,10 +29,10 @@ Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 	hv->map_phys(mem, 0x00000000, RAM_SIZE);
 	hv->map_phys(kmem, 0xc0000000, KRAM_SIZE);
 
-	auto directory = 64*1024*1024; // Page directory base
+	auto directory = 64*ONE_MB; // Page directory base
 	auto dir = (uint32_t *) (mem + directory);
 	for(auto i = 0; i < 1024; ++i) {
-		dir[i] = (directory + 4096 + 4096 * i) | 0x7;
+		dir[i] = (directory + PAGE_SIZE + PAGE_SIZE * i) | 0x7;
 		auto table = (uint32_t *) (mem + (dir[i] & ~0xFFF));
 		for(auto j = 0; j < 1024; ++j) {
 			table[j] = 0x0;
@@ -41,43 +41,43 @@ Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 	hv->reg(CR3, directory);
 	hv->reg(CR0, 0x80000000 | 0x20 | 0x01); // Paging | NE | PE
 
-	auto gdt = ram + 96*1024*1024;
+	auto gdt = ram + 96*ONE_MB;
 	memset(gdt, 0, 0x10000);
 	gdt_encode(gdt, 0, 0, 0, 0); // Null entry
 	gdt_encode(gdt, 1, 0, 0xffffffff, 0x9A); // Code
 	gdt_encode(gdt, 2, 0, 0xffffffff, 0x92); // Data
 	hv->reg(GDT_LIMIT, 0xFFFF);
-	hv->reg(GDT_BASE, 96*1024*1024);
-	map_pages(96 * 1024 * 1024, 96 * 1024 * 1024, 16);
+	hv->reg(GDT_BASE, 96*ONE_MB);
+	map_pages(96 * ONE_MB, 96 * ONE_MB, 16);
 
 	hv->reg(CR4, 0x2000);
 }
 
 void Cpu::map_pages(uint32_t virt, uint32_t phys, uint32_t count, bool present) {
-	auto dir = (uint32_t *) (mem + 64*1024*1024);
+	auto dir = (uint32_t *) (mem + 64*ONE_MB);
 	for(auto i = 0; i < count; ++i) {
 		auto table = (uint32_t *) (mem + (dir[virt >> 22] & ~0xFFF));
 		table[(virt >> 12) & 0x3ff] = phys | 0x6 | (present ? 1 : 0);
-		virt += 4096;
-		phys += 4096;
+		virt += PAGE_SIZE;
+		phys += PAGE_SIZE;
 	}
 	hv->invalidate_tlb(); // Do we really need to do this all the time?
 }
 
 void Cpu::map_io(uint32_t base, uint32_t pages, MMIOReceiver *recv) {
-	auto memblock = new uint8_t[pages * 4096];
-	hv->map_phys(memblock, base, pages * 4096);
+	auto memblock = new uint8_t[pages * PAGE_SIZE];
+	hv->map_phys(memblock, base, pages * PAGE_SIZE);
 	for(auto i = 0; i < pages; ++i) {
 		mmio[base] = recv;
 		recv->buffers[base] = memblock;
 		map_pages(base, base, 1, false); // Pages are not marked present
-		base += 4096;
-		memblock += 4096;
+		base += PAGE_SIZE;
+		memblock += PAGE_SIZE;
 	}
 }
 
 void Cpu::flip_page(uint32_t base, bool val) {
-	auto dir = (uint32_t *) (mem + 64*1024*1024);
+	auto dir = (uint32_t *) (mem + 64*ONE_MB);
 	auto table = (uint32_t *) (mem + (dir[base >> 22] & ~0xFFF));
 	table[(base >> 12) & 0x3ff] = (table[(base >> 12) & 0x3ff] & ~1) | (val ? 1 : 0);
 	hv->invalidate_tlb();

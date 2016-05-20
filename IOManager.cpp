@@ -182,13 +182,13 @@ void DirHandle::ioctl(uint32_t code, void *ibuf, uint32_t isize, void *obuf, uin
 	switch(code) {
 		case IOCTL_DISK_GET_DRIVE_GEOMETRY: {
 			auto geom = (DISK_GEOMETRY *) obuf;
-			geom->BytesPerSector = 1024*1024;
+			geom->BytesPerSector = ONE_MB;
 			break;
 		}
 		case IOCTL_DISK_GET_PARTITION_INFO: {
 			auto part = (PARTITION_INFORMATION *) obuf;
 			part->StartingOffset = 0;
-			part->PartitionLength = 1 * 1024 * 1024 * 1024; // 1GB
+			part->PartitionLength = ONE_GB;
 			part->HiddenSectors = 0;
 			part->PartitionNumber = 5; // Who cares?
 			part->PartitionType = 8;

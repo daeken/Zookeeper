@@ -28,7 +28,7 @@ uint32_t Xbe::LoadImage() {
 	//cout << "Loading image at " << hex << header->base << " to " << hex << header->base + file_size << endl;
 	//cout << "OEP is " << hex << header->oep << endl;
 	box->xbebase = header->base;
-	box->pm->map(header->base, pagepad(file_size) / 4096);
+	box->pm->map(header->base, pagepad(file_size) / PAGE_SIZE);
 	box->cpu->write_memory(header->base, file_size, file_data);
 
 	auto end = file_size;
@@ -38,8 +38,8 @@ uint32_t Xbe::LoadImage() {
 		auto psize = pagepad(sect->vsize);
 		auto base = sect->vaddr & ~0xFFF;
 		if(sect->vaddr & 0xFFF)
-			psize += 4096;
-		box->pm->map(base, psize / 4096);
+			psize += PAGE_SIZE;
+		box->pm->map(base, psize / PAGE_SIZE);
 		//cout << "Loading section of 0x" << hex << sect->vsize << " bytes (padded to 0x" << psize << ") to 0x" << base << endl;
 		box->cpu->write_memory(sect->vaddr, sect->rsize, &file_data[sect->raddr]);
 		auto nend = (sect->vaddr - header->base) + sect->rsize;

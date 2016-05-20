@@ -25,9 +25,9 @@ uint32_t Hypercall::map_contiguous(uint32_t virt_base, uint32_t phys_low, uint32
 }
 uint32_t Hypercall::query_map_size(uint32_t base) {
 	auto count = 0;
-	while(box->cpu->is_mapped(base + count * 4096))
+	while(box->cpu->is_mapped(base + count * PAGE_SIZE))
 		count++;
-	return count * 4096;
+	return count * PAGE_SIZE;
 }
 void Hypercall::unmap(uint32_t virt_base, uint32_t count) {
 	box->pm->unmap(virt_base, count);

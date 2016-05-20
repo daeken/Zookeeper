@@ -1,7 +1,7 @@
 #include "Zookeeper.hpp"
 
 Gpu::Gpu() {
-	box->cpu->map_io(0xFD000000, 4096, (MMIOReceiver *) this); // 16MB address space
+	box->cpu->map_io(0xFD000000, PAGE_SIZE, (MMIOReceiver *) this); // 16MB address space
 }
 
 uint32_t Gpu::read(uint32_t addr) {
