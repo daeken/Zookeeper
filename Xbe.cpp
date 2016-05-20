@@ -36,8 +36,8 @@ uint32_t Xbe::LoadImage() {
 	for(auto i = 0; i < header->numsects; ++i) {
 		XbeSection_t *sect = &sections[i];
 		auto psize = pagepad(sect->vsize);
-		auto base = sect->vaddr & ~0xFFF;
-		if(sect->vaddr & 0xFFF)
+		auto base = sect->vaddr & ~PAGE_MASK;
+		if(sect->vaddr & PAGE_MASK)
 			psize += PAGE_SIZE;
 		box->pm->map(base, psize / PAGE_SIZE);
 		//cout << "Loading section of 0x" << hex << sect->vsize << " bytes (padded to 0x" << psize << ") to 0x" << base << endl;

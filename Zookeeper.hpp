@@ -28,8 +28,11 @@ using namespace boost::algorithm;
 
 #define IN(a, b) (((b).find(a)) != (b).end())
 
+// Xbox has 64MB RAM, Chihiro has 128 MB RAM
 #define RAM_SIZE (128 * ONE_MB)
 #define KRAM_SIZE (128 * ONE_MB)
+
+#define KBASE 0xC0000000
 
 #include "HV.hpp"
 #ifdef MAC

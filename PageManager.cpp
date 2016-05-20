@@ -9,8 +9,8 @@ PageManager::PageManager() {
 }
 
 void PageManager::add_region(uint32_t base, uint32_t size) {
-	if(size & 0xFFF)
-		size = (size & ~0xFFF) + PAGE_SIZE;
+	if(size & PAGE_MASK)
+		size = (size & ~PAGE_MASK) + PAGE_SIZE;
 
 	for(uint32_t addr = 0; addr < base + size; addr += PAGE_SIZE)
 		freePhysPages.push_back(addr);
