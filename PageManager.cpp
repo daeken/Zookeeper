@@ -3,7 +3,7 @@
 PageManager::PageManager() {
 	virtgroup_t group;
 	group.start = 0x10000000;
-	group.end = 0xc0000000;
+	group.end = KBASE;
 	group.count = (group.end - group.start) / PAGE_SIZE;
 	virtGroups.push_back(group);
 }

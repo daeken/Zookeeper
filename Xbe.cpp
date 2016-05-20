@@ -12,7 +12,7 @@ Xbe::Xbe(char *fn) {
 	file_data = new uint8_t[file_size];
 	fread(file_data, file_size, 1, fp);
 	header = (XbeHeader_t *) file_data;
-	assert(header->soh == 0x1000);
+	assert(header->soh == PAGE_SIZE);
 	full_header = new uint8_t[header->soh];
 	memcpy(full_header, file_data, header->soh);
 
