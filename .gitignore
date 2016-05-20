@@ -7,3 +7,4 @@ Hypercalls.hpp
 HypercallDispatch.cpp
 nightbeliever.krnl
 zookeeper
+*.xbe
