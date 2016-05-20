@@ -51,7 +51,7 @@ NTSTATUS NTAPI kernel_PsCreateSystemThreadEx(
 	p->StartContext1 = StartContext1;
 	p->StartContext2 = StartContext2;
 
-	*ThreadHandle = create_thread(threadex_proxy, ((uint8_t *) malloc(1024*1024)) + 1024 * 1024, (uint32_t) p);
+	*ThreadHandle = create_thread(threadex_proxy, ((uint8_t *) malloc(ONE_MB)) + ONE_MB, (uint32_t) p);
 	if(ThreadId != NULL)
 		*ThreadId = *ThreadHandle;
 

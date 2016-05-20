@@ -5,14 +5,14 @@ uint32_t load_multiboot(Cpu *cpu, uint32_t *header) {
 
 	uint8_t *rel = (uint8_t *) header;
 
-	uint32_t memsize = header[6] - 0xC0000000;
-	if(memsize & 0xFFF)
-		memsize = (memsize & ~0xFFF) + 0x1000;
+	uint32_t memsize = header[6] - KBASE;
+	if(memsize & PAGE_MASK)
+		memsize = (memsize & ~PAGE_MASK) + PAGE_SIZE;
 	assert(memsize <= KRAM_SIZE);
 
-	memcpy(cpu->kmem + (header[4] - 0xC0000000), rel + (header[4] - header[3]), memsize);
-	memset(cpu->kmem + (header[5] - 0xC0000000), 0, header[6] - header[5]);
-	cpu->map_pages(0xC0000000, 0xC0000000, memsize / 4096);
+	memcpy(cpu->kmem + (header[4] - KBASE), rel + (header[4] - header[3]), memsize);
+	memset(cpu->kmem + (header[5] - KBASE), 0, header[6] - header[5]);
+	cpu->map_pages(KBASE, KBASE, memsize / PAGE_SIZE);
 
 	return header[7];
 }

@@ -17,12 +17,22 @@ using namespace boost::algorithm;
 
 #define bailout(expr) do { if(expr) { cout << "Bailout: " << #expr << " @ " << __FILE__ << " (" << dec << __LINE__ << ")" << endl; exit(1); } } while(0)
 
-#define pagepad(expr) (((expr) & 0xFFF) ? ((expr) & ~0xFFF) + 4096 : (expr))
+#define ONE_KB 1024
+#define ONE_MB (1024 * ONE_KB)
+#define ONE_GB (1024 * ONE_MB)
+
+#define PAGE_SIZE (4 * ONE_KB)
+#define PAGE_MASK (PAGE_SIZE - 1)
+
+#define pagepad(expr) (((expr) & PAGE_MASK) ? ((expr) & ~PAGE_MASK) + PAGE_SIZE : (expr))
 
 #define IN(a, b) (((b).find(a)) != (b).end())
 
-#define RAM_SIZE 128*1024*1024
-#define KRAM_SIZE 128*1024*1024
+// Xbox has 64MB RAM, Chihiro has 128 MB RAM
+#define RAM_SIZE (128 * ONE_MB)
+#define KRAM_SIZE (128 * ONE_MB)
+
+#define KBASE 0xC0000000
 
 #include "HV.hpp"
 #ifdef MAC

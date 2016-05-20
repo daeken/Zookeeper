@@ -59,7 +59,7 @@ shared_ptr<Directory> IOManager::lookup_directory(string path) {
 shared_ptr<Directory> IOManager::lookup_directory(list<string> path) {
 	auto dir = root;
 	for(auto e : path) {
-		if(dir->subdirectories.find(e) == dir->subdirectories.end()) {
+		if(!IN(e, dir->subdirectories)) {
 			//cout << "Could not find " << e << " in path " << join(path, "\\") << endl;
 			return NULL;
 		}
@@ -75,9 +75,9 @@ string IOManager::lookup_map(string pathstr) {
 	auto i = 0;
 	for(auto e : path) {
 		++i;
-		if(dir->subdirectories.find(e) != dir->subdirectories.end())
+		if(IN(e, dir->subdirectories))
 			dir = dir->subdirectories[e];
-		else if(dir->dirmaps.find(e) != dir->dirmaps.end()) {
+		else if(IN(e, dir->dirmaps)) {
 			auto base = dir->dirmaps[e];
 			if(i == path.size())
 				return base;
@@ -182,13 +182,13 @@ void DirHandle::ioctl(uint32_t code, void *ibuf, uint32_t isize, void *obuf, uin
 	switch(code) {
 		case IOCTL_DISK_GET_DRIVE_GEOMETRY: {
 			auto geom = (DISK_GEOMETRY *) obuf;
-			geom->BytesPerSector = 1024*1024;
+			geom->BytesPerSector = ONE_MB;
 			break;
 		}
 		case IOCTL_DISK_GET_PARTITION_INFO: {
 			auto part = (PARTITION_INFORMATION *) obuf;
 			part->StartingOffset = 0;
-			part->PartitionLength = 1 * 1024 * 1024 * 1024; // 1GB
+			part->PartitionLength = ONE_GB;
 			part->HiddenSectors = 0;
 			part->PartitionNumber = 5; // Who cares?
 			part->PartitionType = 8;
