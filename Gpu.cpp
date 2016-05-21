@@ -3,7 +3,7 @@
 // Comment to enable break_in()s for this file
 #define break_in() do { } while(0)
 
-Gpu::Gpu() {
+Gpu::Gpu() : Device("Gpu") {
 	box->add_mmio(0xFD000000, 4096, this); // 4096 pages * 4KB == 16MB address space
 	box->add_port(0x80c0, this);
 }
