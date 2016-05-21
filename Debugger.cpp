@@ -1,4 +1,7 @@
 #include "Zookeeper.hpp"
+#include <boost/algorithm/string.hpp>
+#include <boost/regex.hpp>
+using namespace boost::algorithm;
 
 void break_in(bool fatal) {
 	if(fatal)

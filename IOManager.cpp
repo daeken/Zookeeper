@@ -1,4 +1,6 @@
 #include "Zookeeper.hpp"
+#include <boost/algorithm/string.hpp>
+using namespace boost::algorithm;
 
 list<string> parse_path(string path) {
 	list<string> vec;

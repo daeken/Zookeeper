@@ -1,7 +1,9 @@
 #include "Zookeeper.hpp"
 
+// Comment to enable break_in()s for this file
+#define break_in() do { } while(0)
+
 Gpu::Gpu() {
-	box->add_pci(1, 0, this);
 	box->add_mmio(0xFD000000, 4096, this); // 4096 pages * 4KB == 16MB address space
 	box->add_port(0x80c0, this);
 }
@@ -12,6 +14,7 @@ uint32_t Gpu::readMmio(uint32_t addr) {
 			return 3;
 		default:
 			cout << format("Gpu::readMmio(0x%08x)") % addr << endl;
+			break_in();
 			return 0;
 	}
 }

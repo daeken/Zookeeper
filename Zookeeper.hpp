@@ -1,9 +1,6 @@
 #pragma once
 
 #include <boost/format.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/regex.hpp>
-#include <boost/lexical_cast.hpp>
 #include <iostream>
 #include <iomanip>
 #include <cassert>
@@ -11,9 +8,9 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <list>
+#include <map>
 using namespace std;
 using boost::format;
-using namespace boost::algorithm;
 
 #define bailout(expr) do { if(expr) { cout << "Bailout: " << #expr << " @ " << __FILE__ << " (" << dec << __LINE__ << ")" << endl; exit(1); } } while(0)
 
@@ -34,9 +31,13 @@ using namespace boost::algorithm;
 #include "Hypercall.hpp"
 #include "xbetypes.hpp"
 #include "Xbe.hpp"
+
 #include "Device.hpp"
 #include "Cpu.hpp"
 #include "Gpu.hpp"
+#include "Lpc.hpp"
+#include "Smbus.hpp"
+
 #include "HandleManager.hpp"
 #include "PageManager.hpp"
 #include "ThreadManager.hpp"

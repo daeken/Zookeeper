@@ -20,6 +20,8 @@ Box::Box() {
 	debugger = new Debugger();
 
 	gpu = new Gpu();
+	lpc = new Lpc();
+	smbus = new Smbus();
 }
 
 void Box::add_mmio(uint32_t base, uint32_t pages, Device *dev) {
