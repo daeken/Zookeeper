@@ -53,6 +53,12 @@ Cpu::Cpu() {
 	hv->reg(CR4, 0x2000);
 }
 
+Cpu::~Cpu() {
+	delete hv;
+	delete[] mem;
+	delete[] kmem;
+}
+
 void Cpu::map_pages(uint32_t virt, uint32_t phys, uint32_t count, bool present) {
 	auto dir = (uint32_t *) (mem + 64*ONE_MB);
 	for(auto i = 0; i < count; ++i) {
@@ -133,10 +139,6 @@ void Cpu::write_memory(uint32_t addr, uint32_t size, void *buffer) {
 			mem[paddr] = *(buf++);
 		++addr;
 	}
-}
-
-Cpu::~Cpu() {
-	delete hv;
 }
 
 #define TASK_TIMER 20 // Milliseconds

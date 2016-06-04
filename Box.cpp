@@ -5,20 +5,20 @@ Box *box;
 Box::Box() {
 	box = this;
 
-	cpu = new Cpu();
-	hypercall = new Hypercall();
+	cpu = make_unique<Cpu>();
+	hypercall = make_unique<Hypercall>();
 
-	hm = new HandleManager();
-	pm = new PageManager();
+	hm = make_unique<HandleManager>();
+	pm = make_unique<PageManager>();
 	pm->add_region(0, 64 * ONE_MB);
-	tm = new ThreadManager();
-	io = new IOManager();
+	tm = make_unique<ThreadManager>();
+	io = make_unique<IOManager>();
 
-	debugger = new Debugger();
+	debugger = make_unique<Debugger>();
 
-	gpu = new Gpu();
-	lpc = new Lpc();
-	smbus = new Smbus();
+	gpu = make_unique<Gpu>();
+	lpc = make_unique<Lpc>();
+	smbus = make_unique<Smbus>();
 }
 
 void Box::add_mmio(uint32_t base, uint32_t pages, Device *dev) {
