@@ -26,6 +26,7 @@ public:
 	map<uint32_t, Device *> pci;
 
 	uint32_t xbebase;
+	bool frame_rendered = false; // Trigger return from cpu
 };
 
 extern Box *box;

@@ -4,9 +4,9 @@
 
 class Cpu {
 public:
-	Cpu(uint8_t *ram, uint8_t *kram);
+	Cpu();
 	~Cpu();
-	void run(uint32_t eip);
+	bool run(uint32_t eip=-1);
 	void map_pages(uint32_t virt, uint32_t phys, uint32_t count, bool present=true);
 	void flip_page(uint32_t base, bool val);
 
@@ -33,4 +33,5 @@ public:
 	int single_step = 0;
 	bool stop = false;
 	bool do_break_in = false;
+	uint64_t last_time;
 };

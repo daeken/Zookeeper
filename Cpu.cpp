@@ -20,9 +20,9 @@ void gdt_encode(uint8_t *gdt, int entry, uint32_t base, uint32_t limit, uint8_t 
     gdt[5] = type;
 }
 
-Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
-	mem = ram;
-	kmem = kram;
+Cpu::Cpu() {
+	bailout(!(mem = (uint8_t *) valloc(RAM_SIZE)));
+	bailout(!(kmem = (uint8_t *) valloc(KRAM_SIZE)));
 
 	hv = new HVImpl();
 	memset(mem, 0, RAM_SIZE);
@@ -41,7 +41,7 @@ Cpu::Cpu(uint8_t *ram, uint8_t *kram) {
 	hv->reg(CR3, directory);
 	hv->reg(CR0, 0x80000000 | 0x20 | 0x01); // Paging | NE | PE
 
-	auto gdt = ram + 96*ONE_MB;
+	auto gdt = mem + 96*ONE_MB;
 	memset(gdt, 0, 0x10000);
 	gdt_encode(gdt, 0, 0, 0, 0); // Null entry
 	gdt_encode(gdt, 1, 0, 0xffffffff, 0x9A); // Code
@@ -148,13 +148,15 @@ uint64_t systime() {
 	return (time.tv_sec * 1000) + (time.tv_usec / 1000);
 }
 
-void Cpu::run(uint32_t eip) {
-	hv->reg(EIP, eip);
-	hv->reg(EFLAGS, 0x2);
+bool Cpu::run(uint32_t eip) {
+	if(eip != -1) {
+		hv->reg(EIP, eip);
+		hv->reg(EFLAGS, 0x2);
 
-	box->debugger->enter(0);
+		box->debugger->enter(0);
 
-	auto last_time = systime();
+		last_time = systime();
+	}
 
 	auto swap = true;
 	uint32_t in_mmio;
@@ -309,6 +311,10 @@ void Cpu::run(uint32_t eip) {
 				last_time = cur_time;
 			}
 		}
-	} while(!stop);
-	box->debugger->enter();
+	} while(!stop && !box->frame_rendered);
+	if(stop) { // No debugger on frame render
+		box->debugger->enter();
+		return false;
+	}
+	return true;
 }

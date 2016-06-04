@@ -4,11 +4,8 @@ Box *box;
 
 Box::Box() {
 	box = this;
-	uint8_t *mem, *kmem;
-	bailout(!(mem = (uint8_t *) valloc(RAM_SIZE)));
-	bailout(!(kmem = (uint8_t *) valloc(KRAM_SIZE)));
 
-	cpu = new Cpu(mem, kmem);
+	cpu = new Cpu();
 	hypercall = new Hypercall();
 
 	hm = new HandleManager();
