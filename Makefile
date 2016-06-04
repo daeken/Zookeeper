@@ -13,10 +13,10 @@ endif
 
 OBJ_FILES := $(CPP_FILES:.cpp=.o)
 
-all: NightBeliever zookeeper
+all: NightBeliever zookeeper_libretro.dylib
 
-zookeeper: $(OBJ_FILES)
-	clang++ -g $(CC_FLAGS) -lboost_regex-mt -framework Hypervisor -o zookeeper $(OBJ_FILES)
+zookeeper_libretro.dylib: $(OBJ_FILES)
+	clang++ -g $(CC_FLAGS) -dynamiclib -lboost_regex-mt -framework Hypervisor -o zookeeper_libretro.dylib $(OBJ_FILES)
 
 .PHONY: NightBeliever
 

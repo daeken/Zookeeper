@@ -26,6 +26,7 @@ public:
 	map<uint32_t, Device *> pci;
 
 	uint32_t xbebase;
+	uint32_t kernel_entry;
 	bool frame_rendered = false; // Trigger return from cpu
 };
 

@@ -22,6 +22,8 @@ using boost::format;
 
 #define KBASE 0xC0000000
 
+#include "libretro.h"
+
 #include "HV.hpp"
 #ifdef MAC
 #include "Mac/HVMac.hpp"
